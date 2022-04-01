@@ -160,13 +160,16 @@ def login(request):
             cursor.execute("SELECT * \
                             FROM login l \
                             WHERE l.email = %s \
-                            AND l.type = %s",
-                            [request.POST['email'],request.POST['type']])
+                            AND l.type = %s \
+                            AND l.password = %s",
+                            [request.POST['email'],request.POST['type'],request.POST['password']])
             user = cursor.fetchone()
             if user == None:
                 status = 'You do not have an account!'
             else:
-                return redirect('home')
+                status = 'Welcome back!'
+                context['status'] = status
+                return redirect('home',context)
 
     #context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
