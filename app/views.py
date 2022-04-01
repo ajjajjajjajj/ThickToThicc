@@ -177,4 +177,4 @@ def login(request):
     #     return HttpResponse("Your username and password didn't match.")
     context['status'] = status
 
-    return render(request, "home/home.html", context)
+    return render(request, "registration/login.html", context)
