@@ -15,8 +15,8 @@
         </div>
         <div>
             <ul>
-                {% for r in result %}
-                    <li> {{ r }} </li>
+                {% for k,v in result.items %}
+                    <li> {{ v }} </li>
                 {% endfor %}
             </ul>
         </div>
