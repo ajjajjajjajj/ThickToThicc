@@ -184,19 +184,19 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
-                id = get(request.POST['email'],request.POST['type'])
+                #id = get(request.POST['email'],request.POST['type'])
                 type = request.POST['type']
                 status = 'Welcome back!'
                 context['status'] = status
-                return redirect('<str:type>/<str:id>/', type = type, id = id, permanent = True )
+                return redirect('<str:type>/', type = type, permanent = True )
     return render(request, "registration/login.html", context)
 
-def get(email,type):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
-        curid = cursor.fetchone()
+#def get(email,type):
+#    with connection.cursor() as cursor:
+#        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
+#        curid = cursor.fetchone()
 
-    return curid
+#    return curid
 
     
 
