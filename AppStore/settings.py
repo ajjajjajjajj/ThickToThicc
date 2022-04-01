@@ -89,7 +89,7 @@ if RUN_LOCAL_DB:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('LOCAL_DB_NAME', default=''),
+            'NAME': config('LOCAL_DB_NAME', default='test'),
             'USER': config('LOCAL_DB_USER', default=''),
             'HOST': 'localhost',
             'PORT': 5432
@@ -97,7 +97,7 @@ if RUN_LOCAL_DB:
     }
     # If no password is used, the value must not appear in the configuration
     # Only add the password if one is actually set
-    LOCAL_DB_PASSWORD = config('LOCAL_DB_PASSWORD', default='chicken123')
+    LOCAL_DB_PASSWORD = config('LOCAL_DB_PASSWORD', default='')
     if LOCAL_DB_PASSWORD:
         DATABASES['default']['PASSWORD'] = LOCAL_DB_PASSWORD
 else:
