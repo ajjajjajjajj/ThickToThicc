@@ -66,7 +66,6 @@ FOREIGN KEY (gym_email) REFERENCES gym(email),
 PRIMARY KEY (gym_email,focus)
 );
 
-
 CREATE TABLE IF NOT EXISTS member_trainer(
 member_email VARCHAR(256) REFERENCES member(email),
 trainer_email VARCHAR(256) REFERENCES trainer(email),
@@ -80,4 +79,137 @@ gym_email VARCHAR(256) REFERENCES gym(email),
 gym_rating NUMERIC CONSTRAINT gym_rating CHECK(gym_rating <= 5),
 UNIQUE(member_email, gym_email)
 );
+
+CREATE TABLE trainer_ratings( 
+    trainer_email VARCHAR(64) REFERENCES trainer(email),
+    rating NUMERIC CONSTRAINT rating CHECK(rating<=5)
+);
+
+CREATE OR REPLACE FUNCTION insert_trainer()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+    AS
+$$
+BEGIN
+-- trainer automatically added to trainer_ratings if not inside
+    INSERT INTO trainer_ratings VALUES(NEW.email, NULL);
+	
+	RETURN NEW;
+END;
+$$;
+
+-- inserting into trainer_rating table once new trainer
+CREATE OR REPLACE TRIGGER insert_trainer
+AFTER INSERT
+ON trainer
+FOR EACH ROW
+EXECUTE PROCEDURE insert_trainer();
+
+
+-- Trigger Function
+CREATE OR REPLACE FUNCTION train_ratings()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+    AS
+$$
+DECLARE 
+	rat NUMERIC;
+BEGIN
+-- get cur trainer rating
+	SELECT tr.rating
+	INTO rat
+	FROM trainer_ratings tr
+	WHERE tr.trainer_email = NEW.trainer_email
+
+-- if new trainer rating is null, no need do anything
+	IF NEW.trainer_rating ISNULL THEN
+		RAISE NOTICE'Rating is null';
+	ELSE
+	-- if trainer rating was null
+		IF rat ISNULL THEN
+			UPDATE trainer_ratings
+        	SET rating = NEW.trainer_rating
+       		WHERE trainer_email = NEW.trainer_email;
+		ELSE
+	-- if trainer rating and new rating not null
+        	UPDATE trainer_ratings
+        	SET rating = ROUND(( rat + NEW.trainer_rating)/2,2)
+        	WHERE trainer_email = NEW.trainer_email;
+		END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- TRAINER trigger
+CREATE TRIGGER calc_trainer
+BEFORE UPDATE
+ON member_trainer
+FOR EACH ROW
+EXECUTE PROCEDURE train_ratings();
+
+CREATE TABLE gym_ratings( 
+    gym_email VARCHAR(64) REFERENCES gym(email),
+    rating NUMERIC CONSTRAINT rating CHECK(rating<=5)
+);
+
+CREATE OR REPLACE FUNCTION insert_gym()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+    AS
+$$
+BEGIN
+-- trainer automatically added to trainer_ratings if not inside
+    INSERT INTO gym_ratings VALUES(NEW.email, NULL);
+	
+	RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER insert_gym
+AFTER INSERT
+ON gym
+FOR EACH ROW
+EXECUTE PROCEDURE insert_gym();
+
+-- Trigger Function
+CREATE OR REPLACE FUNCTION gym_ratings()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+    AS
+$$
+DECLARE 
+	rat NUMERIC;
+BEGIN
+-- if trainer email dont exists in trainer_ratings
+	SELECT gr.rating
+	INTO rat
+	FROM gym_ratings gr
+	WHERE gr.gym_email = NEW.gym_email;
+
+    IF NEW.gym_rating ISNULL THEN
+		RAISE NOTICE'Rating is null';
+	ELSE
+	-- if trainer rating is null
+		IF rat ISNULL THEN
+			UPDATE gym_ratings
+        	SET rating = NEW.gym_rating
+       		WHERE gym_email = NEW.gym_email;
+		ELSE
+	-- if trainer rating and new rating not null
+        	UPDATE gym_ratings
+        	SET rating = ROUND(( rat + NEW.gym_rating)/2,2)
+        	WHERE gym_email = NEW.gym_email;
+		END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER calc_gym
+BEFORE UPDATE
+ON member_gym
+FOR EACH ROW
+EXECUTE PROCEDURE gym_ratings();
 
