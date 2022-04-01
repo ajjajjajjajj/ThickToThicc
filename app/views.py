@@ -143,7 +143,7 @@ def search_request(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT name, email \
                         FROM gym \
-                        WHERE name LIKE %%%s%%", 
+                        WHERE name LIKE '%%%s%%'", 
                         [request.POST['search'],])
         gym_rows = cursor.fetchall()
         result = {}
@@ -152,7 +152,7 @@ def search_request(request):
 
         cursor.execute("SELECT first_name, last_name, email \
                         FROM trainer \
-                        WHERE first_name LIKE %%%s%% OR last_name LIKE %%%s%%",
+                        WHERE first_name LIKE '%%%s%%' OR last_name LIKE '%%%s%%'",
                         [request.POST['search'],request.POST['search']])
         trainer_rows = cursor.fetchall()
         for r in trainer_rows:
