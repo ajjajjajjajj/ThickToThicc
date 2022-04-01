@@ -1,3 +1,5 @@
+from http.client import HTTPResponse
+from sre_constants import NOT_LITERAL
 from django.shortcuts import render, redirect
 from django.db import connection
 
@@ -184,11 +186,21 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
+                id = get(request.POST['email'],request.POST['type'])
+                type = request.POST['type']
                 status = 'Welcome back!'
                 context['status'] = status
-                return render(request,'home/home.html',context)
+                return redirect('loggedhome', type = type, id = id )
 
-    #context["status"] = status 
+def get(email,type):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id FROM %s WHERE email = %s", [email,type])
+        curid = cursor.fetchone()
+    return curid
+
+
+
+    # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
     # if m.check_password(request.POST['password']):
     #    request.session['member_id'] = m.id
@@ -196,4 +208,7 @@ def login_request(request):
     # else:
     #     return HttpResponse("Your username and password didn't match.")
 
-    return render(request, "registration/login.html", context)
+
+
+def logged_home(request):
+    return HttpResponse('hi')
