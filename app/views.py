@@ -144,7 +144,7 @@ def search_request(request):
         cursor.execute("SELECT name, email \
                         FROM gym \
                         WHERE name LIKE %%%s%%", 
-                        request.POST['search'])
+                        [request.POST['search'],])
         gym_rows = cursor.fetchall()
         result = {}
         for r in gym_rows:
