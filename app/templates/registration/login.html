@@ -60,6 +60,8 @@
 	<p class = "main">Are you a Member, Trainer or a Gym?</p>
 
 <form action="/login/" method="POST" class="main">
+    {% csrf token %}
+
 	<label for="type">Choose a type:</label>
 	<select name="type" id="type">
 		<option value="member">Member</option>
@@ -68,7 +70,6 @@
 	</select>
 
 <br><br>
-	{% csrf_token %}
 
   	<div id="div_id_first_name" class="control-group"> 
 		<label for="email" class="control-label requiredField">
