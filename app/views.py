@@ -159,9 +159,9 @@ def search_request(request):
             for r in trainer_rows:
                 result[r] = r
             
-            return render(request, 'searches/search.html', result)
+            return render(request, 'search/search.html', result)
         else:
-            return render(request, 'searches/search.html')
+            return render(request, 'search/search.html')
 
 def login_view(request):
     return render(request,'registration/login.html',{})
