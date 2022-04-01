@@ -193,10 +193,12 @@ def login_request(request):
 
 def get(email,type):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT id FROM '%" + type + "%' WHERE email = %s", [email])
+        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
         curid = cursor.fetchone()
 
     return curid
+
+    
 
 
 
