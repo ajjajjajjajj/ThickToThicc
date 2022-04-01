@@ -188,7 +188,7 @@ def login_request(request):
                 type = request.POST['type']
                 status = 'Welcome back!'
                 context['status'] = status
-                return redirect('loggedhome', type = type, id = id )
+                return redirect('<str:type>/<str:id>/', type = type, id = id, permanent = True )
 
 def get(email,type):
     with connection.cursor() as cursor:
