@@ -1,3 +1,4 @@
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,6 +58,10 @@
   <h1 id="top" class="main">Not So ActiveSG</h1>
   <h2 class="main">From thick to thicc.</h2>
 
+	{% if status %}
+
+		{{ status }}
+
 	<p class = "main">Are you a Member, Trainer or a Gym?</p>
 
 <<<<<<< HEAD
@@ -103,4 +108,5 @@
 	</p>
 </body>
 </html>
-   
+{% endif %}
+{% endblock %}   
