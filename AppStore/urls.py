@@ -20,12 +20,12 @@ from app.views import *
 
 
 urlpatterns = [
+    path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     # path('index', index, name='index'),
     # path('add', add, name='add'),
     # path('view/<str:id>', view, name='view'),
     # path('edit/<str:id>', edit, name='edit'),
-    path('', include('django.contrib.auth.urls')),
     path('', home,name='home'),
     path('home', home, name='home'),
     path('register', register_view, name='register'),
