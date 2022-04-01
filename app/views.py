@@ -172,7 +172,7 @@ def login_request(request):
             else:
                 status = 'Welcome back!'
                 context['status'] = status
-                return render(request,'home',context)
+                return render(request,'home/home.html',context)
 
     #context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
