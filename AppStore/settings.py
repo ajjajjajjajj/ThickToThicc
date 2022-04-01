@@ -89,7 +89,7 @@ if RUN_LOCAL_DB:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('LOCAL_DB_NAME', default='test'),
+            'NAME': config('LOCAL_DB_NAME', default=''),
             'USER': config('LOCAL_DB_USER', default=''),
             'HOST': 'localhost',
             'PORT': 5432
