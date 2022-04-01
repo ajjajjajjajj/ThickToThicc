@@ -10,6 +10,17 @@
             <form method="POST" action="/search_request">
                 {% csrf_token %}
                 <input type="text" name="search">
+                <div class="location" id="location">
+                    <select name="loc" id="loc">
+                        <option>Select Location Preference</option>
+                        <option value="north">North</option>
+                        <option value="south">South</option>
+                        <option value="east">East</option>
+                        <option value="west">West</option>
+                        <option value="central">Central</option>
+                    </select>
+                </div>
+
                 <button type="submit">Search</button>
             </form>
         </div>
