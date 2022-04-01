@@ -143,7 +143,7 @@ def search_view(request):
                         UNION \
                         SELECT name, email \
                         FROM trainer \
-                        WHERE name LIKE %%%s%%", request.POST['search'], request.POST['search'])
+                        WHERE name LIKE %%%s%%", [request.POST['search'], request.POST['search']])
         rows = cursor.fetchall()
         result = {}
         for r in rows:
