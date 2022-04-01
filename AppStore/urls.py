@@ -31,4 +31,5 @@ urlpatterns = [
     path('register', register_view, name='register'),
     path('registration_request', register_request, name='registration_request'),
     path('search', search_view),
+    path('login',login,name='login')
 ]
