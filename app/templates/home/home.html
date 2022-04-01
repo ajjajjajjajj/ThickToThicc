@@ -18,11 +18,8 @@
 	</div>
 </div>
     {% if status %}
-    <ul>
-        {% for item in status %}
-            <li> {{ item }} </li>
-        {% endfor %}
-    </ul>
+    
+        {{ status }}
 
 	{% else %}
 		<p>You are not logged in</p>
