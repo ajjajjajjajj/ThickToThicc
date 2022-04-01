@@ -193,13 +193,9 @@ def login_request(request):
 
 def get(email,type):
     with connection.cursor() as cursor:
-        if type == 'member':
-            cursor.execute("SELECT id FROM member WHERE email = %s", [email])
-        elif type == 'trainer':
-            cursor.execute("SELECT id FROM trainer WHERE email = %s", [email])
-        else:
-            cursor.execute('SELECT if FROM gym WHERE email = %s',[email])
+            cursor.execute("SELECT id FROM '%%" + type + "%%' WHERE email = %s", [email])
         curid = cursor.fetchone()
+
     return curid
 
 
