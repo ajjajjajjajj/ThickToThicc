@@ -97,9 +97,9 @@ if RUN_LOCAL_DB:
     }
     # If no password is used, the value must not appear in the configuration
     # Only add the password if one is actually set
-    LOCAL_DB_PASSWORD = config('LOCAL_DB_PASSWORD', default=None)
-    if LOCAL_DB_PASSWORD:
-        DATABASES['default']['PASSWORD'] = LOCAL_DB_PASSWORD
+    #LOCAL_DB_PASSWORD = config('LOCAL_DB_PASSWORD', default=None)
+    #if LOCAL_DB_PASSWORD:
+        #DATABASES['default']['PASSWORD'] = LOCAL_DB_PASSWORD
 else:
     DATABASES = {
         'default': {
