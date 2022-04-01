@@ -184,7 +184,7 @@ def login_request(request):
             else:
                 status = 'Welcome back!'
                 context['status'] = status
-                return redirect('home',context)
+                return redirect('home')
 
     #context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
