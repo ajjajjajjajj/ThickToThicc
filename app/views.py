@@ -145,9 +145,10 @@ def search_request(request):
                         FROM gym \
                         WHERE name LIKE %%%s%% \
                         UNION \
-                        SELECT name, email \
+                        SELECT first_name, last_name, email \
                         FROM trainer \
-                        WHERE name LIKE %%%s%%", [request.POST['search'], request.POST['search']])
+                        WHERE first_name LIKE %%%s%% OR last_name LIKE %%%s%%" , 
+                        [request.POST['search'], request.POST['search']])
         rows = cursor.fetchall()
         result = {}
         for r in rows:
