@@ -2,6 +2,7 @@ from http.client import HTTPResponse
 from sre_constants import NOT_LITERAL
 from django.shortcuts import render, redirect
 from django.db import connection
+from django.http import HttpResponse, HttpResponseRedirect
 
 # # Create your views here.
 # def index(request):
@@ -147,7 +148,7 @@ def search_request(request):
         with connection.cursor() as cursor:
             cursor.execute("SELECT name, email \
                             FROM gym \
-                            WHERE name LIKE '%%" + string + "%%'")
+                   7         WHERE name LIKE '%%" + string + "%%'")
             gym_rows = cursor.fetchall()
 
         with connection.cursor() as cursor:
@@ -186,19 +187,17 @@ def login_request(request):
             else:
                 #id = get(request.POST['email'],request.POST['type'])
                 type = request.POST['type']
-                status = 'Welcome back!'
-                context['status'] = status
                 return redirect('<str:type>/', type = type, permanent = True )
     return render(request, "registration/login.html", context)
 
-#def get(email,type):
-#    with connection.cursor() as cursor:
-#        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
-#        curid = cursor.fetchone()
+def get(email,type):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
+        curid = cursor.fetchone()
 
-#    return curid
+    return curid
 
-    
+## CANNOT FIND ID SMH AND NEED REVERSE URL
 
 
 
