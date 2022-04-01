@@ -28,8 +28,13 @@ done < ".env"
 URI="postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
 
 # Run the scripts to insert data.
-psql ${URI} -f sql/AppStoreClean.sql
-psql ${URI} -f sql/AppStoreSchema.sql
-psql ${URI} -f sql/AppStoreCustomers.sql
-psql ${URI} -f sql/AppStoreGames.sql
-psql ${URI} -f sql/AppStoreDownloads.sql
+psql ${URI} -f sql/GymAppClean.sql
+psql ${URI} -f sql/GymAppSchema.sql
+psql ${URI} -f sql/GymAppLogin.sql
+psql ${URI} -f sql/GymAppMembers.sql
+psql ${URI} -f sql/GymAppGyms.sql
+psql ${URI} -f sql/GymAppTrainers.sql
+psql ${URI} -f sql/GymAppFocus.sql
+psql ${URI} -f sql/GymAppGymfocus.sql
+psql ${URI} -f sql/GymAppMember_gym.sql
+psql ${URI} -f sql/GymAppMember_trainer.sql
