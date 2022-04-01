@@ -150,7 +150,10 @@ def search_view(request):
             result[r] = r
         return render(request, 'searches/search.html', result)
 
-def login(request):
+def login_view(request):
+    return render(request,'registration/login.html',{})
+
+def login_request(request):
     """Shows the login page"""
     context = {}
     status = ''
@@ -169,7 +172,7 @@ def login(request):
             else:
                 status = 'Welcome back!'
                 context['status'] = status
-                return redirect('home',context)
+                return render(request,'home/home.html',context)
 
     #context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
