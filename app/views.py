@@ -141,24 +141,27 @@ def search_view(request):
 
 def search_request(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT name, email \
-                        FROM gym \
-                        WHERE name LIKE '%%%s%%'", 
-                        [request.POST['search'],])
-        gym_rows = cursor.fetchall()
-        result = {}
-        for r in gym_rows:
-            result[r] = r
+        if request.POST['search']:
+            string = request.POST['search']
+            cursor.execute("SELECT name, email \
+                            FROM gym \
+                            WHERE name LIKE '%%" + string + "%%'")
+            gym_rows = cursor.fetchall()
+            result = {}
+            for r in gym_rows:
+                result[r] = r
 
-        cursor.execute("SELECT first_name, last_name, email \
-                        FROM trainer \
-                        WHERE first_name LIKE '%%%s%%' OR last_name LIKE '%%%s%%'",
-                        [request.POST['search'],request.POST['search']])
-        trainer_rows = cursor.fetchall()
-        for r in trainer_rows:
-            result[r] = r
-        
-        return render(request, 'searches/search.html', result)
+            cursor.execute("SELECT first_name, last_name, email \
+                            FROM trainer \
+                            WHERE first_name LIKE '%%" + string + "%%' \
+                                OR last_name LIKE '%%" + string + "%%'")
+            trainer_rows = cursor.fetchall()
+            for r in trainer_rows:
+                result[r] = r
+            
+            return render(request, 'searches/search.html', result)
+        else:
+            return render(request, 'searches/search.html')
 
 def login_view(request):
     return render(request,'registration/login.html',{})
