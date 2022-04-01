@@ -184,6 +184,7 @@ def login_request(request):
             else:
                 status = 'Welcome back!'
                 context['status'] = status
+                redirect('home')
                 return render(request,'home/home.html',context)
 
     #context["status"] = status 
