@@ -189,6 +189,7 @@ def login_request(request):
                 status = 'Welcome back!'
                 context['status'] = status
                 return redirect('<str:type>/<str:id>/', type = type, id = id, permanent = True )
+    return render(request, "registration/login.html", context)
 
 def get(email,type):
     with connection.cursor() as cursor:
