@@ -16,13 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-import app.views
+from app.views import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', app.views.index, name='index'),
-    path('add', app.views.add, name='add'),
-    path('view/<str:id>', app.views.view, name='view'),
-    path('edit/<str:id>', app.views.edit, name='edit'),
+    # path('index', index, name='index'),
+    # path('add', add, name='add'),
+    # path('view/<str:id>', view, name='view'),
+    # path('edit/<str:id>', edit, name='edit'),
+    # path('', include('django.contrib.auth.urls')),
+    path('', home,name='home'),
+    path('register', register_view, name='register'),
+    path('registration_request', register_request, name='registration_request'),
+    path('home', home, name='home'),
+    path('search', search_view)
 ]
