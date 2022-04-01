@@ -18,8 +18,12 @@
 	</div>
 </div>
 
-	{% if user.is_authenticated %}
-		Hi {{ user.username }}!
+    <ul>
+        {% for item in status %}
+            <li> {{ item }} </li>
+        {% endfor %}
+    </ul>
+
 	{% else %}
 		<p>You are not logged in</p>
 		<a href="/login">Login Here</a>

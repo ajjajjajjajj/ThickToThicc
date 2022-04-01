@@ -173,6 +173,8 @@ def login_request(request):
             user = cursor.fetchone()
             if user == None:
                 status = 'You do not have an account!'
+                context['status'] = status
+                return render(request,"registration/login.html",context)
             else:
                 status = 'Welcome back!'
                 context['status'] = status
