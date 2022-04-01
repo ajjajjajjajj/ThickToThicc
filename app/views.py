@@ -166,7 +166,6 @@ def login_view(request):
 def login_request(request):
     """Shows the login page"""
     context = {}
-    status = ''
  
     if request.POST:
         with connection.cursor() as cursor:
@@ -193,6 +192,5 @@ def login_request(request):
     #    return HttpResponse("You're logged in.")
     # else:
     #     return HttpResponse("Your username and password didn't match.")
-    context['status'] = status
 
     return render(request, "registration/login.html", context)
