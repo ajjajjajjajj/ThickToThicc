@@ -149,3 +149,32 @@ def search_view(request):
         for r in rows:
             result[r] = r
         return render(request, 'searches/search.html', result)
+
+def login(request):
+    """Shows the login page"""
+    context = {}
+    status = ''
+ 
+    if request.POST:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * \
+                            FROM login l \
+                            WHERE l.email = %s \
+                            AND l.type = %s",
+                            [request.POST['email'],request.POST['type']])
+            user = cursor.fetchone()
+            if user == None:
+                status = 'You do not have an account!'
+            else:
+                return redirect('home')
+
+    #context["status"] = status 
+    # m = Login.objects.get(username=request.POST['email'])
+    # if m.check_password(request.POST['password']):
+    #    request.session['member_id'] = m.id
+    #    return HttpResponse("You're logged in.")
+    # else:
+    #     return HttpResponse("Your username and password didn't match.")
+    context['status'] = status
+
+    return render(request, "home/home.html", context)
