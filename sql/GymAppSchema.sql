@@ -21,11 +21,8 @@ experience NUMERIC NOT NULL CHECK(experience >= 0),
 focus1 VARCHAR(64) NOT NULL,
 focus2 VARCHAR(64) NOT NULL,
 focus3 VARCHAR(64) NOT NULL,
-level VARCHAR(64) NOT NULL CONSTRAINT level CHECK(level = 'Beginner' OR level = 'Intermediate' OR level = 'Advanced'),
-FOREIGN KEY (email) 
-    REFERENCES login(email)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+level VARCHAR(64) NOT NULL,
+FOREIGN KEY (email) REFERENCES login(email)
 );
 
 CREATE TABLE IF NOT EXISTS member(
@@ -34,17 +31,16 @@ email VARCHAR(256) PRIMARY KEY,
 first_name VARCHAR(64) NOT NULL,
 last_name VARCHAR(64) NOT NULL,
 gender VARCHAR(16) NOT NULL CONSTRAINT gender CHECK(gender = 'M' OR gender = 'F'),
-level VARCHAR(64) NOT NULL CONSTRAINT level CHECK(level = 'Beginner' OR level = 'Intermediate' OR level = 'Advanced'),
+level VARCHAR(64) NOT NULL,
 preferred_gym_location VARCHAR(256) NOT NULL,
 budget NUMERIC NOT NULL,
+FOREIGN KEY (email) REFERENCES login(email), 
 focus1 VARCHAR(64) REFERENCES focus(focus),
 focus2 VARCHAR(64) REFERENCES focus(focus),
-focus3 VARCHAR(64) REFERENCES focus(focus),
-FOREIGN KEY (email) 
-    REFERENCES login(email)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+focus3 VARCHAR(64) REFERENCES focus(focus)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS gym(
 id SERIAL,
@@ -56,31 +52,28 @@ lower_price_range NUMERIC NOT NULL CHECK(lower_price_range > 0),
 capacity NUMERIC NOT NULL CHECK(capacity > 0),
 level VARCHAR(64) NOT NULL CONSTRAINT level CHECK(level = 'Beginner' OR level = 'Intermediate' OR level = 'Advanced'),
 region VARCHAR(16) NOT NULL CONSTRAINT region CHECK(region = 'North' OR region = 'South' OR region = 'East' OR region = 'West' OR region = 'Central'),
-FOREIGN KEY (email) 
-    REFERENCES login(email)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS gymfocus(
-gym_email VARCHAR(256),
-focus VARCHAR(64) REFERENCES focus(focus) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (gym_email) REFERENCES gym(email),
-PRIMARY KEY (gym_email,focus)
+FOREIGN KEY (email) REFERENCES login(email)
 );
 
 CREATE TABLE IF NOT EXISTS member_trainer(
 member_email VARCHAR(256) REFERENCES member(email),
 trainer_email VARCHAR(256) REFERENCES trainer(email),
-trainer_rating NUMERIC CONSTRAINT trainer_rating CHECK(trainer_rating <= 5),
+trainer_rating NUMERIC,
 UNIQUE(member_email, trainer_email)
 );
 
 CREATE TABLE IF NOT EXISTS member_gym(
 member_email VARCHAR(256) REFERENCES member(email),
 gym_email VARCHAR(256) REFERENCES gym(email),
-gym_rating NUMERIC CONSTRAINT gym_rating CHECK(gym_rating <= 5),
+gym_rating NUMERIC CONSTRAINT gym_rating CHECK(gym_rating<=5),
 UNIQUE(member_email, gym_email)
+);
+
+CREATE TABLE IF NOT EXISTS gymfocus(
+gym_email VARCHAR(256),
+focus VARCHAR(64) REFERENCES focus(focus),
+FOREIGN KEY (gym_email) REFERENCES gym(email),
+PRIMARY KEY (gym_email,focus)
 );
 
 CREATE TABLE trainer_ratings( 
@@ -108,7 +101,6 @@ ON trainer
 FOR EACH ROW
 EXECUTE PROCEDURE insert_trainer();
 
-
 -- Trigger Function
 CREATE OR REPLACE FUNCTION train_ratings()
     RETURNS TRIGGER
@@ -116,38 +108,39 @@ CREATE OR REPLACE FUNCTION train_ratings()
     AS
 $$
 DECLARE 
-	rat NUMERIC;
+	num NUMERIC;
+	sum1 numeric;
 BEGIN
--- get cur trainer rating
-	SELECT tr.rating
-	INTO rat
-	FROM trainer_ratings tr
-	WHERE tr.trainer_email = NEW.trainer_email
-
 -- if new trainer rating is null, no need do anything
 	IF NEW.trainer_rating ISNULL THEN
 		RAISE NOTICE'Rating is null';
 	ELSE
+		SELECT COUNT(mt.trainer_rating), SUM(mt.trainer_rating)
+		INTO num, sum1
+		FROM member_trainer mt
+		WHERE mt.trainer_email = NEW.trainer_email;
+		
 	-- if trainer rating was null
-		IF rat ISNULL THEN
+		IF num = 0 THEN
 			UPDATE trainer_ratings
         	SET rating = NEW.trainer_rating
        		WHERE trainer_email = NEW.trainer_email;
 		ELSE
 	-- if trainer rating and new rating not null
         	UPDATE trainer_ratings
-        	SET rating = ROUND(( rat + NEW.trainer_rating)/2,2)
+        	SET rating = ROUND(( sum1 + NEW.trainer_rating)/(num+1),2)
         	WHERE trainer_email = NEW.trainer_email;
 		END IF;
-    END IF;
+    	END IF;
 
     RETURN NEW;
 END;
 $$;
 
+
 -- TRAINER trigger
-CREATE TRIGGER calc_trainer
-BEFORE UPDATE
+CREATE OR REPLACE TRIGGER calc_trainer
+BEFORE UPDATE OR INSERT
 ON member_trainer
 FOR EACH ROW
 EXECUTE PROCEDURE train_ratings();
@@ -183,26 +176,28 @@ CREATE OR REPLACE FUNCTION gym_ratings()
     AS
 $$
 DECLARE 
-	rat NUMERIC;
+	num NUMERIC;
+	sum1 NUMERIC;
 BEGIN
 -- if trainer email dont exists in trainer_ratings
-	SELECT gr.rating
-	INTO rat
-	FROM gym_ratings gr
-	WHERE gr.gym_email = NEW.gym_email;
-
     IF NEW.gym_rating ISNULL THEN
 		RAISE NOTICE'Rating is null';
 	ELSE
+		
+		SELECT COUNT(mg.gym_rating), SUM(mg.gym_rating)
+		INTO num, sum1
+		FROM member_gym mg
+		WHERE mg.gym_email = NEW.gym_email;
+		
 	-- if trainer rating is null
-		IF rat ISNULL THEN
+		IF num = 0 THEN
 			UPDATE gym_ratings
         	SET rating = NEW.gym_rating
        		WHERE gym_email = NEW.gym_email;
 		ELSE
 	-- if trainer rating and new rating not null
         	UPDATE gym_ratings
-        	SET rating = ROUND(( rat + NEW.gym_rating)/2,2)
+        	SET rating = ROUND((sum1+ NEW.gym_rating)/(num+1),2)
         	WHERE gym_email = NEW.gym_email;
 		END IF;
     END IF;
@@ -211,8 +206,7 @@ END;
 $$;
 
 CREATE OR REPLACE TRIGGER calc_gym
-BEFORE UPDATE
+BEFORE UPDATE OR INSERT
 ON member_gym
 FOR EACH ROW
 EXECUTE PROCEDURE gym_ratings();
-
