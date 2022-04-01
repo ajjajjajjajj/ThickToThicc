@@ -5,7 +5,7 @@
     </head>
     <body>
         
-        <h2> Search for a gym </h2>
+        <h2> Search for a gym or trainer! </h2>
         <div>
             <form method="POST" action="/search_request">
                 {% csrf_token %}
@@ -14,20 +14,24 @@
             </form>
         </div>
         <div>
-            <h3>Gyms</h3>
-            <ul>
-                {% for g in gym %}
-                    <li> {{ g }} </li>
-                {% endfor %}
-            </ul>
+            {% if num_gyms != 0 %}
+                <h3>Gyms</h3>
+                <ul>
+                    {% for g in gym %}
+                        <li> {{ g }} </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
         <div>
+            {% if num_trainers != 0 %}
             <h3>Trainers</h3>
             <ul>
                 {% for t in trainer %}
                     <li> {{ t }} </li>
                 {% endfor %}
             </ul>           
+            {% endif %}
         </div>
     </body>
 </html>
