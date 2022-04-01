@@ -26,9 +26,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=jtuv_tw20df-4=%g+k_#vbbk3o%max96^h@paxwafs8ey7@hg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-RUN_LOCAL_DB = config('RUN_LOCAL_DB', default=True, cast=bool)
+RUN_LOCAL_DB = config('RUN_LOCAL_DB', default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -61,7 +61,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'AppStore.urls'
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 TEMPLATES = [
     {
