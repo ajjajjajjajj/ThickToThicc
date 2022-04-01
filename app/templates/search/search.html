@@ -14,11 +14,20 @@
             </form>
         </div>
         <div>
+            <h3>Gyms</h3>
             <ul>
-                {% for r in result %}
-                    <li> {{ r }} </li>
+                {% for g in gym %}
+                    <li> {{ g }} </li>
                 {% endfor %}
             </ul>
+        </div>
+        <div>
+            <h3>Trainers</h3>
+            <ul>
+                {% for t in trainer %}
+                    <li> {{ t }} </li>
+                {% endfor %}
+            </ul>           
         </div>
     </body>
 </html>
