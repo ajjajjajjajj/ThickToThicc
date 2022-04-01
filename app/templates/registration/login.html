@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+	<--!<link rel="stylesheet" type="text/css" href="login.css"/>!-->
+	
+	<style type="text/css">
+		.main{ 
+    	color: white;
+    	font-family: "Bebas Neue", cursive;
+    	text-align: center;
+    	letter-spacing: 0.1em;
+	}
+		body {
+    	background-image : url("https://images.pexels.com/photos/163403/box-sport-men-training-163403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    	background-position :center;
+	}
+
+		form {
+    	font-size: 0.75em; 
+	}
+		
+		img {
+	width:"10";
+	height:"10";
+		}
+
+		#last {
+    	font-size: 0.15em;
+	}
+
+		#top {
+    	margin-top: 1em;
+    	font-size: 5em;
+	}
+
+		#container{
+			width:100%;
+			height:100%;
+	}
+
+		#body {
+			margin:auto;
+	}
+		#form {
+			margin:auto;
+	}
+	</style>
+	
+	<title>Not So ActiveSG </title>
+
+</head>
+<body>
+  <img src="../../static/app/images/logo.jpeg">
+  <h1 id="top" class="main">Not So ActiveSG</h1>
+  <h2 class="main">From thick to thicc.</h2>
+
+	<p class = "main">Are you a Member, Trainer or a Gym?</p>
+
+<form action="/login" method="POST" class="main">
+	<label for="type">Choose a type:</label>
+	<select name="type" id="type">
+		<option value="member">Member</option>
+		<option value="trainer">Trainer</option>
+		<option value="gym">Gym</option>
+	</select>
+
+<br><br>
+	{% csrf_token %}
+
+  	<div id="div_id_first_name" class="control-group"> 
+		<label for="email" class="control-label requiredField">
+  			Email: 
+		</label> 
+		<div class="controls"> 
+			<input type="text" name="email" maxlength="64" class="textinput textInput" required="" id="id_email"> 
+		</div> 
+	</div> 
+		<div id="div_ipassword" class="control-group"> 
+			<label for="password" class="control-label requiredField">
+  				Password: 
+			</label>
+			<div class="controls">
+				<input type="password" name="password" maxlength="64" class="textinput textInput" required="" id="id_password">
+			</div>
+		</div>
+	</div><br> 
+	<button type="submit" class="btn btn-primary">Log In</button>
+</form>	
+	<p id="last" class="main" class="text-center">
+		If you do not have an account, <a href="/register">register here</a> for a new account.
+	</p>
+</body>
+</html>
+   

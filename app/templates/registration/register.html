@@ -1,0 +1,440 @@
+<html>
+    <head>
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
+        <link rel="stylesheet" href="hidden.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $().ready(function(){
+                $('#reg_type').on('change', function(){
+                    var tval = $(this).val();
+                    $('.answer').addClass('hidden');
+                    $('.answer#' + tval).removeClass('hidden');
+                });
+            });
+        </script>
+        <script type="text/javascript">
+            var check = function() {
+                if (document.getElementById('id_password').value ==
+                    document.getElementById('id_cfmpassword').value) {
+                    document.getElementById('message').style.color = 'green';
+                    document.getElementById('message').innerHTML = 'matching';
+                } else {
+                        document.getElementById('message').style.color = 'red';
+                    document.getElementById('message').innerHTML = 'not matching';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        
+        <h2>Register for a new account!</h2>
+        <div class="regtype" id="regtype"> 
+            <label for="reg_type">
+                Gym Level<span class="">*</span> 
+            </label> 
+            <select name="type" id="reg_type">
+                <option>Select Registration Type</option>
+                <option value="member">Member</option>
+                <option value="trainer">Trainer</option>
+                <option value="gym">Gym</option>
+            </select>
+        </div> 
+          
+        <p class="text-center">If you already have an account, <a href="../login">login</a> here!</p>
+
+        <p style="color:red">{{ status|safe }}</p>
+        <!-- Create a Form -->
+        <div class="answer hidden" id="member">
+            <p>
+                <form method="POST" action="/registration_request">
+                    <!-- Security token by Django -->
+                    {% csrf_token %}
+                    <!-- form -->
+                    <div id="div_id_first_name" class="control-group"> 
+                        <label for="id_first_name" class="control-label requiredField">
+                            First name<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="text" name="first_name" maxlength="64" class="textinput textInput" required="" id="id_first_name"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_last_name" class="control-group"> 
+                        <label for="id_last_name" class="control-label requiredField">
+                            Last name<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="text" name="last_name" maxlength="64" class="textinput textInput" required="" id="id_last_name"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_email" class="control-group"> <label for="id_email" class="control-label requiredField">
+                    Email<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="email" maxlength="256" class="textinput textInput" required="" id="id_email"> </div> </div> 
+                    <div id="div_id_password" class="control-group"> <label for="id_password" class="control-label requiredField">
+                    Password<span class="asteriskField">*</span> </label> <div class="controls"> <input type="password" name="password" maxlength="256" required="" id="id_password" onkeyup="check()"> </div> </div> 
+                    <div id="div_id_cfmpassword" class="control-group"> <label for="id_cfmpassword" class="control-label requiredField">
+                    Confirm Password<span class="asteriskField">*</span> </label> <div class="controls"> <input type="password" name="cfm_password" maxlength="256" required="" id="id_cfmpassword" onkeyup="check()"> <span id='message'></span> </div> </div>            
+                    <div id="div_id_gender" class="control-group"> 
+                        <label for="id_gender" class="control-label requiredField">
+                            Gender<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <select name="gender" id="gender">
+                                <option>Select Gender</option>
+                                <option value="M">M</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div> 
+                    </div> 
+                    <div id="div_id_level" class="control-group"> 
+                        <label for="id_level" class="control-label requiredField">
+                            Level (Beginner, Intermediate or Advanced)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <select name="level" id="level">
+                                <option> Select Your Preferred Level of Training</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div> 
+                    </div> 
+                    <div id="div_id_preferred_gym_location" class="control-group"> 
+                        <label for="id_preferred_gym_location" class="control-label requiredField">
+                            Preferred Gym Location (North, South, East, West or Central)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <select name="preferred_gym_location" id="preferred_gym_location">
+                                <option>Select Gym Location</option>
+                                <option value="North">North</option>
+                                <option value="South">South</option>
+                                <option value="East">East</option>
+                                <option value="West">West</option>
+                                <option value="Central">Central</option>
+                            </select>        
+                        </div> 
+                    </div> 
+                    <div id="div_id_budget" class="control-group"> <label for="id_budget" class="control-label requiredField">
+                    Budget<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="budget" min = "1" class="numberinput numberInput" required="" id="id_budget"> </div> </div>
+                    <div id="div_id_focus1" class="control-group"> 
+                        <label for="id_focus1" class="control-label">
+                            Primary Focus<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="focus1" id="focus1">
+                                <option>Select Preferred Focus Area</option>
+                                <option value="Calisthenics">Calisthenics</option>
+                                <option value="Crossfit">Crossfit</option>
+                                <option value="Martial Arts">Martial Arts</option>
+                                <option value="Physiotherapy">Physiotherapy</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Powerlifting">Powerlifting</option>
+                                <option value="Weightlifting">Weightlifting</option>
+                                <option value="Running">Running</option>
+                                <option value="Spin">Spin</option>
+                                <option value="Yoga">Yoga</option>
+                            </select>        
+                 
+                        </div> 
+                    </div>    
+                    <div id="div_id_focus2" class="control-group"> 
+                        <label for="id_focus2" class="control-label">
+                            Secondary Focus<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="focus2" id="focus2">
+                                <option>Select Preferred Focus Area</option>
+                                <option value="Calisthenics">Calisthenics</option>
+                                <option value="Crossfit">Crossfit</option>
+                                <option value="Martial Arts">Martial Arts</option>
+                                <option value="Physiotherapy">Physiotherapy</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Powerlifting">Powerlifting</option>
+                                <option value="Weightlifting">Weightlifting</option>
+                                <option value="Running">Running</option>
+                                <option value="Spin">Spin</option>
+                                <option value="Yoga">Yoga</option>
+                            </select>        
+                        </div> 
+                    </div>
+                    <div id="div_id_focus3" class="control-group"> 
+                        <label for="id_focus3" class="control-label">
+                            Tertiary Focus<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="focus3" id="focus3">
+                                <option>Select Preferred Focus Area</option>
+                                <option value="Calisthenics">Calisthenics</option>
+                                <option value="Crossfit">Crossfit</option>
+                                <option value="Martial Arts">Martial Arts</option>
+                                <option value="Physiotherapy">Physiotherapy</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Powerlifting">Powerlifting</option>
+                                <option value="Weightlifting">Weightlifting</option>
+                                <option value="Running">Running</option>
+                                <option value="Spin">Spin</option>
+                                <option value="Yoga">Yoga</option>
+                            </select>        
+                        </div> 
+                    </div>
+                    <div> 
+                        <input type="hidden" name="type" value="member" />
+                    </div> 
+                    <br>
+                    <button type="submit" value="Register">Register</button>
+                </form>
+            </p>
+        </div>
+        <div class="answer hidden" id="trainer">
+            <p>
+                <form method="POST" action="/registration_request">
+                    <!-- Security token by Django -->
+                    {% csrf_token %}
+                    <!-- form -->
+                    <div id="div_id_first_name" class="control-group"> 
+                        <label for="id_first_name" class="control-label requiredField">
+                            First name<span class="asteriskField">*</span> 
+                        </label> 
+                        <div class="controls"> 
+                            <input type="text" name="first_name" maxlength="64" class="textinput textInput" required="" id="id_first_name"> 
+                        </div> 
+                    </div> 
+                
+                    <div id="div_id_last_name" class="control-group"> 
+                        <label for="id_last_name" class="control-label requiredField">
+                            Last name<span class="asteriskField">*</span> 
+                        </label> 
+                        <div class="controls"> 
+                            <input type="text" name="last_name" maxlength="64" class="textinput textInput" required="" id="id_last_name"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_email" class="control-group"> 
+                        <label for="id_email" class="control-label requiredField">
+                            Email<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="text" name="email" maxlength="256" class="textinput textInput" required="" id="id_email"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_password" class="control-group"> 
+                        <label for="id_password" class="control-label requiredField">
+                            Password<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="password" name="password" maxlength="256" required="" id="id_password" onkeyup="check();"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_cfmpassword" class="control-group"> 
+                        <label for="id_cfmpassword" class="control-label requiredField">
+                            Confirm Password<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="password" name="cfm_password" maxlength="256" required="" id="id_cfmpassword" onkeyup="check()"> 
+                            <span id='message'></span> 
+                        </div> 
+                    </div>            
+                    <div id="div_id_gender" class="control-group"> 
+                        <label for="id_gender" class="control-label requiredField">
+                            Gender<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <select name="gender" id="gender">
+                                <option>Select Gender</option>
+                                <option value="M">M</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div> 
+                    </div> 
+                    <div id="div_id_upper_price" class="control-group"> 
+                        <label for="id_upper_price" class="control-label requiredField">
+                            Upper Price Range (in SGD)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="number" name="upper_price_range" min="1" required="" id="id_upper_price_range"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_lower_price" class="control-group"> 
+                        <label for="id_lower_price" class="control-label requiredField">
+                            Lower Price Range (in SGD)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="number" name="lower_price_range" min="1" required="" id="id_lower_price_range"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_experience" class="control-group"> 
+                        <label for="id_experience" class="control-label requiredField">
+                            Experience (in number of years)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="number" name="experience" min = "1" required="" id="id_experience"> 
+                        </div> 
+                    </div>
+                    <div id="div_id_focus1" class="control-group"> 
+                        <label for="id_focus1" class="control-label">
+                            Trainer's Primary Focus<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="focus1" id="focus1">
+                                <option>Select Preferred Focus Area</option>
+                                <option value="Calisthenics">Calisthenics</option>
+                                <option value="Crossfit">Crossfit</option>
+                                <option value="Martial Arts">Martial Arts</option>
+                                <option value="Physiotherapy">Physiotherapy</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Powerlifting">Powerlifting</option>
+                                <option value="Weightlifting">Weightlifting</option>
+                                <option value="Running">Running</option>
+                                <option value="Spin">Spin</option>
+                                <option value="Yoga">Yoga</option>
+                            </select>        
+                        </div> 
+                    </div>    
+                    <div id="div_id_focus2" class="control-group"> 
+                        <label for="id_focus2" class="control-label">
+                            Trainer's Secondary Focus<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="focus2" id="focus2">
+                                <option>Select Preferred Focus Area</option>
+                                <option value="Calisthenics">Calisthenics</option>
+                                <option value="Crossfit">Crossfit</option>
+                                <option value="Martial Arts">Martial Arts</option>
+                                <option value="Physiotherapy">Physiotherapy</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Powerlifting">Powerlifting</option>
+                                <option value="Weightlifting">Weightlifting</option>
+                                <option value="Running">Running</option>
+                                <option value="Spin">Spin</option>
+                                <option value="Yoga">Yoga</option>
+                            </select>        
+                        </div> 
+                    </div>
+                    <div id="div_id_focus3" class="control-group"> 
+                        <label for="id_focus3" class="control-label">
+                            Trainer's Tertiary Focus<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="focus3" id="focus3">
+                                <option>Select Preferred Focus Area</option>
+                                <option value="Calisthenics">Calisthenics</option>
+                                <option value="Crossfit">Crossfit</option>
+                                <option value="Martial Arts">Martial Arts</option>
+                                <option value="Physiotherapy">Physiotherapy</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Powerlifting">Powerlifting</option>
+                                <option value="Weightlifting">Weightlifting</option>
+                                <option value="Running">Running</option>
+                                <option value="Spin">Spin</option>
+                                <option value="Yoga">Yoga</option>
+                            </select>        
+                        </div> 
+                    </div>    
+                    <div id="div_id_trainerlevel" class="control-group"> 
+                        <label for="id_trainerlevel" class="control-label">
+                            Trainer Level<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="level" id="level">
+                                <option> Select Your Level of Training</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div> 
+                    </div>    
+                    <div> 
+                        <input type="hidden" name="type" value="trainer" />
+                    </div>  
+                    <br>
+                    <button type="submit" value="Register">Register</button>
+                </form>
+            </p>
+        </div>
+        <div class="answer hidden" id="gym">
+            <p>
+                <form method="POST" action="/registration_request">
+                    <!-- Security token by Django -->
+                    {% csrf_token %}
+                    <!-- form -->
+                    <div id="div_id_gym_name" class="control-group"> 
+                        <label for="id_gym_name" class="control-label requiredField">
+                            Name<span class="asteriskField">*</span> 
+                        </label> 
+                        <div class="controls"> 
+                            <input type="text" name="gym_name" maxlength="128" class="textinput textInput" required="" id="id_gym_name"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_email" class="control-group"> 
+                        <label for="id_email" class="control-label requiredField">
+                            Email<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="text" name="email" maxlength="256" class="textinput textInput" required="" id="id_email"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_password" class="control-group"> 
+                        <label for="id_password" class="control-label requiredField">
+                            Password<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="password" name="password" maxlength="256" required="" id="id_password" onkeyup="check();"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_cfmpassword" class="control-group"> 
+                        <label for="id_cfmpassword" class="control-label requiredField">
+                            Confirm Password<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="password" name="cfm_password" maxlength="256" required="" id="id_cfmpassword" onkeyup="check()"> 
+                            <span id='message'></span> 
+                        </div> 
+                    </div>            
+                    <div id="div_id_address" class="control-group"> 
+                        <label for="id_address" class="control-label requiredField">
+                            Address<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="text" name="address" maxlength="256" class="textinput textInput" required="" id="id_address"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_upper_price" class="control-group"> 
+                        <label for="id_upper_price" class="control-label requiredField">
+                            Upper Price Range (in SGD)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="number" name="upper_price_range" min="1" required="" id="id_upper_price_range"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_lower_price" class="control-group"> 
+                        <label for="id_lower_price" class="control-label requiredField">
+                            Lower Price Range (in SGD)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="number" name="lower_price_range" min="1" required="" id="id_lower_price_range"> 
+                        </div> 
+                    </div> 
+                    <div id="div_id_capacity" class="control-group"> 
+                        <label for="id_capacity" class="control-label requiredField">
+                            Capacity<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <input type="number" name="capacity" min="1" required="" id="id_capacity"> 
+                        </div> 
+                    </div>
+                    <div id="div_id_gym_location" class="control-group"> 
+                        <label for="id_gym_location" class="control-label requiredField">
+                            Region of Location (North, South, East, West or Central)<span class="asteriskField">*</span> 
+                        </label> <div class="controls"> 
+                            <select name="gym_location" id="gym_location">
+                                <option>Select Gym Location</option>
+                                <option value="North">North</option>
+                                <option value="South">South</option>
+                                <option value="East">East</option>
+                                <option value="West">West</option>
+                                <option value="Central">Central</option>
+                            </select>        
+                        </div> 
+                    </div> 
+                    <div id="div_id_gymlevel" class="control-group"> 
+                        <label for="id_gymlevel" class="control-label">
+                            Gym Level<span class="">*</span> 
+                        </label> <div class="controls">
+                            <select name="level" id="level">
+                                <option> Select Gym Training Level</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div> 
+                    </div>    
+                    <div> 
+                        <input type="hidden" name="type" value="gym" />
+                    </div> 
+                    
+                    <br>
+                    <button type="submit" value="Register">Register</button>
+                </form>
+            </p>
+        </div>
+
+
+    </body>
+</html>

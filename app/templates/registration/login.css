@@ -1,0 +1,24 @@
+.main{ 
+    color: white;
+    font-family: "Bebas Neue", cursive;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+body {
+    background-image : url("https://images.pexels.com/photos/163403/box-sport-men-training-163403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-position :center;
+    background-size :cover;
+}
+
+form {
+    font-size: 0.75em; 
+}
+
+#last {
+    font-size: 0.15em;
+}
+
+#top {
+    margin-top: 1em;
+    font-size: 5em;
+}
