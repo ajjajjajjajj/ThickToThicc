@@ -140,28 +140,26 @@ def search_view(request):
     return render(request, 'search/search.html')
 
 def search_request(request):
-    with connection.cursor() as cursor:
-        if request.POST['search']:
-            string = request.POST['search']
+    if request.POST['search']:
+        string = request.POST['search']
+        with connection.cursor() as cursor:
             cursor.execute("SELECT name, email \
                             FROM gym \
                             WHERE name LIKE '%%" + string + "%%'")
             gym_rows = cursor.fetchall()
-            result = {}
-            for r in gym_rows:
-                result[r] = r
 
+        with connection.cursor() as cursor:
             cursor.execute("SELECT first_name, last_name, email \
                             FROM trainer \
                             WHERE first_name LIKE '%%" + string + "%%' \
                                 OR last_name LIKE '%%" + string + "%%'")
             trainer_rows = cursor.fetchall()
-            for r in trainer_rows:
-                result[r] = r
             
-            return render(request, 'search/search.html', result)
-        else:
-            return render(request, 'search/search.html')
+        return render(request, 'search/search.html', 
+        {'gym': gym_rows,
+        'trainer': trainer_rows})
+    else:
+        return render(request, 'search/search.html',{})
 
 def login_view(request):
     return render(request,'registration/login.html',{})
