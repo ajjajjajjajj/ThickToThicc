@@ -135,7 +135,11 @@ def register_request(request):
                 return render(request,'registration/register.html', context)
 
 
+
 def search_view(request):
+    return render(request, 'search/search.html')
+
+def search_request(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT name, email \
                         FROM gym \
