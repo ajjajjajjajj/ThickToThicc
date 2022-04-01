@@ -17,7 +17,7 @@
 		class="sign-up btn btn-success">View available Gyms and Trainers now!</a>
 	</div>
 </div>
-
+    {% if status %}
     <ul>
         {% for item in status %}
             <li> {{ item }} </li>
