@@ -211,5 +211,5 @@ def get(email,type):
     #     return HttpResponse("Your username and password didn't match.")
 
 
-def logged_home(request,type,id):
+def logged_home(request,type,email):
     return HttpResponse('hi')
