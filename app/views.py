@@ -149,7 +149,7 @@ def search_request(request):
         with connection.cursor() as cursor:
             cursor.execute("SELECT name, email \
                             FROM gym \
-                   7         WHERE name LIKE '%%" + string + "%%'")
+                            WHERE name LIKE '%%" + string + "%%'")
             gym_rows = cursor.fetchall()
 
         with connection.cursor() as cursor:

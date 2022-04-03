@@ -61,7 +61,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'AppStore.urls'
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 TEMPLATES = [
     {
