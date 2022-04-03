@@ -131,7 +131,8 @@ def register_request(request):
                         , [request.POST['name'], request.POST['email'], request.POST['address'],
                             request.POST['upper_price_range'], request.POST['lower_price_range'], request.POST['capacity'],
                             request.POST['level'], request.POST['region']])
-                return render(request,"registration/reg_submit.html", context)
+                return redirect('login')
+                # return render(request,"registration/reg_submit.html", context)
             else:
                 status = '%s with email %s already exists' % (type, request.POST['email'])
                 context['status'] = status
@@ -187,7 +188,7 @@ def login_request(request):
             else:
                 #id = get(request.POST['email'],request.POST['type'])
                 type = request.POST['type']
-                return redirect('<str:type>/', type = type, permanent = True )
+                return redirect('loggedhome', type = type, permanent = True )
     return render(request, "registration/login.html", context)
 
 def get(email,type):
@@ -198,8 +199,6 @@ def get(email,type):
     return curid
 
 ## CANNOT FIND ID SMH AND NEED REVERSE URL
-
-
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
