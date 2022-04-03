@@ -186,9 +186,9 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
+                type = request.POST['type']
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
                 id = cursor.fetchone()
-                type = request.POST['type']
                 return redirect('loggedhome', type = type, id = id, permanent = True )
     return render(request, "registration/login.html", context)
 
