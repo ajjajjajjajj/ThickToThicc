@@ -210,5 +210,5 @@ def get(email,type):
 
 
 
-def logged_home(request):
+def logged_home(request,type):
     return HttpResponse('hi')
