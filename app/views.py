@@ -190,7 +190,7 @@ def login_request(request):
                 #cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
                 #id = cursor.fetchone()
                 email = request.POST['email']
-                return redirect('loggedhome', type = type, id = email, permanent = True )
+                return redirect('loggedhome', type = type, email = email, permanent = True )
     return render(request, "registration/login.html", context)
 
 def get(email,type):
