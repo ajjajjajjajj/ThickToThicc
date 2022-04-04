@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-from fnmatch import fnmatchcase
-from http.client import HTTPResponse
-from sre_constants import NOT_LITERAL
-=======
->>>>>>> 8b07a0c (added front end for recos page)
 from django.shortcuts import render, redirect
 from django.db import connection
 
@@ -42,7 +36,7 @@ from django.db import connection
 # def add(request):
 #     """Shows the main page"""
 #     context = {}
-#     status = "'"
+#     status = ''
 
 #     if request.POST:
 #         ## Check if customerid is already in the table
@@ -78,7 +72,7 @@ from django.db import connection
 #         cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
 #         obj = cursor.fetchone()
 
-#     status = "'"
+#     status = ''
 #     # save the data from the form
 
 #     if request.POST:
@@ -104,7 +98,7 @@ def register_view(request):
 
 def register_request(request):
     context = {}
-    status = "'"
+    status = ''
 
     if request.POST:
         with connection.cursor() as cursor:
@@ -146,9 +140,9 @@ def search_view(request):
     return render(request, 'search/search.html')
 
 def search_request(request):
-    # build string first, then check through if NA or no, if NA then dont add to string
     if request.POST['search']:
         string = request.POST['search']
+<<<<<<< HEAD
         type = request.POST.get('type',False)
         if type == "gym":
             location = request.POST.get('loc',False)
@@ -195,6 +189,20 @@ def search_request(request):
                 traineraction += " AND 1=1'"
                 cursor.execute(traineraction)
                 trainer_rows = cursor.fetchall()
+=======
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT name, email \
+                            FROM gym \
+                            WHERE name LIKE '%%" + string + "%%'")
+            gym_rows = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT first_name, last_name, email \
+                            FROM trainer \
+                            WHERE first_name LIKE '%%" + string + "%%' \
+                                OR last_name LIKE '%%" + string + "%%'")
+            trainer_rows = cursor.fetchall()
+>>>>>>> bf7af0a (..)
             
         return render(request, 'search/search.html', 
         {'gym': gym_rows,
@@ -225,22 +233,24 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
-<<<<<<< HEAD
                 type = request.POST['type']
-                cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
-                id = cursor.fetchone()
+                cursor.execute("SELECT first_name FROM " + type + " WHERE email = %s", [request.POST['email']])
+                fnmatch = cursor.fetchone()
                 #email = request.POST['email']
-                return redirect('loggedhome', type = type, id = id, permanent = True )
+                return redirect('loggedhome', fname = fname, permanent = True )
     return render(request, "registration/login.html", context)
 
-    # context["status"] = status 
-=======
-                status = 'Welcome back!'
-                context['status'] = status
-                return render(request,'home/home.html',context)
 
-    #context["status"] = status 
->>>>>>> 8b07a0c (added front end for recos page)
+def get(email,type):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
+        curid = cursor.fetchone()
+
+    return curid
+
+## CANNOT FIND ID SMH AND NEED REVERSE URL
+
+    # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
     # if m.check_password(request.POST['password']):
     #    request.session['member_id'] = m.id
@@ -250,18 +260,70 @@ def login_request(request):
 
     return render(request, "registration/login.html", context)
 
-<<<<<<< HEAD
-def logged_home(request,type,id):
-=======
-<<<<<<< HEAD
-def logged_home(request,fname):
->>>>>>> 3151335 (added front end for recos page)
-    return HttpResponse('hi')
-=======
 def recommends_view(request, member_id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM member WHERE id = " + member_id)
+    member = cursor.fetchone()
+    email = member[1]
+    level = member[5]
+    region = member[6]
+    budget = member[7]
+    focus = [member[8:11]]
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM member_trainer WHERE member_email = %s" , email)  
+    trainers = cursor.fetchall()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM member_gym WHERE member_email = %s", email)
+    gyms = cursor.fetchall()
+        # tuple contains:
+        # id, email, first_name, last_name, gender, level, preferred_gym_location, budget, focus1, focus2, focus3
+        # look up gyms and trainers with above info
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * \
+                        FROM gym g\
+                        WHERE g.region = " + region +
+                        "AND " + budget + " BETWEEN g.lower_price_range AND g.upper_price_range \
+                            AND ( '" + focus[0] + "' IN (SELECT focus \
+                                                FROM gymfocus gf \
+                                                WHERE gf.gym_email = g.email) \
+                            OR '" + focus[1] + "' IN (SELECT focus \
+                                                FROM gymfocus gf1 \
+                                                WHERE gf1.gym_email = g.email)  \
+                            OR '" + focus[2] + "' IN (SELECT focus \
+                                                FROM gymfocus gf2 \
+                                                WHERE gf2.gym_email = g.email))")
+        reco_gyms = cursor.fetchall()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * \
+                        FROM trainer t \
+                        WHERE " + budget + " BETWEEN t.lower_price_range AND t.upper_price_range \
+                            AND '" + level + "' = t.level \
+                                AND ('" + focus[0] + "' =ANY(t.focus1, t.focus2, t.focus3) \
+                                    OR '" + focus[1] + "' =ANY(t.focus1, t.focus2, t.focus3) \
+                                    OR '" + focus[2] + "' =ANY(t.focus1, t.focus2, t.focus3))")
+        reco_trainers = cursor.fetchall()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT m.first_name, m.last_name \
+                        FROM member m \
+                        WHERE m.preferred_gym_location = " + region + 
+                        "AND m.email in (SELECT mt.member_email \
+                                            FROM member_trainer mt \
+                                            WHERE mt.member_email = '" + email +  
+                                            "' AND mt.trainer_email in (SELECT mt1.trainer_email \
+                                                                        FROM member_trainer mt1 \
+                                                                        WHERE m.email = mt1.member_email) \
+                                        UNION \
+                                        SELECT mg.member_email \
+                                            FROM member_gym mg \
+                                            WHERE mg.member_email = '" + email + 
+                                            "' AND mg.gym_email in (SELECT mg1.trainer_email \
+                                                                        FROM member_gym mg1 \
+                                                                        WHERE m.email = mg1.member_email)")
+        reco_members = cursor.fetchall()
+        
+                            
 
     pass
 
 def logged_home(request, member_id):
     pass
->>>>>>> 8b07a0c (added front end for recos page)
