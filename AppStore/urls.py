@@ -31,5 +31,5 @@ urlpatterns = [
     path('search', search_view),
     path('search_request', search_request, name='search_request'),
     path('login/',login_request,name='login'),
-    path('login/<str:type>/', logged_home, name = 'loggedhome'),
+    path('<str:fname>', logged_home, name = 'loggedhome'),
 ]
