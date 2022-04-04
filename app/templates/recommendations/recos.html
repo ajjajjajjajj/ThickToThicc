@@ -1,0 +1,78 @@
+{% extends base.html%}
+
+{% block content %}
+    
+    <h1>Here's what we recommend :]</h1>
+
+    {% if best_recos %}
+    <h2>The best recommendations for you</h2>
+    <div>
+        {% for type, list in best_reco %}
+            <div>
+                <h3>{{ type }}</h3>
+                <ul>
+                    {% for row in list %}
+                    <li> {{row}} </li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if gym_recos %}
+
+        <div>
+            <h3>Since you stay in the {{ region }} area, here are some nearby places to go to get active!</h3>
+            {% for row in gym['region'] %}
+
+            {% endfor %}
+        </div>
+        <div>
+            <h3>Because you like {{ focus1 }}, {{ focus2 }}, {{ focus3 }}, we recommend...</h3>
+            {% for row in gym['focus'] %}
+
+            {% endfor %}
+        </div>
+        <div>
+            <h3>Gyms that fit your price range: </h3>
+            {% for row in gym['price'] %}
+
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if trainer_recos %}
+    
+        <div>
+            <h3>We have some trainers you might be interested in!</h3>
+            
+            {% if trainer_recos['focus1'] %}
+                Trainers specialising in {{ focus1 }} 
+                {% for row in trainer['focus1'] %}
+
+                {% endfor %}
+            {% endif %}
+            {% if trainer_recos['focus2'] %}
+
+                Trainers specialising in {{ focus2 }}
+                {% for row in trainer['focus2'] %}
+
+                {% endfor %}
+            {% endif %}
+            {% if trainer_recos['focus3'] %}
+                Trainers specialising in {{ focus3 }}
+                {% for row in trainer['focus3'] %}
+
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if budget %}
+        <div>
+            Trainers that fit your budget:
+            {% for row in trainer%}
+
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

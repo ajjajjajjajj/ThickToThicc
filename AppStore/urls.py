@@ -32,4 +32,5 @@ urlpatterns = [
     path('search_request', search_request, name='search_request'),
     path('login/',login_request,name='login'),
     path('<str:type>-<int:id>', logged_home, name = 'loggedhome'),
+    path('recommends/<str:type>/', recommends_view, name='recommends')
 ]

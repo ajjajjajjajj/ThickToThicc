@@ -1,9 +1,11 @@
+<<<<<<< HEAD
 from fnmatch import fnmatchcase
 from http.client import HTTPResponse
 from sre_constants import NOT_LITERAL
+=======
+>>>>>>> 8b07a0c (added front end for recos page)
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
 
 # # Create your views here.
 # def index(request):
@@ -132,8 +134,7 @@ def register_request(request):
                         , [request.POST['name'], request.POST['email'], request.POST['address'],
                             request.POST['upper_price_range'], request.POST['lower_price_range'], request.POST['capacity'],
                             request.POST['level'], request.POST['region']])
-                return redirect('login')
-                # return render(request,"registration/reg_submit.html", context)
+                return render(request,"registration/reg_submit.html", context)
             else:
                 status = '%s with email %s already exists' % (type, request.POST['email'])
                 context['status'] = status
@@ -197,7 +198,9 @@ def search_request(request):
             
         return render(request, 'search/search.html', 
         {'gym': gym_rows,
-        'trainer': trainer_rows})
+        'trainer': trainer_rows,
+        'num_gyms': len(gym_rows),
+        'num_trainers': len(trainer_rows)})
     else:
         return render(request, 'search/search.html',{})
 
@@ -222,6 +225,7 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
+<<<<<<< HEAD
                 type = request.POST['type']
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
                 id = cursor.fetchone()
@@ -230,6 +234,13 @@ def login_request(request):
     return render(request, "registration/login.html", context)
 
     # context["status"] = status 
+=======
+                status = 'Welcome back!'
+                context['status'] = status
+                return render(request,'home/home.html',context)
+
+    #context["status"] = status 
+>>>>>>> 8b07a0c (added front end for recos page)
     # m = Login.objects.get(username=request.POST['email'])
     # if m.check_password(request.POST['password']):
     #    request.session['member_id'] = m.id
@@ -237,6 +248,20 @@ def login_request(request):
     # else:
     #     return HttpResponse("Your username and password didn't match.")
 
+    return render(request, "registration/login.html", context)
 
+<<<<<<< HEAD
 def logged_home(request,type,id):
+=======
+<<<<<<< HEAD
+def logged_home(request,fname):
+>>>>>>> 3151335 (added front end for recos page)
     return HttpResponse('hi')
+=======
+def recommends_view(request, member_id):
+
+    pass
+
+def logged_home(request, member_id):
+    pass
+>>>>>>> 8b07a0c (added front end for recos page)
