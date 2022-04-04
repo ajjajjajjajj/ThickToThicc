@@ -32,9 +32,9 @@ psql ${URI} -f sql/GymAppClean.sql
 psql ${URI} -f sql/GymAppSchema.sql
 psql ${URI} -f sql/GymAppLogin.sql
 psql ${URI} -f sql/GymAppFocus.sql
-psql ${URI} -f sql/GymAppMembers.sql
 psql ${URI} -f sql/GymAppGyms.sql
 psql ${URI} -f sql/GymAppTrainers.sql
+psql ${URI} -f sql/GymAppMembers.sql
 psql ${URI} -f sql/GymAppGymfocus.sql
 psql ${URI} -f sql/GymAppMember_gym.sql
 psql ${URI} -f sql/GymAppMember_trainer.sql
