@@ -226,18 +226,8 @@ def login_request(request):
                 type = request.POST['type']
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
                 id = cursor.fetchone()
-                #email = request.POST['email']
                 return redirect('loggedhome', type = type, id = id, permanent = True )
     return render(request, "registration/login.html", context)
-
-    # context["status"] = status 
-    # m = Login.objects.get(username=request.POST['email'])
-    # if m.check_password(request.POST['password']):
-    #    request.session['member_id'] = m.id
-    #    return HttpResponse("You're logged in.")
-    # else:
-    #     return HttpResponse("Your username and password didn't match.")
-
 
 def logged_home(request,type,id):
     return HttpResponse('hi')
