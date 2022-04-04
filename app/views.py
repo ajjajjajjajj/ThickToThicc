@@ -1,3 +1,4 @@
+from fnmatch import fnmatchcase
 from http.client import HTTPResponse
 from sre_constants import NOT_LITERAL
 from django.shortcuts import render, redirect
@@ -186,12 +187,13 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
-                type = request.POST['type']
-                #cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
-                #id = cursor.fetchone()
+                #type = request.POST['type']
+                cursor.execute("SELECT first_name FROM " + type + " WHERE email = %s", [request.POST['email']])
+                fnmatch = cursor.fetchone()
                 #email = request.POST['email']
-                return redirect('loggedhome', type = type, permanent = True )
+                return redirect('loggedhome', fname = fname, permanent = True )
     return render(request, "registration/login.html", context)
+
 
 def get(email,type):
     with connection.cursor() as cursor:
@@ -211,5 +213,5 @@ def get(email,type):
     #     return HttpResponse("Your username and password didn't match.")
 
 
-def logged_home(request,type):
+def logged_home(request,fname):
     return HttpResponse('hi')
