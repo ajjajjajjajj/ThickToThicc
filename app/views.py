@@ -201,19 +201,11 @@ def login_request(request):
                 return render(request,"registration/login.html",context)
             else:
                 type = request.POST['type']
-                cursor.execute("SELECT first_name FROM " + type + " WHERE email = %s", [request.POST['email']])
-                fname = cursor.fetchone()
+                cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
+                id = cursor.fetchone()
                 #email = request.POST['email']
-                return redirect('loggedhome', fname = fname, permanent = True )
+                return redirect('loggedhome', type = type, id = id, permanent = True )
     return render(request, "registration/login.html", context)
-
-
-def get(email,type):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
-        curid = cursor.fetchone()
-
-    return curid
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
@@ -224,5 +216,5 @@ def get(email,type):
     #     return HttpResponse("Your username and password didn't match.")
 
 
-def logged_home(request,fname):
+def logged_home(request,type,id):
     return HttpResponse('hi')
