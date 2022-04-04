@@ -189,7 +189,7 @@ def login_request(request):
             else:
                 type = request.POST['type']
                 cursor.execute("SELECT first_name FROM " + type + " WHERE email = %s", [request.POST['email']])
-                fnmatch = cursor.fetchone()
+                fname = cursor.fetchone()
                 #email = request.POST['email']
                 return redirect('loggedhome', fname = fname, permanent = True )
     return render(request, "registration/login.html", context)
@@ -201,8 +201,6 @@ def get(email,type):
         curid = cursor.fetchone()
 
     return curid
-
-## CANNOT FIND ID SMH AND NEED REVERSE URL
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
