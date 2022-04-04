@@ -170,7 +170,6 @@ def search_request(request):
                     gymaction += " AND f.focus = '" + focus2 + "'"
                 if focus3 != "":
                     gymaction += " AND f.focus = '" + focus3 + "'"
-                gymaction += " AND 1=1"
                 cursor.execute(gymaction)
                 gym_rows = cursor.fetchall()
                 return render(request, 'search/search.html', 
@@ -190,7 +189,6 @@ def search_request(request):
                     traineraction += "AND f.focus = '" + focus2 + "'"
                 if focus3 != "":
                     traineraction += "AND f.focus = '" + focus3 + "'"
-                traineraction += " AND 1=1'"
                 cursor.execute(traineraction)
                 trainer_rows = cursor.fetchall()
                 return render(request, 'search/search.html', 
