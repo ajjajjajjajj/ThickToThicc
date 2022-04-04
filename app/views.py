@@ -256,20 +256,14 @@ def recommends_view(request, member_id):
     region = member[6]
     budget = member[7]
     focus = [member[8:11]]
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM member_trainer WHERE member_email = %s" , email)  
-    trainers = cursor.fetchall()
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM member_gym WHERE member_email = %s", email)
-    gyms = cursor.fetchall()
         # tuple contains:
         # id, email, first_name, last_name, gender, level, preferred_gym_location, budget, focus1, focus2, focus3
         # look up gyms and trainers with above info
     with connection.cursor() as cursor:
         cursor.execute("SELECT * \
                         FROM gym g\
-                        WHERE g.region = " + region +
-                        "AND " + budget + " BETWEEN g.lower_price_range AND g.upper_price_range \
+                        WHERE g.region = '" + region +
+                        "' AND " + budget + " BETWEEN g.lower_price_range AND g.upper_price_range \
                             AND ( '" + focus[0] + "' IN (SELECT focus \
                                                 FROM gymfocus gf \
                                                 WHERE gf.gym_email = g.email) \
@@ -279,15 +273,17 @@ def recommends_view(request, member_id):
                             OR '" + focus[2] + "' IN (SELECT focus \
                                                 FROM gymfocus gf2 \
                                                 WHERE gf2.gym_email = g.email))")
+                                            
         reco_gyms = cursor.fetchall()
     with connection.cursor() as cursor:
         cursor.execute("SELECT * \
-                        FROM trainer t \
-                        WHERE " + budget + " BETWEEN t.lower_price_range AND t.upper_price_range \
-                            AND '" + level + "' = t.level \
-                                AND ('" + focus[0] + "' =ANY(t.focus1, t.focus2, t.focus3) \
-                                    OR '" + focus[1] + "' =ANY(t.focus1, t.focus2, t.focus3) \
-                                    OR '" + focus[2] + "' =ANY(t.focus1, t.focus2, t.focus3))")
+                        FROM trainer \
+                        WHERE " + budget + " BETWEEN lower_price_range AND upper_price_range \
+                            AND '" + level + "' = level \
+                                AND ('" + focus[0] + "' IN (focus1, focus2, focus3) \
+                                    OR '" + focus[1] + "' IN (focus1, focus2, focus3) \
+                                    OR '" + focus[2] + "' IN (focus1, focus2, focus3))")
+
         reco_trainers = cursor.fetchall()
     with connection.cursor() as cursor:
         cursor.execute("SELECT m.first_name, m.last_name \
@@ -306,11 +302,10 @@ def recommends_view(request, member_id):
                                             "' AND mg.gym_email in (SELECT mg1.trainer_email \
                                                                         FROM member_gym mg1 \
                                                                         WHERE m.email = mg1.member_email)")
-        reco_members = cursor.fetchall()
-        
-                            
-
-    pass
+        reco_members = cursor.fetchall()                            
+    return render(request, {'reco_gyms': reco_gyms,
+                                'reco_trainers': reco_trainers,
+                                'reco_members': reco_members})
 
 def logged_home(request, member_id):
     pass
