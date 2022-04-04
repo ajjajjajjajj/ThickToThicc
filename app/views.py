@@ -148,15 +148,15 @@ def search_request(request):
     # build string first, then check through if NA or no, if NA then dont add to string
     if request.POST['search']:
         string = request.POST['search']
-        type = request.POST['type']
+        type = request.POST.get('type',False)
         if type == "gym":
             location = request.POST.get('loc',False)
         if type == "trainer":
             gender = request.POST.get('gend',False)
-        level = request.POST['lvl']
-        focus1 = request.POST['foc1']
-        focus2 = request.POST['foc2']
-        focus3 = request.POST['foc3']
+        level = request.POST.get('lvl',False)
+        focus1 = request.POST.get('foc1',False)
+        focus2 = request.POST.get('foc2',False)
+        focus3 = request.POST.get('foc3',False)
         gymaction = "SELECT DISTINCT g.name, g.email \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%' \
@@ -169,13 +169,13 @@ def search_request(request):
             with connection.cursor() as cursor:
                 if location:
                     gymaction += "AND g.region = '%%" + location + "%%' \ "
-                if level != 'Select Fitness Level':
+                if level:
                     gymaction += "AND g.level = '%%" + level + "%%' \ "
-                if focus1 != 'Select a focus':
+                if focus1:
                     gymaction += "AND f.focus = '%%" + focus1 + "%%' \ "
-                if focus2 != 'Select a focus':
+                if focus2:
                     gymaction += "AND f.focus = '%%" + focus2 + "%%' \ "
-                if focus3 != 'Select a focus':
+                if focus3:
                     gymaction += "AND f.focus = '%%" + focus3 + "%%' \ "
                 cursor.execute(gymaction)
                 gym_rows = cursor.fetchall()
@@ -183,13 +183,13 @@ def search_request(request):
             with connection.cursor() as cursor:
                 if gender:
                     traineraction += "AND t.gender = '%%" + gender + "%%' \ "
-                if level != 'Select Fitness Level':
+                if level:
                     traineraction += "AND t.level = '%%" + level + "%%' \ "
-                if focus1 != 'Select a focus':
+                if focus1:
                     traineraction += "AND f.focus = '%%" + focus1 + "%%' \ "
-                if focus2 != 'Select a focus':
+                if focus2:
                     traineraction += "AND f.focus = '%%" + focus2 + "%%' \ "
-                if focus3 != 'Select a focus':
+                if focus3:
                     traineraction += "AND f.focus = '%%" + focus3 + "%%' \ "
                 cursor.execute(traineraction)
                 trainer_rows = cursor.fetchall()
