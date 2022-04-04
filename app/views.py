@@ -40,7 +40,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 # def add(request):
 #     """Shows the main page"""
 #     context = {}
-#     status = ''
+#     status = "'"
 
 #     if request.POST:
 #         ## Check if customerid is already in the table
@@ -76,7 +76,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 #         cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
 #         obj = cursor.fetchone()
 
-#     status = ''
+#     status = "'"
 #     # save the data from the form
 
 #     if request.POST:
@@ -102,7 +102,7 @@ def register_view(request):
 
 def register_request(request):
     context = {}
-    status = ''
+    status = "'"
 
     if request.POST:
         with connection.cursor() as cursor:
@@ -169,30 +169,32 @@ def search_request(request):
         trainer_rows = {}
         if type == "gym":
             with connection.cursor() as cursor:
-                if location:
-                    gymaction += "AND g.region = '%%" + location + "%%' \ "
-                if level:
-                    gymaction += "AND g.level = '%%" + level + "%%' \ "
-                if focus1:
-                    gymaction += "AND f.focus = '%%" + focus1 + "%%' \ "
-                if focus2:
-                    gymaction += "AND f.focus = '%%" + focus2 + "%%' \ "
-                if focus3:
-                    gymaction += "AND f.focus = '%%" + focus3 + "%%' \ "
+                if location != 'Select Location Preference':
+                    gymaction += " AND g.region = '" + location + "'"
+                if level != 'Select Fitness Level':
+                    gymaction += " AND g.level = '" + level + "'"
+                if focus1 != 'Select a focus':
+                    gymaction += " AND f.focus = '" + focus1 + "'"
+                if focus2 != 'Select a focus':
+                    gymaction += " AND f.focus = '" + focus2 + "'"
+                if focus3 != 'Select a focus':
+                    gymaction += " AND f.focus = '" + focus3 + "'"
+                gymaction += " AND 1=1"
                 cursor.execute(gymaction)
                 gym_rows = cursor.fetchall()
         if type == "trainer":
             with connection.cursor() as cursor:
-                if gender:
-                    traineraction += "AND t.gender = '%%" + gender + "%%' \ "
-                if level:
-                    traineraction += "AND t.level = '%%" + level + "%%' \ "
-                if focus1:
-                    traineraction += "AND f.focus = '%%" + focus1 + "%%' \ "
-                if focus2:
-                    traineraction += "AND f.focus = '%%" + focus2 + "%%' \ "
-                if focus3:
-                    traineraction += "AND f.focus = '%%" + focus3 + "%%' \ "
+                if gender != 'Select Gender Preference':
+                    traineraction += "AND t.gender = '" + gender + "'"
+                if level != 'Select Fitness Level':
+                    traineraction += "AND t.level = '%%" + level + "'"
+                if focus1 != 'Select a focus':
+                    traineraction += "AND f.focus = '%%" + focus1 + "'"
+                if focus2 != 'Select a focus':
+                    traineraction += "AND f.focus = '%%" + focus2 + "'"
+                if focus3 != 'Select a focus':
+                    traineraction += "AND f.focus = '%%" + focus3 + "'"
+                traineraction += " AND 1=1"
                 cursor.execute(traineraction)
                 trainer_rows = cursor.fetchall()
             
