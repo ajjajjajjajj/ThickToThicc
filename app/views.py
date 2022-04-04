@@ -159,14 +159,11 @@ def search_request(request):
         focus3 = request.POST.get('foc3',False)
         gymaction = "SELECT DISTINCT g.name, g.email \
             FROM gym g, gymfocus f \
-            WHERE name LIKE '%%" + string + "%%' \
-            "
+            WHERE name LIKE '%%" + string + "%%'"
         traineraction = "SELECT DISTINCT t.first_name, t.last_name, t.email \
                 FROM trainer t, focus f \
-                WHERE name LIKE '%%" + string + "%%' \
-                "
-        gym_rows = {}
-        trainer_rows = {}
+                WHERE first_name LIKE '%%" + string + "%%' \
+                    OR last_name LIKE '%%" + string + "%%'"
         if type == "gym":
             with connection.cursor() as cursor:
                 if location != "":
