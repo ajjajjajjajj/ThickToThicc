@@ -165,6 +165,8 @@ def search_request(request):
                 FROM trainer t, focus f \
                 WHERE name LIKE '%%" + string + "%%' \
                 "
+        gym_rows = {}
+        trainer_rows = {}
         if type == "gym":
             with connection.cursor() as cursor:
                 if location:
