@@ -187,14 +187,14 @@ def search_request(request):
                 if gender != 'Select Gender Preference':
                     traineraction += "AND t.gender = '" + gender + "'"
                 if level != 'Select Fitness Level':
-                    traineraction += "AND t.level = '%%" + level + "'"
+                    traineraction += "AND t.level = '" + level + "'"
                 if focus1 != 'Select a focus':
-                    traineraction += "AND f.focus = '%%" + focus1 + "'"
+                    traineraction += "AND f.focus = '" + focus1 + "'"
                 if focus2 != 'Select a focus':
-                    traineraction += "AND f.focus = '%%" + focus2 + "'"
+                    traineraction += "AND f.focus = '" + focus2 + "'"
                 if focus3 != 'Select a focus':
-                    traineraction += "AND f.focus = '%%" + focus3 + "'"
-                traineraction += " AND 1=1"
+                    traineraction += "AND f.focus = '" + focus3 + "'"
+                traineraction += " AND 1=1'"
                 cursor.execute(traineraction)
                 trainer_rows = cursor.fetchall()
             
