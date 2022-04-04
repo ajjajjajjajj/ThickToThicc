@@ -154,6 +154,9 @@ def search_request(request):
         focus1 = request.POST['foc1']
         focus2 = request.POST['foc2']
         focus3 = request.POST['foc3']
+        gender = request.POST['gend']
+        lower_price_range = request.POST['lowerpricerange']
+        upper_price_range = request.POST['upperpricerange']
         #gymaction = "SELECT g.name, g.email \
             #FROM gym g \
             #WHERE"
