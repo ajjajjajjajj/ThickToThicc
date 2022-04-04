@@ -142,7 +142,6 @@ def search_view(request):
 def search_request(request):
     if request.POST['search']:
         string = request.POST['search']
-<<<<<<< HEAD
         type = request.POST.get('type',False)
         if type == "gym":
             location = request.POST.get('loc',False)
@@ -174,7 +173,12 @@ def search_request(request):
                 gymaction += " AND 1=1"
                 cursor.execute(gymaction)
                 gym_rows = cursor.fetchall()
-        if type == "trainer":
+                return render(request, 'search/search.html', 
+                                {'gym': gym_rows,
+                                'trainer': [],
+                                'num_gyms': len(gym_rows),
+                                'num_trainers': 0})
+        elif type == "trainer":
             with connection.cursor() as cursor:
                 if gender != "":
                     traineraction += "AND t.gender = '" + gender + "'"
@@ -189,26 +193,11 @@ def search_request(request):
                 traineraction += " AND 1=1'"
                 cursor.execute(traineraction)
                 trainer_rows = cursor.fetchall()
-=======
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT name, email \
-                            FROM gym \
-                            WHERE name LIKE '%%" + string + "%%'")
-            gym_rows = cursor.fetchall()
-
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT first_name, last_name, email \
-                            FROM trainer \
-                            WHERE first_name LIKE '%%" + string + "%%' \
-                                OR last_name LIKE '%%" + string + "%%'")
-            trainer_rows = cursor.fetchall()
->>>>>>> bf7af0a (..)
-            
-        return render(request, 'search/search.html', 
-        {'gym': gym_rows,
-        'trainer': trainer_rows,
-        'num_gyms': len(gym_rows),
-        'num_trainers': len(trainer_rows)})
+                return render(request, 'search/search.html', 
+                                {'gym': [],
+                                'trainer': trainer_rows,
+                                'num_gyms': 0,
+                                'num_trainers': len(trainer_rows)})
     else:
         return render(request, 'search/search.html',{})
 
