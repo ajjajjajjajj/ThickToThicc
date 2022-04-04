@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
+        <link rel="stylesheet" href="hidden.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $().ready(function(){
+                $('#type').on('change', function(){
+                    var tval = $(this).val();
+                    $('.answer').addClass('hidden');
+                    $('.answer#' + tval).removeClass('hidden');
+                });
+            });
+        </script>
         <title>Thick to Thicc - Search</title>
     </head>
     <body>
         
         <h2> Search for a gym or trainer! </h2>
-        <div>
+        <h2> Select Type </h2>
+        <label for="ty" id="ty">
+            Looking for a trainer or a gym?<span class="">*</span>
+        </label>
+        <select name="type" id="type">
+            <option>Select Type</option>
+            <option value="trainer">Trainer</option>
+            <option value="gym">Gym</option>
+        </select>
+        <div class="answer hidden" id="gym">
             <form method="POST" action="/search_request">
                 {% csrf_token %}
                 <input type="text" name="search">
@@ -92,6 +119,98 @@
                 <button type="submit">Search</button>
             </form>
         </div>
+
+        <div class="answer hidden" id="trainer">
+            <form method="POST" action="/search_request">
+                {% csrf_token %}
+                <input type="text" name="search">
+                <div class="gender" id="gender">
+                    <select name="gend" id="gend">
+                        <option>Select Gender Preference</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <div class="level" id="level">
+                    <select name="lvl" id="lvl">
+                        <option>Select Fitness Level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+
+                <div class="control-group" id="lowerpricerange">Lower Price Range
+                    <div class="controls">
+                        <input type="number" name="lowerpricerange" min="1" class="numberinput numberInput" id="lowerpricerange">
+                    </div>
+                </div>
+
+                <div class="control-group" id="upperpricerange">Upper Price Range
+                    <div class="controls">
+                        <input type="number" name="upperpricerange" min="1" class="numberinput numberInput" id="upperpricerange">
+                    </div>
+                </div>
+
+                <div class="focus1" id="focus1">
+                    <select name="foc1" id="foc1">
+                        <option>Select a focus</option>
+                        <option value="Pilates">Pilates</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="Weightlifting">Weightlifting</option>
+                        <option value="Spin">Spin</option>
+                        <option value="Crossfit">Crossfit</option>
+                        <option value="Calisthenics">Calisthenics</option>
+                        <option value="Powerlifting">Powerlifting</option>
+                        <option value="Martial Arts">Martial Arts</option>
+                        <option value="Physiotherapy">Physiotherapy</option>
+                        <option value="Running">Running</option>
+                        <option value="Swimming">Swimming</option>
+                    </select>
+                </div>
+
+                <div class="focus2" id="focus2">
+                    <select name="foc2" id="foc2">
+                        <option>Select a focus</option>
+                        <option value="Pilates">Pilates</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="Weightlifting">Weightlifting</option>
+                        <option value="Spin">Spin</option>
+                        <option value="Crossfit">Crossfit</option>
+                        <option value="Calisthenics">Calisthenics</option>
+                        <option value="Powerlifting">Powerlifting</option>
+                        <option value="Martial Arts">Martial Arts</option>
+                        <option value="Physiotherapy">Physiotherapy</option>
+                        <option value="Running">Running</option>
+                        <option value="Swimming">Swimming</option>
+                    </select>
+                </div>
+
+                <div class="focus3" id="focus3">
+                    <select name="foc3" id="foc3">
+                        <option>Select a focus</option>
+                        <option value="Pilates">Pilates</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="Weightlifting">Weightlifting</option>
+                        <option value="Spin">Spin</option>
+                        <option value="Crossfit">Crossfit</option>
+                        <option value="Calisthenics">Calisthenics</option>
+                        <option value="Powerlifting">Powerlifting</option>
+                        <option value="Martial Arts">Martial Arts</option>
+                        <option value="Physiotherapy">Physiotherapy</option>
+                        <option value="Running">Running</option>
+                        <option value="Swimming">Swimming</option>
+                    </select>
+                </div>
+
+
+
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+
         <div>
             {% if num_gyms != 0 %}
                 <h3>Gyms</h3>

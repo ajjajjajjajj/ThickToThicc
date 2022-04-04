@@ -145,12 +145,28 @@ def search_view(request):
     return render(request, 'search/search.html')
 
 def search_request(request):
+    # build string first, then check through if NA or no, if NA then dont add to string
     if request.POST['search']:
         string = request.POST['search']
+        location = request.POST['loc']
+        level = request.POST['lvl']
+        budget = request.POST['budget']
+        focus1 = request.POST['foc1']
+        focus2 = request.POST['foc2']
+        focus3 = request.POST['foc3']
+        gender = request.POST['gend']
+        lower_price_range = request.POST['lowerpricerange']
+        upper_price_range = request.POST['upperpricerange']
+        #gymaction = "SELECT g.name, g.email \
+            #FROM gym g \
+            #WHERE"
         with connection.cursor() as cursor:
-            cursor.execute("SELECT name, email \
-                            FROM gym \
-                            WHERE name LIKE '%%" + string + "%%'")
+            cursor.execute("SELECT g.name, g.email \
+                            FROM gym g \
+                            WHERE name LIKE '%%" + string + "%%' \
+                            AND g.region = '%" + location + "%' \
+                            AND g.level = '%" + level + "%' \
+                            AND g.    ")
             gym_rows = cursor.fetchall()
 
         with connection.cursor() as cursor:
