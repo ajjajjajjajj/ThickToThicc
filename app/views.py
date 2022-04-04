@@ -187,7 +187,7 @@ def login_request(request):
                 context['status'] = status
                 return render(request,"registration/login.html",context)
             else:
-                #type = request.POST['type']
+                type = request.POST['type']
                 cursor.execute("SELECT first_name FROM " + type + " WHERE email = %s", [request.POST['email']])
                 fnmatch = cursor.fetchone()
                 #email = request.POST['email']
