@@ -142,7 +142,7 @@ def search_view(request):
 def search_request(request):
     if request.POST['search']:
         string = request.POST['search']
-        type = request.POST.get('type',False)
+        type = request.POST['type']
         if type == "gym":
             location = request.POST.get('loc',False)
         if type == "trainer":
