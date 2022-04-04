@@ -148,33 +148,51 @@ def search_request(request):
     # build string first, then check through if NA or no, if NA then dont add to string
     if request.POST['search']:
         string = request.POST['search']
-        location = request.POST['loc']
+        type = request.POST['type']
+        if type == "gym":
+            location = request.POST.get('loc',False)
+        if type == "trainer":
+            gender = request.POST.get('gend',False)
         level = request.POST['lvl']
-        budget = request.POST['budget']
         focus1 = request.POST['foc1']
         focus2 = request.POST['foc2']
         focus3 = request.POST['foc3']
-        gender = request.POST['gend']
-        lower_price_range = request.POST['lowerpricerange']
-        upper_price_range = request.POST['upperpricerange']
-        #gymaction = "SELECT g.name, g.email \
-            #FROM gym g \
-            #WHERE"
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT g.name, g.email \
-                            FROM gym g \
-                            WHERE name LIKE '%%" + string + "%%' \
-                            AND g.region = '%" + location + "%' \
-                            AND g.level = '%" + level + "%' \
-                            AND g.    ")
-            gym_rows = cursor.fetchall()
-
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT first_name, last_name, email \
-                            FROM trainer \
-                            WHERE first_name LIKE '%%" + string + "%%' \
-                                OR last_name LIKE '%%" + string + "%%'")
-            trainer_rows = cursor.fetchall()
+        gymaction = "SELECT DISTINCT g.name, g.email \
+            FROM gym g, gymfocus f \
+            WHERE name LIKE '%%" + string + "%%' \
+            "
+        traineraction = "SELECT DISTINCT t.first_name, t.last_name, t.email \
+                FROM trainer t, focus f \
+                WHERE name LIKE '%%" + string + "%%' \
+                "
+        if type == "gym":
+            with connection.cursor() as cursor:
+                if location:
+                    gymaction += "AND g.region = '%%" + location + "%%' \ "
+                if level != 'Select Fitness Level':
+                    gymaction += "AND g.level = '%%" + level + "%%' \ "
+                if focus1 != 'Select a focus':
+                    gymaction += "AND f.focus = '%%" + focus1 + "%%' \ "
+                if focus2 != 'Select a focus':
+                    gymaction += "AND f.focus = '%%" + focus2 + "%%' \ "
+                if focus3 != 'Select a focus':
+                    gymaction += "AND f.focus = '%%" + focus3 + "%%' \ "
+                cursor.execute(gymaction)
+                gym_rows = cursor.fetchall()
+        if type == "trainer":
+            with connection.cursor() as cursor:
+                if gender:
+                    traineraction += "AND t.gender = '%%" + gender + "%%' \ "
+                if level != 'Select Fitness Level':
+                    traineraction += "AND t.level = '%%" + level + "%%' \ "
+                if focus1 != 'Select a focus':
+                    traineraction += "AND f.focus = '%%" + focus1 + "%%' \ "
+                if focus2 != 'Select a focus':
+                    traineraction += "AND f.focus = '%%" + focus2 + "%%' \ "
+                if focus3 != 'Select a focus':
+                    traineraction += "AND f.focus = '%%" + focus3 + "%%' \ "
+                cursor.execute(traineraction)
+                trainer_rows = cursor.fetchall()
             
         return render(request, 'search/search.html', 
         {'gym': gym_rows,
