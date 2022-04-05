@@ -339,6 +339,7 @@ def rating(request):
                 cursor.execute("SELECT * from trainer_ratings where trainer_email = '" + trainer_email + "'")
                 rating = cursor.fetchone()
                 return render(request,'ratings/rating.html',{'rating':rating})
-
+    else:
+        return render(request,'ratings/rating.html',{})
 def logged_home(request, member_id):
     pass
