@@ -342,7 +342,7 @@ def rating(request):
                     cursor.execute("SELECT * from trainer_ratings where trainer_email = '" + trainer_email + "'")
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
-        elif type == 'gym':
+        if type == 'gym':
             gym_email = request.POST.get('gymemail',False)
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM gym_ratings \
