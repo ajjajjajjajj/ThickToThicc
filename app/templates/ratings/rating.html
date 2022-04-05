@@ -2,4 +2,49 @@
 <html>
     <head>
         <title>Thick to Thicc - Ratings</title>
-        
+    </head>
+
+    <body>
+        <h2> Want to leave a rating for a gym or a trainer? </h2>
+        <h3> Leave it here, along with your email for us to get back to you! </h3>
+
+        <form method="POST" action="/rating">
+            {% csrf_token %}
+            <div id="div_id_member_email" class="control-group">
+                <label for="id_member_email" class="control-label requiredField">
+                    Your Email<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input type="text" name="email" maxlength="256" class="textinput textInput" required="" id="memberemail">
+                </div>
+            </div>
+
+            <div id="div_id_trainer_email" class="control-group">
+                <label for="id_trainer_email" class="control-label requiredField">
+                    Trainer's Email<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input type="text" name="email" maxlength="256" class="textinput textInput" required="" id="traineremail">
+                </div>
+            </div>
+
+            <div id="div_id_rate" class="control-group">
+                <label for="id_rate" class="control-label requiredField">
+                    Your rating<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input type="number" name="rating" min="0" class="numberinput numberInput" required="" id="rating">
+                </div>
+            </div>
+            <br>
+            <button type="submit" value="Rating">Submit!</button>
+        </form>
+
+        <div>
+            {% rating %}
+
+        </div>
+
+
+    </body>
+</html>

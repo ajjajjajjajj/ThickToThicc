@@ -331,14 +331,14 @@ def rating(request):
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM trainer_ratings where trainer_email = '" + trainer_email + "'")
                 rating = cursor.fetchone()
-                return render(request,{'rating': rating})
+                return render(request,'ratings/rating.html',{'rating': rating })
         else:
             with connection.cursor() as cursor:
                 cursor.execute("INSERT INTO member_trainer (member_email,trainer_email,trainer_rating) VALUES ('" + member_email + "','"+trainer_email+"',"+rate+")")
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * from trainer_ratings where trainer_email = '" + trainer_email + "'")
                 rating = cursor.fetchone()
-                return render(request,{'rating':rating})
+                return render(request,'ratings/rating.html',{'rating':rating})
 
 def logged_home(request, member_id):
     pass
