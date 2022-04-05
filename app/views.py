@@ -287,7 +287,7 @@ def recommends_view(request, member_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * \
                         FROM trainer \
-                        WHERE " + budget + " BETWEEN lower_price_range AND upper_price_range \
+                        WHERE " + str(budget) + " BETWEEN lower_price_range AND upper_price_range \
                             AND '" + level + "' = level \
                                 AND ('" + focus[0] + "' IN (focus1, focus2, focus3) \
                                     OR '" + focus[1] + "' IN (focus1, focus2, focus3) \
