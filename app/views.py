@@ -166,8 +166,8 @@ def search_request(request):
                 if level != "":
                     gymaction += " AND g.level = '" + level + "'"
                 if budget != "":
-                    gymaction += " AND g.lower_price_range <= '" + budget + "'"
-                    gymaction += " AND '" + budget + " <= g.upper_price_range'"
+                    gymaction += " AND g.lower_price_range <= " + budget
+                    gymaction += " AND " + budget + " <= g.upper_price_range"
                 if focus1 != "":
                     gymaction += " AND f.focus = '" + focus1 + "'"
                 if focus2 != "":
@@ -190,8 +190,8 @@ def search_request(request):
                 if level != "":
                     traineraction += "AND t.level = '" + level + "'"
                 if budget != "":
-                    traineraction += " AND t.lower_price_range <= '" + budget + "'"
-                    traineraction += " AND '" + budget + " <= t.upper_price_range'"
+                    traineraction += " AND t.lower_price_range <= " + budget 
+                    traineraction += " AND " + budget + " <= t.upper_price_range"
                 if focus1 != "":
                     traineraction += "AND f.focus = '" + focus1 + "'"
                 if focus2 != "":
