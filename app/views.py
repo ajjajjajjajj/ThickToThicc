@@ -324,7 +324,7 @@ def rating(request):
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM trainer_ratings \
                             WHERE trainer_email = '" + trainer_email + "'")
-        in_trainer_rating = cursor.fetchone()
+            in_trainer_rating = cursor.fetchone()
         if in_trainer_rating:
             with connection.cursor() as cursor:
                 cursor.execute("UPDATE member_trainer SET trainer_rating = " + rate + " WHERE member_email = '" + member_email + "' AND trainer_email = '" + trainer_email + "'")
