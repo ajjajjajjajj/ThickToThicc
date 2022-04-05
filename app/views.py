@@ -260,6 +260,7 @@ def recommends_view(request, member_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM member WHERE id = " + member_id)
         member = cursor.fetchone()
+    name = member[2]
     email = member[1]
     level = member[5]
     region = member[6]
@@ -312,10 +313,11 @@ def recommends_view(request, member_id):
                                                                         FROM member_gym mg1 \
                                                                         WHERE m.email = mg1.member_email)")
         reco_members = cursor.fetchall()                            
-    return render(request, 'recommendations/recos.html', {'reco_gyms': reco_gyms,
+    return render(request, 'recommendations/recos.html', {'name': name,
+                                'reco_gyms': reco_gyms,
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
-
+                                
 def rating(request):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
