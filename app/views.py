@@ -111,20 +111,24 @@ def register_request(request):
             user = cursor.fetchone()
             type = request.POST['type']
             if user == None:
-                cursor.execute("INSERT INTO login VALUES (%s, %s, %s)", [request.POST['email'], request.POST['password'], type])
+                cursor.execute("INSERT INTO login VALUES \
+                    (%s, %s, %s)", [request.POST['email'], request.POST['password'], type])
                 if (type == 'member'):
-                    cursor.execute("INSERT INTO member VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute("INSERT INTO member (email,first_name,last_name,gender,level,preferred_gym_location,budget,focus1,focus2,focus3) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['email'], request.POST['first_name'], request.POST['last_name'], 
                             request.POST['gender'], request.POST['level'], request.POST['preferred_gym_location'],
                             request.POST['budget'], request.POST['focus1'], request.POST['focus2'], request.POST['focus3'] ])
                 elif (type == 'trainer'):
-                    cursor.execute("INSERT INTO trainer VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute("INSERT INTO trainer (email, first_name, last_name, gender, upper_price_range, lower_price_range,experience,focus1,focus2,focus3,level) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['email'], request.POST['first_name'], request.POST['last_name'],
                             request.POST['gender'], request.POST['upper_price_range'], request.POST['lower_price_range'],
                             request.POST['experience'], request.POST['focus1'], request.POST['focus2'], request.POST['focus3'],
                             request.POST['level']])
                 elif (type == 'gym'):
-                    cursor.execute("INSERT INTO gym VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute("INSERT INTO gym (name, email, address, upper_price_range, lower_price_range, capacity, level, region) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['name'], request.POST['email'], request.POST['address'],
                             request.POST['upper_price_range'], request.POST['lower_price_range'], request.POST['capacity'],
                             request.POST['level'], request.POST['region']])
@@ -299,7 +303,8 @@ def recommends_view(request, member_id):
         cursor.execute("SELECT m.first_name, m.last_name \
                         FROM member m \
                         WHERE m.preferred_gym_location = '" + region + 
-                        "' AND m.email in (SELECT mt.member_email \
+                    "' AND m.id != " + member_id + " \
+                        AND m.email in (SELECT mt.member_email \
                                             FROM member_trainer mt \
                                             WHERE mt.member_email = '" + email +  
                                             "' AND mt.trainer_email in (SELECT mt1.trainer_email \
