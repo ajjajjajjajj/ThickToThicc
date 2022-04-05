@@ -311,7 +311,7 @@ def recommends_view(request, member_id):
                                             WHERE mg.member_email = '" + email + 
                                             "' AND mg.gym_email in (SELECT mg1.trainer_email \
                                                                         FROM member_gym mg1 \
-                                                                        WHERE m.email = mg1.member_email)")
+                                                                        WHERE m.email = mg1.member_email))")
         reco_members = cursor.fetchall()                            
     return render(request, 'recommendations/recos.html', {'name': name,
                                 'reco_gyms': reco_gyms,
