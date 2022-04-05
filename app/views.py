@@ -312,7 +312,7 @@ def recommends_view(request, member_id):
                                                                         FROM member_gym mg1 \
                                                                         WHERE m.email = mg1.member_email)")
         reco_members = cursor.fetchall()                            
-    return render(request, {'reco_gyms': reco_gyms,
+    return render(request, 'recommendations/recos.html', {'reco_gyms': reco_gyms,
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
 
