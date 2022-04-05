@@ -265,7 +265,7 @@ def recommends_view(request, member_id):
     level = member[5]
     region = member[6]
     budget = str(member[7])
-    focus = [member[8:11]]
+    focus = member[8:11]
         # tuple contains:
         # id, email, first_name, last_name, gender, level, preferred_gym_location, budget, focus1, focus2, focus3
         # look up gyms and trainers with above info
