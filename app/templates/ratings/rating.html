@@ -25,16 +25,16 @@
         <h2> Want to leave a rating for a gym or a trainer? </h2>
         <h3> Leave it here, along with your email for us to get back to you! </h3>
 
-        <select name="type" id="type">
-            <option value="">Are you leaving feedback for a gym or a trainer?</option>
-            <option value="gym">Gym</option>
-            <option value="trainer">Trainer</option>
-        </select>
+        <form method="POST" action="rating">
+            {% csrf_token %}
+            <select name="type" id="type">
+                <option value="">Are you leaving feedback for a gym or a trainer?</option>
+                <option value="gym">Gym</option>
+                <option value="trainer">Trainer</option>
+            </select>
 
         <div class="answer hidden" id="trainer">
 
-            <form method="POST" action="/rating">
-                {% csrf_token %}
                 <div id="div_id_member_email" class="control-group">
                     <label for="id_member_email" class="control-label requiredField">
                         Your Email<span class="asteriskField">*</span>
@@ -64,12 +64,13 @@
 
                 <br>
                 <button type="submit" value="Rating">Submit!</button>
-            </form>
         </div>
+        </form>
 
-        <div class="answer hidden" id="gym">
-            <form method="POST" action="/rating">
-                {% csrf_token %}
+        <form method="POST" action="/rating">
+            {% csrf_token %}
+
+            <div class="answer hidden" id="gym">
                 <div id="div_id_member_email" class="control-group">
                     <label for="id_member_email" class="control-label requiredField">
                         Your Email<span class="asteriskField">*</span>
@@ -99,8 +100,8 @@
 
                 <br>
                 <button type="submit" value="Rating">Submit!</button>
-            </form>
-        </div>
+            </div>
+        </form>
 
         <div>
             {{ rating }}
