@@ -4,75 +4,42 @@
     
     <h1>Here's what we recommend :]</h1>
 
-    {% if best_recos %}
-    <h2>The best recommendations for you</h2>
+    {% if reco_gyms %}
     <div>
-        {% for type, list in best_reco %}
-            <div>
-                <h3>{{ type }}</h3>
-                <ul>
-                    {% for row in list %}
-                    <li> {{row}} </li>
-                </ul>
-            </div>
-        {% endfor %}
+        <h3>Here are the gyms that fit your needs!</h3>
+        <div>
+            <ul>
+            {% for row in reco_gyms%}
+                <li>
+                    {{row}}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
     </div>
     {% endif %}
 
-    {% if gym_recos %}
-
-        <div>
-            <h3>Since you stay in the {{ region }} area, here are some nearby places to go to get active!</h3>
-            {% for row in gym['region'] %}
-
+    {% if reco_trainers %}
+    <div>
+        <h3>We have some trainers you might be interested in!</h3>
+        <ul>
+            {% for row in reco_gyms%}
+                <li>
+                    {{row}}
+                </li>
             {% endfor %}
-        </div>
-        <div>
-            <h3>Because you like {{ focus1 }}, {{ focus2 }}, {{ focus3 }}, we recommend...</h3>
-            {% for row in gym['focus'] %}
-
-            {% endfor %}
-        </div>
-        <div>
-            <h3>Gyms that fit your price range: </h3>
-            {% for row in gym['price'] %}
-
-            {% endfor %}
-        </div>
+        </ul>
+    </div>
     {% endif %}
-
-    {% if trainer_recos %}
-    
-        <div>
-            <h3>We have some trainers you might be interested in!</h3>
-            
-            {% if trainer_recos['focus1'] %}
-                Trainers specialising in {{ focus1 }} 
-                {% for row in trainer['focus1'] %}
-
-                {% endfor %}
-            {% endif %}
-            {% if trainer_recos['focus2'] %}
-
-                Trainers specialising in {{ focus2 }}
-                {% for row in trainer['focus2'] %}
-
-                {% endfor %}
-            {% endif %}
-            {% if trainer_recos['focus3'] %}
-                Trainers specialising in {{ focus3 }}
-                {% for row in trainer['focus3'] %}
-
-                {% endfor %}
-            {% endif %}
-        </div>
-        {% if budget %}
-        <div>
-            Trainers that fit your budget:
-            {% for row in trainer%}
-
+    {% if reco_members %}
+    <div>
+        <h3>As a bonus, here's some people in your region and visit the same gyms or trainers as you!</h3>
+        <ul>
+            {% for row in reco_members%}
+                <li>
+                    {{row}}
+                </li>
             {% endfor %}
-        </div>
-        {% endif %}
-    {% endif %}
+        </ul>
+    </div>
 {% endblock %}
