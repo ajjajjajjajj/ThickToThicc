@@ -316,5 +316,10 @@ def recommends_view(request, member_id):
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
 
+def rating(request):
+    if request.POST:
+        pass
+
+
 def logged_home(request, member_id):
     pass
