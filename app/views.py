@@ -298,8 +298,8 @@ def recommends_view(request, member_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT m.first_name, m.last_name \
                         FROM member m \
-                        WHERE m.preferred_gym_location = " + region + 
-                        " AND m.email in (SELECT mt.member_email \
+                        WHERE m.preferred_gym_location = '" + region + 
+                        "' AND m.email in (SELECT mt.member_email \
                                             FROM member_trainer mt \
                                             WHERE mt.member_email = '" + email +  
                                             "' AND mt.trainer_email in (SELECT mt1.trainer_email \
