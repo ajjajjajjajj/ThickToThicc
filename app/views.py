@@ -264,7 +264,7 @@ def recommends_view(request, member_id):
     email = member[1]
     level = member[5]
     region = member[6]
-    budget = member[7]
+    budget = str(member[7])
     focus = [member[8:11]]
         # tuple contains:
         # id, email, first_name, last_name, gender, level, preferred_gym_location, budget, focus1, focus2, focus3
@@ -288,7 +288,7 @@ def recommends_view(request, member_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * \
                         FROM trainer \
-                        WHERE " + str(budget) + " BETWEEN lower_price_range AND upper_price_range \
+                        WHERE " + budget + " BETWEEN lower_price_range AND upper_price_range \
                             AND '" + level + "' = level \
                                 AND ('" + focus[0] + "' IN (focus1, focus2, focus3) \
                                     OR '" + focus[1] + "' IN (focus1, focus2, focus3) \
@@ -317,7 +317,7 @@ def recommends_view(request, member_id):
                                 'reco_gyms': reco_gyms,
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
-                                
+
 def rating(request):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
