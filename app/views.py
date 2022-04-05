@@ -318,8 +318,27 @@ def recommends_view(request, member_id):
 
 def rating(request):
     if request.POST:
-        pass
-
+        rate = request.POST.get('rating',False)
+        trainer_email = request.POST.get('traineremail',False)
+        member_email = request.POST.get('memberemail',False)
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM trainer_ratings \
+                            WHERE trainer_email = '" + trainer_email + "'")
+        in_trainer_rating = cursor.fetchone()
+        if in_trainer_rating:
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE member_trainer SET trainer_rating = " + rate + " WHERE member_email = '" + member_email + "' AND trainer_email = '" + trainer_email + "'")
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM trainer_ratings where trainer_email = '" + trainer_email + "'")
+                rating = cursor.fetchone()
+                return render(request,{'rating': rating})
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO member_trainer (member_email,trainer_email,trainer_rating) VALUES ('" + member_email + "','"+trainer_email+"',"+rate+")")
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * from trainer_ratings where trainer_email = '" + trainer_email + "'")
+                rating = cursor.fetchone()
+                return render(request,{'rating':rating})
 
 def logged_home(request, member_id):
     pass
