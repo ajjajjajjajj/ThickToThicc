@@ -362,8 +362,8 @@ def rating(request):
                     cursor.execute("SELECT * from gym_ratings where gym_email = '" + gym_email + "'")
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
-        else:
-            return render(request,'ratings/rating.html',{})
+    else:
+        return render(request,'ratings/rating.html',{})
 
 def browse(request):
     pass
