@@ -151,6 +151,7 @@ def search_request(request):
         focus1 = request.POST.get('foc1',False)
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
+        budget = request.POST.get('budget',False)
         gymaction = "SELECT DISTINCT g.name, g.email \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
@@ -164,6 +165,9 @@ def search_request(request):
                     gymaction += " AND g.region = '" + location + "'"
                 if level != "":
                     gymaction += " AND g.level = '" + level + "'"
+                if budget != "":
+                    gymaction += " AND g.lower_price_range <= '" + budget + "'"
+                    gymaction += " AND '" + budget + " <= g.upper_price_range'"
                 if focus1 != "":
                     gymaction += " AND f.focus = '" + focus1 + "'"
                 if focus2 != "":
@@ -185,6 +189,9 @@ def search_request(request):
                     traineraction += "AND t.gender = '" + gender + "'"
                 if level != "":
                     traineraction += "AND t.level = '" + level + "'"
+                if budget != "":
+                    traineraction += " AND t.lower_price_range <= '" + budget + "'"
+                    traineraction += " AND '" + budget + " <= t.upper_price_range'"
                 if focus1 != "":
                     traineraction += "AND f.focus = '" + focus1 + "'"
                 if focus2 != "":
