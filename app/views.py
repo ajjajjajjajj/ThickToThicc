@@ -309,7 +309,7 @@ def recommends_view(request, member_id):
                                         SELECT mg.member_email \
                                             FROM member_gym mg \
                                             WHERE mg.member_email = '" + email + 
-                                            "' AND mg.gym_email in (SELECT mg1.trainer_email \
+                                            "' AND mg.gym_email in (SELECT mg1.gym_email \
                                                                         FROM member_gym mg1 \
                                                                         WHERE m.email = mg1.member_email))")
         reco_members = cursor.fetchall()                            
