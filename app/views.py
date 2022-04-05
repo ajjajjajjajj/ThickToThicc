@@ -259,7 +259,7 @@ def get(email,type):
 def recommends_view(request, member_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM member WHERE id = " + member_id)
-    member = cursor.fetchone()
+        member = cursor.fetchone()
     email = member[1]
     level = member[5]
     region = member[6]
