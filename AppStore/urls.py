@@ -33,5 +33,6 @@ urlpatterns = [
     path('login/',login_request,name='login'),
     path('<str:type>-<int:id>', logged_home, name = 'loggedhome'),
     path('recommends/<str:type>/', recommends_view, name='recommends'),
-    path('rating',rating,name='rating')
+    path('rating',rating,name='rating'),
+    path('browse',browse,name='browse')
 ]
