@@ -170,6 +170,8 @@ def search_request(request):
                     gymaction += " AND f.focus = '" + focus2 + "'"
                 if focus3 != "":
                     gymaction += " AND f.focus = '" + focus3 + "'"
+                if (focus1 != "") or (focus2 != "") or (focus3 != ""):
+                    gymaction += " AND g.email = f.email" 
                 cursor.execute(gymaction)
                 gym_rows = cursor.fetchall()
                 return render(request, 'search/search.html', 
