@@ -240,7 +240,7 @@ def login_request(request):
     return render(request, "registration/login.html", context)
 
 
-def logged_home(request, type, id):
+def logged_home(request, *):
     return HttpResponse("hi")
 
 
