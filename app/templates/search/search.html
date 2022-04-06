@@ -6,7 +6,7 @@
             <h3>Gyms</h3>
             <ul>
                 {% for g in gym %}
-                    <li> <a href="profile/gym/{{ g.0 }}"> {{ g.2 }} </a></li>
+                    <li> <a href="../profile/gym/{{ g.0 }}"> {{ g.1 }} </a></li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -16,7 +16,7 @@
             <h3>Trainers</h3>
             <ul>
                 {% for t in trainer %}
-                    <li> <a href="profile/trainer/{{ t.0 }}"> {{ t.2|add:t.3 }} </a></li>
+                    <li> <a href="../profile/trainer/{{ t.0 }}"> {{ t.2|add:t.3 }} </a></li>
                 {% endfor %}
             </ul>           
         {% endif %}
