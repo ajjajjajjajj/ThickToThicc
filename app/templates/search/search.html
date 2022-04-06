@@ -34,7 +34,7 @@
         </select>
 
         <div class="answer hidden" id="gym">
-            <form method="POST" action="/search_request">
+            <form method="POST" action="/search_request/">
                 {% csrf_token %}
                 <input type="text" name="search">
                 <div class="location" id="location">
@@ -124,7 +124,7 @@
         </div>
 
         <div class="answer hidden" id="trainer">
-            <form method="POST" action="/search_request">
+            <form method="POST" action="/search_request/">
                 {% csrf_token %}
                 <input type="text" name="search">
                 <div class="gender" id="gender">
@@ -215,7 +215,7 @@
                 <h3>Gyms</h3>
                 <ul>
                     {% for g in gym %}
-                        <li> {{ g }} </li>
+                        <li> <a>{{ g</a>{{ g }} </li>
                     {% endfor %}
                 </ul>
             {% endif %}
