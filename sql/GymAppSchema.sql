@@ -55,12 +55,14 @@ region VARCHAR(16) NOT NULL CONSTRAINT region CHECK(region = 'North' OR region =
 FOREIGN KEY (email) REFERENCES login(email)
 );
 
+
 CREATE TABLE IF NOT EXISTS member_trainer(
 member_email VARCHAR(256) REFERENCES member(email),
 trainer_email VARCHAR(256) REFERENCES trainer(email),
 trainer_rating NUMERIC,
 UNIQUE(member_email, trainer_email)
 );
+
 
 CREATE TABLE IF NOT EXISTS member_gym(
 member_email VARCHAR(256) REFERENCES member(email),
@@ -144,7 +146,6 @@ END;
 $$;
 
 
-
 -- TRAINER trigger
 CREATE OR REPLACE TRIGGER calc_trainer
 BEFORE UPDATE OR INSERT
@@ -165,7 +166,6 @@ $$
 BEGIN
 -- trainer automatically added to trainer_ratings if not inside
     INSERT INTO gym_ratings VALUES(NEW.email, NULL);
-	
 	RETURN NEW;
 END;
 $$;
@@ -221,33 +221,3 @@ BEFORE UPDATE OR INSERT
 ON member_gym
 FOR EACH ROW
 EXECUTE PROCEDURE gym_ratings();
-
-select * from member_gym
-select * from member_gym where gym_email = 'omg@omgyoga.sg'
-
-UPDATE member_gym SET gym_rating = 2 WHERE gym_email = 'omg@omgyoga.sg' AND member_email = 'apirolinio@google.ru'
-
-DELETE FROM trainer
-DELETE FROM member_trainer
-DELETE FROM trainer_ratings
-
-select * from member_gym
-where gym_email = 'omg@omgyoga.sg'
-
-select * from gym_ratings
-where gym_email = 'omg@omgyoga.sg'
-
-select * from member_trainer
-select * from member_trainer where trainer_email = 'tdunsfordd6@cpanel.net'
-
-UPDATE member_trainer SET trainer_rating = 2 WHERE trainer_email = 'tdunsfordd6@cpanel.net' AND member_email = 'gedesoncd@webs.com'
-
-DELETE FROM trainer
-DELETE FROM member_trainer
-DELETE FROM trainer_ratings
-
-select * from member_trainer
-where trainer_email = 'tdunsfordd6@cpanel.net'
-
-select * from trainer_ratings
-where trainer_email = 'tdunsfordd6@cpanel.net'
