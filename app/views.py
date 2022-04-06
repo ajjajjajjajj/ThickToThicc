@@ -390,7 +390,7 @@ def profile_view(request, type, id):
                                                 FROM member_gym mg \
                                                 WHERE mg.member_email = '" + email + "')") 
             member_gyms = cursor.fetchall()
-        return render(request, {'name': profile_info[2] + " " + profile_info[3],
+        return render(request, 'profile/member.html', {'name': profile_info[2] + " " + profile_info[3],
                                 'gender': profile_info[4],
                                 'level': profile_info[5],
                                 'region': profile_info[6],
@@ -409,7 +409,7 @@ def profile_view(request, type, id):
                                                 FROM member_trainer mt \
                                                 WHERE mt.trainer_email = '" + email + "')")
             trainer_members = cursor.fetchall()
-        return render(request, {'name': profile_info[2] + ' ' + profile_info[3],
+        return render(request, 'profile/trainer.html', {'name': profile_info[2] + ' ' + profile_info[3],
                                 'gender': profile_info[4],
                                 'upper_price_range': profile_info[5],
                                 'lower_price_range': profile_info[6],
@@ -429,7 +429,7 @@ def profile_view(request, type, id):
                                                 WHERE mg.gym_email = '" + email + "')")
             gym_members = cursor.fetchall()
         
-        return render(request, {'name': profile_info[1],
+        return render(request, 'profile/gym.html', {'name': profile_info[1],
                                 'address': profile_info[3],
                                 'upper_price_range': profile_info[4],
                                 'lower_price_range': profile_info[5],
