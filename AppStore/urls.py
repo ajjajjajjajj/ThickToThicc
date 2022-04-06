@@ -31,8 +31,9 @@ urlpatterns = [
     path('search/', search_view),
     path('search_request/', search_request, name='search_request'),
     path('login/',login_request,name='login'),
-    path('<str:type>=<str:myid>/', loggedhome, name = 'loggedhome'),
+    path('<str:type><str:id>/', logged_home, name = 'loggedhome'),
     path('recommends/<str:member_id>/', recommends_view, name='recommends'),
     path('rating/',rating,name='rating'),
-    path('browse/',browse,name='browse')
+    path('browse/',browse,name='browse'),
+    path('profile/<str:type><str:id>/', profile_view, name = 'profile_view'),
 ]
