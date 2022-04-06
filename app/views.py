@@ -398,7 +398,8 @@ def profile_view(request, type, id):
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
                                 'member_gyms': member_gyms,
-                                'email': email })
+                                'email': email,
+                                'id': profile_info[0]})
     elif type == 'trainer':
         email = profile_info[1]
         with connection.cursor() as cursor:
