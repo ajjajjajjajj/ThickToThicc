@@ -158,10 +158,10 @@ def search_request(request):
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
         budget = request.POST.get('budget',False)
-        gymaction = "SELECT DISTINCT g.name, g.email \
+        gymaction = "SELECT DISTINCT * \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
-        traineraction = "SELECT DISTINCT t.first_name, t.last_name, t.email \
+        traineraction = "SELECT DISTINCT * \
                 FROM trainer t, focus f \
                 WHERE first_name LIKE '%%" + string + "%%' \
                     OR last_name LIKE '%%" + string + "%%'"
