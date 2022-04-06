@@ -237,11 +237,11 @@ def login_request(request):
             else:
                 type = request.POST['type']
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
-                id = str(cursor.fetchone())
-                return redirect('loggedhome', type = type, id = id, permanent = True )
+                myid = str(cursor.fetchone())
+                return redirect('loggedhome', type = type, myid = myid, permanent = True )
     return render(request, "registration/login.html", context)
     
-def logged_home(request,type,id):
+def logged_home(request,*args):
     return HttpResponse("hi")
 
 
