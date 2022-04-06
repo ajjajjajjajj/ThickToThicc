@@ -388,7 +388,7 @@ def profile_view(request, type, id):
                             FROM gym g \
                             WHERE g.email IN (SELECT mg.gym_email \
                                                 FROM member_gym mg \
-                                                WHERE mg.member_email = '" + email + "'") 
+                                                WHERE mg.member_email = '" + email + "')") 
             member_gyms = cursor.fetchall()
         return render(request, {'name': profile_info[2] + " " + profile_info[3],
                                 'gender': profile_info[4],
@@ -407,7 +407,7 @@ def profile_view(request, type, id):
                             FROM member m \
                             WHERE m.email IN (SELECT mt.member_email \
                                                 FROM member_trainer mt \
-                                                WHERE mt.trainer_email = '" + email + "'")
+                                                WHERE mt.trainer_email = '" + email + "')")
             trainer_members = cursor.fetchall()
         return render(request, {'name': profile_info[2] + ' ' + profile_info[3],
                                 'gender': profile_info[4],
@@ -426,7 +426,7 @@ def profile_view(request, type, id):
                             FROM member m \
                             WHERE m.email IN (SELECT mg.member_email \
                                                 FROM member_gym mg \
-                                                WHERE mg.gym_email = '" + email + "'")
+                                                WHERE mg.gym_email = '" + email + "')")
             gym_members = cursor.fetchall()
         
         return render(request, {'name': profile_info[1],
