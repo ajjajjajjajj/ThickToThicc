@@ -23,17 +23,23 @@ from django.http import HttpResponse, HttpResponseRedirect
 #     return render(request,'app/index.html',result_dict)
 
 # # Create your views here.
-# def view(request, id):
-#     """Shows the main page"""
+def admin_index(request):
+
+    ## Use raw query to get a customer
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM login")
+        users = cursor.fetchall()
+
+    return render(request,'app/index.html',{'users': users})
+
+def admin_delete(request):
+    if request.POST:
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM login WHERE email = %s AND type = %s", 
+                [request.POST['email'], request.POST['type']])
+        return render(request, 'app/view.html', {'status': 'User deleted successfully'})
     
-#     ## Use raw query to get a customer
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-#         customer = cursor.fetchone()
-#     result_dict = {'cust': customer}
-
-#     return render(request,'app/view.html',result_dict)
-
+    return render(request, 'app/delete.html', {'status': 'Please specify user details - login email and user type'})
 # # Create your views here.
 # def add(request):
 #     """Shows the main page"""
@@ -158,10 +164,10 @@ def search_request(request):
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
         budget = request.POST.get('budget',False)
-        gymaction = "SELECT DISTINCT * \
+        gymaction = "SELECT DISTINCT g.id, g.name, g.email, g.address, g.upper_price_range, g.lower_price_range, g.capacity, g.level, g.region  \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
-        traineraction = "SELECT DISTINCT * \
+        traineraction = "SELECT DISTINCT t.id, t.email, t.first_name, t.last_name, t.gender, t.upper_price_range, t.lower_price_range, t.experience, t.focus1, t.focus2, t.focus3, t.level \
                 FROM trainer t, focus f \
                 WHERE first_name LIKE '%%" + string + "%%' \
                     OR last_name LIKE '%%" + string + "%%'"
@@ -242,8 +248,8 @@ def login_request(request):
     return render(request, "registration/login.html", context)
 
 def loggedhome(request, type, myid):
-    
     return redirect('profile_view', type, myid)
+
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
@@ -427,6 +433,10 @@ def profile_view(request, type, id):
                                                 WHERE mg.gym_email = '" + email + "')")
             gym_members = cursor.fetchall()
         
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT focus \
+                            FROM gymfocus \
+                            WHERE gym_email = '" + email + "'")
         return render(request, 'profile/gym.html', {'name': profile_info[1],
                                 'address': profile_info[3],
                                 'upper_price_range': profile_info[4],
