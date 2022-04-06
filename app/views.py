@@ -242,10 +242,8 @@ def login_request(request):
     return render(request, "registration/login.html", context)
 
 def loggedhome(request, type, myid):
-    a = type
-    b = myid
-    return redirect('profile/' + type + '/id')
-
+    
+    return redirect('profile_view', request, type, myid)
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
