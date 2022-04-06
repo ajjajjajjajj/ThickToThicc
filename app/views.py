@@ -220,7 +220,7 @@ def login_view(request):
 def login_request(request):
     """Shows the login page"""
     context = {}
- 
+
     if request.POST:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * \
@@ -237,11 +237,11 @@ def login_request(request):
             else:
                 type = request.POST['type']
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
-                myid = str(cursor.fetchone())
+                myid = str(cursor.fetchone()[0])
                 return redirect('loggedhome', type = type, myid = myid, permanent = True)
     return render(request, "registration/login.html", context)
-    
-def logged_home(request,*args):
+
+def logged_home(request, type, id):
     return HttpResponse("hi")
 
 
