@@ -40,6 +40,15 @@ def admin_delete(request):
         return render(request, 'app/view.html', {'status': 'User deleted successfully'})
     
     return render(request, 'app/delete.html', {'status': 'Please specify user details - login email and user type'})
+
+def admin_edit(request):
+    if request.POST:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
+                [request.POST['email'], request.POST['type']])
+            user = cursor.fetchone()
+        if not user:
+            cursor
 # # Create your views here.
 # def add(request):
 #     """Shows the main page"""
@@ -437,6 +446,7 @@ def profile_view(request, type, id):
             cursor.execute("SELECT focus \
                             FROM gymfocus \
                             WHERE gym_email = '" + email + "'")
+            focuses = cursor.fetchall()
         return render(request, 'profile/gym.html', {'name': profile_info[1],
                                 'address': profile_info[3],
                                 'upper_price_range': profile_info[4],
@@ -445,4 +455,7 @@ def profile_view(request, type, id):
                                 'level': profile_info[7],
                                 'region': profile_info[8],
                                 'gym_members': gym_members,
-                                'email': email })
+                                'email': email,
+                                'focus1': focuses[0][0],
+                                'focus2': focuses[1][0],
+                                'focus3': focuses[2][0]})
