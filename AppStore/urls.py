@@ -26,7 +26,7 @@ urlpatterns = [
     # path('view/<str:id>', view, name='view'),
     # path('edit/<str:id>', edit, name='edit'),
     path('', home,name='home'),
-    path('registe/', register_view, name='register'),
+    path('register/', register_view, name='register'),
     path('registration_request/', register_request, name='registration_request'),
     path('search/', search_view),
     path('search_request/', search_request, name='search_request'),
