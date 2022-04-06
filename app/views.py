@@ -111,20 +111,24 @@ def register_request(request):
             user = cursor.fetchone()
             type = request.POST['type']
             if user == None:
-                cursor.execute("INSERT INTO login VALUES (%s, %s, %s)", [request.POST['email'], request.POST['password'], type])
+                cursor.execute("INSERT INTO login VALUES \
+                    (%s, %s, %s)", [request.POST['email'], request.POST['password'], type])
                 if (type == 'member'):
-                    cursor.execute("INSERT INTO member VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute("INSERT INTO member (email,first_name,last_name,gender,level,preferred_gym_location,budget,focus1,focus2,focus3) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['email'], request.POST['first_name'], request.POST['last_name'], 
                             request.POST['gender'], request.POST['level'], request.POST['preferred_gym_location'],
                             request.POST['budget'], request.POST['focus1'], request.POST['focus2'], request.POST['focus3'] ])
                 elif (type == 'trainer'):
-                    cursor.execute("INSERT INTO trainer VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute("INSERT INTO trainer (email, first_name, last_name, gender, upper_price_range, lower_price_range,experience,focus1,focus2,focus3,level) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['email'], request.POST['first_name'], request.POST['last_name'],
                             request.POST['gender'], request.POST['upper_price_range'], request.POST['lower_price_range'],
                             request.POST['experience'], request.POST['focus1'], request.POST['focus2'], request.POST['focus3'],
                             request.POST['level']])
                 elif (type == 'gym'):
-                    cursor.execute("INSERT INTO gym VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    cursor.execute("INSERT INTO gym (name, email, address, upper_price_range, lower_price_range, capacity, level, region) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['name'], request.POST['email'], request.POST['address'],
                             request.POST['upper_price_range'], request.POST['lower_price_range'], request.POST['capacity'],
                             request.POST['level'], request.POST['region']])
@@ -151,6 +155,7 @@ def search_request(request):
         focus1 = request.POST.get('foc1',False)
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
+        budget = request.POST.get('budget',False)
         gymaction = "SELECT DISTINCT g.name, g.email \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
@@ -164,12 +169,17 @@ def search_request(request):
                     gymaction += " AND g.region = '" + location + "'"
                 if level != "":
                     gymaction += " AND g.level = '" + level + "'"
+                if budget != "":
+                    gymaction += " AND g.lower_price_range <= " + budget
+                    gymaction += " AND " + budget + " <= g.upper_price_range"
                 if focus1 != "":
                     gymaction += " AND f.focus = '" + focus1 + "'"
                 if focus2 != "":
                     gymaction += " AND f.focus = '" + focus2 + "'"
                 if focus3 != "":
                     gymaction += " AND f.focus = '" + focus3 + "'"
+                if (focus1 != "") or (focus2 != "") or (focus3 != ""):
+                    gymaction += " AND g.email = f.gym_email" 
                 cursor.execute(gymaction)
                 gym_rows = cursor.fetchall()
                 return render(request, 'search/search.html', 
@@ -183,6 +193,9 @@ def search_request(request):
                     traineraction += "AND t.gender = '" + gender + "'"
                 if level != "":
                     traineraction += "AND t.level = '" + level + "'"
+                if budget != "":
+                    traineraction += " AND t.lower_price_range <= " + budget 
+                    traineraction += " AND " + budget + " <= t.upper_price_range"
                 if focus1 != "":
                     traineraction += "AND f.focus = '" + focus1 + "'"
                 if focus2 != "":
@@ -259,26 +272,21 @@ def get(email,type):
 def recommends_view(request, member_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM member WHERE id = " + member_id)
-    member = cursor.fetchone()
+        member = cursor.fetchone()
+    name = member[2]
     email = member[1]
     level = member[5]
     region = member[6]
-    budget = member[7]
-    focus = [member[8:11]]
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM member_trainer WHERE member_email = %s" , email)  
-    trainers = cursor.fetchall()
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM member_gym WHERE member_email = %s", email)
-    gyms = cursor.fetchall()
+    budget = str(member[7])
+    focus = member[8:11]
         # tuple contains:
         # id, email, first_name, last_name, gender, level, preferred_gym_location, budget, focus1, focus2, focus3
         # look up gyms and trainers with above info
     with connection.cursor() as cursor:
         cursor.execute("SELECT * \
                         FROM gym g\
-                        WHERE g.region = " + region +
-                        "AND " + budget + " BETWEEN g.lower_price_range AND g.upper_price_range \
+                        WHERE g.region = '" + region +
+                        "' AND " + budget + " BETWEEN g.lower_price_range AND g.upper_price_range \
                             AND ( '" + focus[0] + "' IN (SELECT focus \
                                                 FROM gymfocus gf \
                                                 WHERE gf.gym_email = g.email) \
@@ -288,21 +296,24 @@ def recommends_view(request, member_id):
                             OR '" + focus[2] + "' IN (SELECT focus \
                                                 FROM gymfocus gf2 \
                                                 WHERE gf2.gym_email = g.email))")
+                                            
         reco_gyms = cursor.fetchall()
     with connection.cursor() as cursor:
         cursor.execute("SELECT * \
-                        FROM trainer t \
-                        WHERE " + budget + " BETWEEN t.lower_price_range AND t.upper_price_range \
-                            AND '" + level + "' = t.level \
-                                AND ('" + focus[0] + "' =ANY(t.focus1, t.focus2, t.focus3) \
-                                    OR '" + focus[1] + "' =ANY(t.focus1, t.focus2, t.focus3) \
-                                    OR '" + focus[2] + "' =ANY(t.focus1, t.focus2, t.focus3))")
+                        FROM trainer \
+                        WHERE " + budget + " BETWEEN lower_price_range AND upper_price_range \
+                            AND '" + level + "' = level \
+                                AND ('" + focus[0] + "' IN (focus1, focus2, focus3) \
+                                    OR '" + focus[1] + "' IN (focus1, focus2, focus3) \
+                                    OR '" + focus[2] + "' IN (focus1, focus2, focus3))")
+
         reco_trainers = cursor.fetchall()
     with connection.cursor() as cursor:
         cursor.execute("SELECT m.first_name, m.last_name \
                         FROM member m \
-                        WHERE m.preferred_gym_location = " + region + 
-                        "AND m.email in (SELECT mt.member_email \
+                        WHERE m.preferred_gym_location = '" + region + 
+                    "' AND m.id != " + member_id + " \
+                        AND m.email in (SELECT mt.member_email \
                                             FROM member_trainer mt \
                                             WHERE mt.member_email = '" + email +  
                                             "' AND mt.trainer_email in (SELECT mt1.trainer_email \
@@ -312,14 +323,68 @@ def recommends_view(request, member_id):
                                         SELECT mg.member_email \
                                             FROM member_gym mg \
                                             WHERE mg.member_email = '" + email + 
-                                            "' AND mg.gym_email in (SELECT mg1.trainer_email \
+                                            "' AND mg.gym_email in (SELECT mg1.gym_email \
                                                                         FROM member_gym mg1 \
-                                                                        WHERE m.email = mg1.member_email)")
-        reco_members = cursor.fetchall()
-        
-                            
+                                                                        WHERE m.email = mg1.member_email))")
+        reco_members = cursor.fetchall()                            
+    return render(request, 'recommendations/recos.html', {'name': name,
+                                'reco_gyms': reco_gyms,
+                                'reco_trainers': reco_trainers,
+                                'reco_members': reco_members})
 
+def rating(request):
+    #TODO: add case for insert rating for gyms, need to edit rating.html as well
+    if request.POST:
+        rate = request.POST.get('rating',False)
+        member_email = request.POST.get('memberemail',False)
+        type = request.POST.get('type',False)
+        if type == 'trainer':
+            trainer_email = request.POST.get('traineremail',False)
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM trainer_ratings \
+                                WHERE trainer_email = '" + trainer_email + "'")
+                in_trainer_rating = cursor.fetchone()
+            if in_trainer_rating:
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE member_trainer SET trainer_rating = " + rate + " WHERE member_email = '" + member_email + "' AND trainer_email = '" + trainer_email + "'")
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT * FROM trainer_ratings where trainer_email = '" + trainer_email + "'")
+                    rating = cursor.fetchone()
+                    return render(request,'ratings/rating.html',{'rating': rating })
+            else:
+                with connection.cursor() as cursor:
+                    cursor.execute("INSERT INTO member_trainer (member_email,trainer_email,trainer_rating) VALUES ('" + member_email + "','"+trainer_email+"',"+rate+")")
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT * from trainer_ratings where trainer_email = '" + trainer_email + "'")
+                    rating = cursor.fetchone()
+                    return render(request,'ratings/rating.html',{'rating':rating})
+        if type == 'gym':
+            gym_email = request.POST.get('gymemail',False)
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM gym_ratings \
+                            WHERE gym_email = '" + gym_email + "'")
+                in_gym_rating = cursor.fetchone()
+            if in_gym_rating:
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE member_gym SET gym_rating = " + rate + " WHERE member_email = '" + member_email + "' AND gym_email = '" + gym_email + "'")
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT * FROM gym_ratings where gym_email = '" + gym_email + "'")
+                    rating = cursor.fetchone()
+                    return render(request,'ratings/rating.html',{'rating': rating })
+            else:
+                with connection.cursor() as cursor:
+                    cursor.execute("INSERT INTO member_gym (member_email,gym_email,gym_rating) VALUES ('" + member_email + "','"+gym_email+"',"+rate+")")
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT * from gym_ratings where gym_email = '" + gym_email + "'")
+                    rating = cursor.fetchone()
+                    return render(request,'ratings/rating.html',{'rating':rating})
+    else:
+        return render(request,'ratings/rating.html',{})
+
+def browse(request):
     pass
+
+
 
 def logged_home(request, member_id):
     pass
