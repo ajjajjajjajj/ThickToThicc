@@ -143,7 +143,7 @@ def register_request(request):
 
 
 def search_view(request):
-    return render(request, 'search/search.html')
+    return render(request, 'search/search_base.html')
 
 def search_request(request):
     if request.POST['search']:
