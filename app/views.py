@@ -408,7 +408,7 @@ def profile_view(request, type, id):
                             WHERE m.email IN (SELECT mt.member_email \
                                                 FROM member_trainer mt \
                                                 WHERE mt.trainer_email = '" + email + "'")
-            trainer_members = cursor.fetchall()'
+            trainer_members = cursor.fetchall()
         return render(request, {'name': profile_info[2] + ' ' + profile_info[3],
                                 'gender': profile_info[4],
                                 'upper_price_range': profile_info[5],
