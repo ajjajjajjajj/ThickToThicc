@@ -16,8 +16,8 @@
             <td> {{ i.1 }} </td>
             <td> {{ i.2 }} </td>
             <td>
-                <a href="edit/{{i.0}}"><button>Edit</button></a> | 
-                <a href="delete/{{i.0}}"><button>Delete</button></a>
+                <a href="edit/{{i.2}}/{{i.0}}"><button>Edit</button></a> | 
+                <a href="delete/{{i.2}}/{{i.0}}"><button>Delete</button></a>
                 | 
                 <form method="POST" style="display: inline;">
                 {% csrf_token %}
