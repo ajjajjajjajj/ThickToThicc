@@ -115,27 +115,34 @@ BEGIN
 	IF NEW.trainer_rating ISNULL THEN
 		RAISE NOTICE'Rating is null';
 	ELSE
-		SELECT COUNT(mt.trainer_rating), SUM(mt.trainer_rating)
+		SELECT COUNT(DISTINCT mt.member_email), SUM(mt.trainer_rating)
 		INTO num, sum1
 		FROM member_trainer mt
-		WHERE mt.trainer_email = NEW.trainer_email;
+		WHERE mt.trainer_email = NEW.trainer_email
+		GROUP BY mt.trainer_email;
 		
 	-- if trainer rating was null
 		IF num = 0 THEN
 			UPDATE trainer_ratings
         	SET rating = NEW.trainer_rating
        		WHERE trainer_email = NEW.trainer_email;
+		ELSIF (TG_OP = 'UPDATE') THEN
+	-- trainer email and new rating not null, existing relation
+			UPDATE trainer_ratings
+        	SET rating = ROUND((sum1 - OLD.trainer_rating + NEW.trainer_rating)/num,2)
+        	WHERE trainer_email = NEW.trainer_email;
 		ELSE
-	-- if trainer rating and new rating not null
+	-- if trainer rating and new rating not null, insert new relation
         	UPDATE trainer_ratings
         	SET rating = ROUND(( sum1 + NEW.trainer_rating)/(num+1),2)
         	WHERE trainer_email = NEW.trainer_email;
 		END IF;
-    	END IF;
+    END IF;
 
     RETURN NEW;
 END;
 $$;
+
 
 
 -- TRAINER trigger
@@ -183,19 +190,23 @@ BEGIN
     IF NEW.gym_rating ISNULL THEN
 		RAISE NOTICE'Rating is null';
 	ELSE
-		
-		SELECT COUNT(mg.gym_rating), SUM(mg.gym_rating)
+		SELECT COUNT(DISTINCT mg.member_email), SUM(mg.gym_rating)
 		INTO num, sum1
 		FROM member_gym mg
-		WHERE mg.gym_email = NEW.gym_email;
+		WHERE mg.gym_email = NEW.gym_email
+		GROUP BY gym_email;
 		
 	-- if trainer rating is null
 		IF num = 0 THEN
 			UPDATE gym_ratings
         	SET rating = NEW.gym_rating
        		WHERE gym_email = NEW.gym_email;
-		ELSE
+		ELSIF (TG_OP = 'UPDATE') THEN
+			UPDATE gym_ratings
+        	SET rating = ROUND((sum1 - OLD.gym_rating + NEW.gym_rating)/num,2)
+        	WHERE gym_email = NEW.gym_email;
 	-- if trainer rating and new rating not null
+		ELSE
         	UPDATE gym_ratings
         	SET rating = ROUND((sum1+ NEW.gym_rating)/(num+1),2)
         	WHERE gym_email = NEW.gym_email;
@@ -210,3 +221,33 @@ BEFORE UPDATE OR INSERT
 ON member_gym
 FOR EACH ROW
 EXECUTE PROCEDURE gym_ratings();
+
+select * from member_gym
+select * from member_gym where gym_email = 'omg@omgyoga.sg'
+
+UPDATE member_gym SET gym_rating = 2 WHERE gym_email = 'omg@omgyoga.sg' AND member_email = 'apirolinio@google.ru'
+
+DELETE FROM trainer
+DELETE FROM member_trainer
+DELETE FROM trainer_ratings
+
+select * from member_gym
+where gym_email = 'omg@omgyoga.sg'
+
+select * from gym_ratings
+where gym_email = 'omg@omgyoga.sg'
+
+select * from member_trainer
+select * from member_trainer where trainer_email = 'tdunsfordd6@cpanel.net'
+
+UPDATE member_trainer SET trainer_rating = 2 WHERE trainer_email = 'tdunsfordd6@cpanel.net' AND member_email = 'gedesoncd@webs.com'
+
+DELETE FROM trainer
+DELETE FROM member_trainer
+DELETE FROM trainer_ratings
+
+select * from member_trainer
+where trainer_email = 'tdunsfordd6@cpanel.net'
+
+select * from trainer_ratings
+where trainer_email = 'tdunsfordd6@cpanel.net'
