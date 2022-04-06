@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 # # Create your views here.
@@ -134,7 +134,7 @@ def register_request(request):
                         , [request.POST['name'], request.POST['email'], request.POST['address'],
                             request.POST['upper_price_range'], request.POST['lower_price_range'], request.POST['capacity'],
                             request.POST['level'], request.POST['region']])
-                return render(request,"registration/reg_submit.html", context)
+                return HttpResponseRedirect("registration/reg_submit.html", context)
             else:
                 status = '%s with email %s already exists' % (type, request.POST['email'])
                 context['status'] = status
