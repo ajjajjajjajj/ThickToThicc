@@ -399,7 +399,7 @@ def profile_view(request, type, id):
                                 'focus1': profile_info[8],
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
-                                'gyms': member_gyms,
+                                'member_gyms': member_gyms,
                                 'email': email })
     elif type == 'trainer':
         email = profile_info[1]
@@ -418,7 +418,7 @@ def profile_view(request, type, id):
                                 'focus1': profile_info[8],
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
-                                'members': trainer_members,
+                                'trainer_members': trainer_members,
                                 'email': email })
     elif type == 'gym':
         email = profile_info[2]
