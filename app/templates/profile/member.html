@@ -12,11 +12,13 @@ Region: {{ region }} <br>
 
 Training level: {{ level }} <br>
 
+<h2> <a href="../../../recommends/{{ id }}/"> View recommendations for this member </a></h2>
+
 <h3> Trains at </h3>
 <ul> 
     {% for g in member_gyms %}
     <li>
-        {{ g }}
+        <a href="../../gym/{{ g.0 }}"> {{ g.1 }}</a>
     </li>
     {% endfor %}
 </ul>

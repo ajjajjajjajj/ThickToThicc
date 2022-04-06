@@ -9,9 +9,9 @@
         <h3>Here are the gyms that fit your needs!</h3>
         <div>
             <ul>
-            {% for row in reco_gyms%}
+            {% for g in reco_gyms%}
                 <li>
-                    {{row}}
+                    <a href="../profile/gym/{{ g.0 }}"> {{ g.1 }}</a>
                 </li>
             {% endfor %}
             </ul>
@@ -23,9 +23,9 @@
     <div>
         <h3>We have some trainers you might be interested in!</h3>
         <ul>
-            {% for row in reco_trainers %}
+            {% for t in reco_trainers %}
                 <li>
-                    {{row}}
+                    <a href="../../../profile/trainer/{{ t.0 }}"> {{ t.2|add:t.3 }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -35,9 +35,9 @@
     <div>
         <h3>As a bonus, here's some people in your region and visit the same gyms or trainers as you!</h3>
         <ul>
-            {% for row in reco_members %}
+            {% for m in reco_members %}
                 <li>
-                    {{row}}
+                    <a href="../../../profile/member/{{ m.0 }}"> {{ m.2|add:m.3 }}</a>
                 </li>
             {% endfor %}
         </ul>

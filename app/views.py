@@ -158,10 +158,10 @@ def search_request(request):
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
         budget = request.POST.get('budget',False)
-        gymaction = "SELECT DISTINCT g.name, g.email \
+        gymaction = "SELECT DISTINCT * \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
-        traineraction = "SELECT DISTINCT t.first_name, t.last_name, t.email \
+        traineraction = "SELECT DISTINCT * \
                 FROM trainer t, focus f \
                 WHERE first_name LIKE '%%" + string + "%%' \
                     OR last_name LIKE '%%" + string + "%%'"
@@ -242,10 +242,8 @@ def login_request(request):
     return render(request, "registration/login.html", context)
 
 def loggedhome(request, type, myid):
-    a = type
-    b = myid
-    return HttpResponse("hi")
-
+    
+    return redirect('profile_view', request, type, myid)
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
@@ -372,8 +370,6 @@ def browse(request):
 
 
 
-def logged_home(request, member_id):
-    pass
 
 def profile_view(request, type, id):
     with connection.cursor() as cursor:
@@ -399,8 +395,9 @@ def profile_view(request, type, id):
                                 'focus1': profile_info[8],
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
-                                'gyms': member_gyms,
-                                'email': email })
+                                'member_gyms': member_gyms,
+                                'email': email,
+                                'id': profile_info[0]})
     elif type == 'trainer':
         email = profile_info[1]
         with connection.cursor() as cursor:
@@ -418,7 +415,7 @@ def profile_view(request, type, id):
                                 'focus1': profile_info[8],
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
-                                'members': trainer_members,
+                                'trainer_members': trainer_members,
                                 'email': email })
     elif type == 'gym':
         email = profile_info[2]
