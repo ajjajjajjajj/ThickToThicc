@@ -16,9 +16,9 @@ Region: {{ region }} <br>
 
 <h3> Trainees </h3>
 <ul> 
-    {% for g in trainer_members %}
+    {% for m in trainer_members %}
     <li>
-        {{ g }}
+        <a href="../profile/gym/{{m.0}}"> {{ m.2|add:m.3 }}</a>
     </li>
     {% endfor %}
 </ul>
