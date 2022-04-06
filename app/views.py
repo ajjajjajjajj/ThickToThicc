@@ -241,7 +241,7 @@ def login_request(request):
                 return redirect('loggedhome', type = type, myid = myid, permanent = True)
     return render(request, "registration/login.html", context)
 
-def logged_home(request, type, id):
+def logged_home(request, type, myid):
     return HttpResponse("hi")
 
 
