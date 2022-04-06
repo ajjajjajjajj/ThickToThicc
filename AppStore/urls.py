@@ -26,13 +26,13 @@ urlpatterns = [
     # path('view/<str:id>', view, name='view'),
     # path('edit/<str:id>', edit, name='edit'),
     path('', home,name='home'),
-    path('register', register_view, name='register'),
-    path('registration_request', register_request, name='registration_request'),
-    path('search', search_view),
-    path('search_request', search_request, name='search_request'),
+    path('registe/', register_view, name='register'),
+    path('registration_request/', register_request, name='registration_request'),
+    path('search/', search_view),
+    path('search_request/', search_request, name='search_request'),
     path('login/',login_request,name='login'),
-    path('<str:type><int:id>', logged_home, name = 'loggedhome'),
+    path('<str:type>-<str:id>/', logged_home, name = 'loggedhome'),
     path('recommends/<str:member_id>/', recommends_view, name='recommends'),
-    path('rating',rating,name='rating'),
-    path('browse',browse,name='browse')
+    path('rating/',rating,name='rating'),
+    path('browse/',browse,name='browse')
 ]
