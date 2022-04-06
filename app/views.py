@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
 
+
 # # Create your views here.
 # def index(request):
 #     """Shows the main page"""
@@ -236,8 +237,7 @@ def login_request(request):
                 type = request.POST['type']
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
                 id = cursor.fetchone()
-                return HttpResponse(id)
-                #return redirect('loggedhome', type = type, id = id, permanent = True )
+                return redirect('loggedhome', type = type, id = id, permanent = True )
     return render(request, "registration/login.html", context)
 
 
@@ -252,8 +252,6 @@ def logged_home(request, type, id):
     #    return HttpResponse("You're logged in.")
     # else:
     #     return HttpResponse("Your username and password didn't match.")
-
-    return render(request, "registration/login.html", context)
 
 def recommends_view(request, member_id):
     with connection.cursor() as cursor:
