@@ -35,5 +35,5 @@ urlpatterns = [
     path('recommends/<str:member_id>/', recommends_view, name='recommends'),
     path('rating/',rating,name='rating'),
     path('browse/',browse,name='browse'),
-    path('profile/<str:type><str:id>/', profile_view, name = 'profile_view'),
+    path('profile/<str:type>/<str:id>/', profile_view, name = 'profile_view'),
 ]
