@@ -140,7 +140,7 @@ def register_request(request):
                         , [request.POST['name'], request.POST['email'], request.POST['address'],
                             request.POST['upper_price_range'], request.POST['lower_price_range'], request.POST['capacity'],
                             request.POST['level'], request.POST['region']])
-                return HttpResponseRedirect("registration/reg_submit.html", context)
+                return render(request, "registration/reg_submit.html", context)
             else:
                 status = '%s with email %s already exists' % (type, request.POST['email'])
                 context['status'] = status
