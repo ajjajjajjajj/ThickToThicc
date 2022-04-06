@@ -243,7 +243,7 @@ def login_request(request):
 
 def loggedhome(request, type, myid):
     
-    return redirect('profile_view', request, type, myid)
+    return redirect('profile_view', type, myid)
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
