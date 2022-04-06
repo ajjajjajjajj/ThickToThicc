@@ -234,30 +234,15 @@ def login_request(request):
                 return render(request,"registration/login.html",context)
             else:
                 type = request.POST['type']
-<<<<<<< HEAD
                 cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [request.POST['email']])
                 id = cursor.fetchone()
                 return redirect('loggedhome', type = type, id = id, permanent = True )
     return render(request, "registration/login.html", context)
 
-def logged_home(request,type,id):
-    return HttpResponse('hi')
-=======
-                cursor.execute("SELECT first_name FROM " + type + " WHERE email = %s", [request.POST['email']])
-                fnmatch = cursor.fetchone()
-                #email = request.POST['email']
-                return redirect('loggedhome', fname = fname, permanent = True )
-    return render(request, "registration/login.html", context)
 
+def logged_home(request, id, type):
+    return HttpResponse("hi")
 
-def get(email,type):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT id FROM " + type + " WHERE email = %s", [email])
-        curid = cursor.fetchone()
-
-    return curid
-
-## CANNOT FIND ID SMH AND NEED REVERSE URL
 
     # context["status"] = status 
     # m = Login.objects.get(username=request.POST['email'])
@@ -388,4 +373,3 @@ def browse(request):
 
 def logged_home(request, member_id):
     pass
->>>>>>> 4e774c01616ab12bc4bff40f4ccd5e38a84e4cc1
