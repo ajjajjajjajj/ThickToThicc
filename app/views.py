@@ -244,7 +244,7 @@ def login_request(request):
 def loggedhome(request, type, myid):
     a = type
     b = myid
-    return HttpResponse("hi")
+    return redirect('profile/' + type + '/id')
 
 
     # context["status"] = status 
@@ -372,8 +372,6 @@ def browse(request):
 
 
 
-def logged_home(request, member_id):
-    pass
 
 def profile_view(request, type, id):
     with connection.cursor() as cursor:
