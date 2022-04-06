@@ -1,0 +1,33 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+Specialises in: {{ focus1 }}, {{ focus2 }}, {{ focus3 }} <br>
+
+Lower Price Range: {{ lower_price_range }} <br>
+
+Upper Price Range: {{ upper_price_range }} <br>
+
+Capacity: {{ capacity }} <br>
+
+Suitable for: {{ level }} level <br>
+
+Region: {{ region }} <br>
+
+<h3> Members in this gym </h3>
+<ul> 
+    {% for m in gym_members %}
+    <li>
+        {{ m }}
+    </li>
+    {% endfor %}
+</ul>
+
+
+<h3> Address </h3>
+{{ address }}
+<h3> Contact </h3>
+{{ email }}
+
+
+{% endblock %}

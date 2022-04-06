@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+Gender: {{ gender }} <br> 
+
+Preferred training styles: {{ focus1 }}, {{ focus2 }}, {{ focus3 }} <br>
+
+Budget: {{ budget }} <br>
+
+Region: {{ region }} <br>
+
+Training level: {{ level }} <br>
+
+<h3> Trains at </h3>
+<ul> 
+    {% for g in member_gyms %}
+    <li>
+        {{ g }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h3> Contact </h3>
+{{ email }}
+
+
+{% endblock %}

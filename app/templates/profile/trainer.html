@@ -1,0 +1,32 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+Gender: {{ gender }} <br> 
+
+Specialises in training: {{ focus1 }}, {{ focus2 }}, {{ focus3 }} <br>
+
+Training level: {{ level }} <br>
+Experience (in number of months): {{ experience }} <br>
+
+Lower Price Range: {{ lower_price_range }} <br>
+
+Upper Price Range: {{ upper_price_range }} <br>
+Region: {{ region }} <br>
+
+<h3> Trainees </h3>
+<ul> 
+    {% for g in trainer_members %}
+    <li>
+        {{ g }}
+    </li>
+    {% endfor %}
+</ul>
+
+
+<h3> Contact </h3>
+{{ email }}
+
+
+
+{% endblock %}
