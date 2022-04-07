@@ -25,20 +25,20 @@ def admin_edit_req(request):
         if type == 'gym':
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM gym WHERE email = %s", 
-                [request.POST['email'], request.POST['type']])
+                [request.POST['email']])
                 gym = cursor.fetchone()
             return render(request,'app/gym_edit.html', {'gym': gym })
         elif type == 'member':
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM member WHERE email = %s", 
-                [request.POST['email'], request.POST['type']])
+                [request.POST['email']])
                 member = cursor.fetchone()
 
             return render(request, 'app/member_edit.html', {'member': member })
         elif type == 'trainer':
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM trainer WHERE email = %s", 
-                [request.POST['email'], request.POST['type']])
+                [request.POST['email']])
                 trainer = cursor.fetchone()
 
             return render(request, 'app/trainer_edit.html', {'trainer': trainer })
