@@ -1,4 +1,4 @@
-INSERT INTO members (email,first_name,last_name,gender,level,preferred_gym_location,budget,focus1,focus2,focus3) VALUES
+INSERT INTO member (email,first_name,last_name,gender,level,preferred_gym_location,budget,focus1,focus2,focus3) VALUES
     ('knortham0@weather.com','Kim','Northam','F','Beginner','North',52,'Running','Crossfit','Pilates'),
     ('rreynolds1@wordpress.com','Robbert','Reynolds','M','Advanced','North',100,'Martial Arts','Pilates','Powerlifting'),
     ('sreinger2@techcrunch.com','Stern','Reinger','M','Advanced','South',99,'Running','Spin','Calisthenics'),
