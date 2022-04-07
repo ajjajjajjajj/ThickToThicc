@@ -17,13 +17,13 @@
             <td> {{ i.1 }} </td>
             <td> {{ i.2 }} </td>
             <td>
-                <form action="edit/" method="POST">
+                <form action="../edit/" method="POST">
                     <input type="hidden" name="type" value={{i.2}}/>
                     <input type="hidden" name="email" value={{i.0}}/>
                     <button type="submit">Edit</button> 
                 </form>
 
-                <form action="delete/" method="POST">
+                <form action="../delete/" method="POST">
                     <input type="hidden" name="type" value={{i.2}}/>
                     <input type="hidden" name="email" value={{i.0}}/>
                     <button onclick="return confirm('Are you sure you want to delete {{i.0}}?');" type="submit">Delete</button> 
