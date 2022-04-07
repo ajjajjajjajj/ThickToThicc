@@ -1,0 +1,181 @@
+{% extends './base_edit.html' %}
+
+{% block content %}
+
+    <h2>Edit {{member.2}} {{member.3}}</h2>
+
+    <p style="color:red">{{status | safe}}</p>
+
+    <form method="POST" action="edit/">
+
+        {% csrf_token %}
+
+        <div id="div_id_email" class="control-group">
+            <label for="id_email" class="control-label requiredField">
+                Email
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="text" name="email" value="{{member.1}}" maxlength="64" class="textinput textInput" required="" id="id_email">
+        </div>
+        </div>
+
+        <div id="div_id_first_name" class="control-group">
+            <label for="id_first_name" class="control-label requiredField">
+                First Name
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="text" name="first_name" value="{{member.2}}" maxlength="64" class="textinput textInput" required="" id="id_first_name">
+        </div>
+        </div>
+
+        <div id="div_id_last_name" class="control-group">
+            <label for="id_last_name" class="control-label requiredField">
+                Last Name
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="text" name="last_name" value="{{member.3}}" maxlength="64" class="textinput textInput" required="" id="id_last_name">
+        </div>
+        </div>
+
+        <div id="div_id_gender" class="control-group">
+            <label for="id_gender" class="control-label requiredField">
+                Gender<span class="asteriskField">*</span>
+            </label><div class="controls">
+            <select name="gender" id="id_gender">
+                <option value="{{member.4}}">{{member.4}}</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+
+        <div class="control-group" id="div_id_level">
+            <label for="id_level" class="control-label requiredField">
+                Fitness Level<span class="asteriskField">*</span>
+            </label><div class="controls">
+            <select name="level" id="id_level">
+                <option value="{{member.5}}">{{member.5}}</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+        </div>
+        </div>
+
+        <div class="control-group" id="div_id_location">
+            <label for id="id_location" class="control-label requiredField">
+                Preferred Gym Location<span class="asteriskField">*</span>
+            </label><div class="controls">
+            <select name="location" id="location">
+                <option value="{{member.6}}">{{member.6}}</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="Central">Central</option>
+            </select>
+        </div>
+
+        <div id="div_id_budget" class="control-group">
+            <label for="id_budget" class="control-label requiredField">
+                Budget
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="number" name="budget" value="{{member.7}}" class="numberinput numberInput" required="" id="id_budget">
+        </div>
+        </div>
+
+        <div id="div_id_focus1" class="control-group">
+            <label for="id_focus1" class="control-label requiredField">
+                Focus 1
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <select name="focus1" id="id_focus1">
+                <option value="{{member.9}}">{{member.9}}</option>
+                <option value="Calisthenics">Calisthenics</option>
+                <option value="Crossfit">Crossfit</option>
+                <option value="Martial Arts">Martial Arts</option>
+                <option value="Physiotherapy">Physiotherapy</option>
+                <option value="Pilates">Pilates</option>
+                <option value="Powerlifting">Powerlifting</option>
+                <option value="Weightlifting">Weightlifting</option>
+                <option value="Running">Running</option>
+                <option value="Spin">Spin</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+        </div>
+        </div>
+
+        <div id="div_id_focus2" class="control-group">
+            <label for="id_focus2" class="control-label requiredField">
+                Focus 2
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <select name="focus2" id="id_focus2">
+                <option value="{{member.10}}">{{member.10}}</option>
+                <option value="Calisthenics">Calisthenics</option>
+                <option value="Crossfit">Crossfit</option>
+                <option value="Martial Arts">Martial Arts</option>
+                <option value="Physiotherapy">Physiotherapy</option>
+                <option value="Pilates">Pilates</option>
+                <option value="Powerlifting">Powerlifting</option>
+                <option value="Weightlifting">Weightlifting</option>
+                <option value="Running">Running</option>
+                <option value="Spin">Spin</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+        </div>
+        </div>
+
+        <div id="div_id_focus3" class="control-group">
+            <label for="id_focus3" class="control-label requiredField">
+                Focus 3
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <select name="focus3" id="id_focus3">
+                <option value="{{member.11}}">{{member.11}}</option>
+                <option value="Calisthenics">Calisthenics</option>
+                <option value="Crossfit">Crossfit</option>
+                <option value="Martial Arts">Martial Arts</option>
+                <option value="Physiotherapy">Physiotherapy</option>
+                <option value="Pilates">Pilates</option>
+                <option value="Powerlifting">Powerlifting</option>
+                <option value="Weightlifting">Weightlifting</option>
+                <option value="Running">Running</option>
+                <option value="Spin">Spin</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+        </div>
+        </div>
+
+        <br>
+        <button type="submit" value="Update">Update</button>
+    </form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
