@@ -1,0 +1,104 @@
+{% extends './base_edit.html' %}
+
+{% block content %}
+
+    <h2>Edit {{ gym.1 }}</h2>
+
+    <p style="color:red">{{ status | safe }}</p>
+
+    <form method="POST" action="edit/">
+
+        {% csrf_token %}
+
+        <div id="div_id_name" class="control-group">
+            <label for="id_name" class="control-label requiredField">
+                Name
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="text" name="name" value="{{gym.1}}" maxlength="64" class="textinput textInput" required="" id="id_first_name">
+        </div>
+        </div>
+
+        <div id="div_id_email" class="control-group">
+            <label for="id_email" class="control-label requiredField">
+                Email
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="text" name="email" value="{{gym.2}}" maxlength="64" class="textinput textInput" required="" id="id_email">
+        </div>
+        </div>
+        
+        <div id="div_id_address" class="control-group">
+            <label for="id_address" class="control-label requiredField">
+                Address
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="text" name="address" value="{{gym.3}}" maxlength="256" class="textinput textInput" required="" id="id_address">
+        </div>
+        </div>
+
+        <div id="div_id_upper_price_range" class="control-group">
+            <label for="id_upper_price_range" class="control-label requiredField">
+                Upper Price Range
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="number" name="upper_price_range" value="{{gym.4}}" class="numberinput numberInput" required="" id="id_upper_price_range">
+        </div>
+        </div>
+
+        <div id="div_id_lower_price_range" class="control-group">
+            <label for="id_lower_price_range" class="control-label requiredField">
+                Lower Price Range
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="number" name="lower_price_range" value="{{gym.5}}" class="numberinput numberInput" required="" id="id_lower_price_range">
+        </div>
+        </div>
+
+        <div id="div_id_capacity" class="control-group">
+            <label for="id_capacity" class="control-label requiredField">
+                Capacity
+            <span class="asteriskField">*</span>
+            </label>
+        <div class="controls">
+            <input type="number" name="capacity" value="{{gym.6}}" class="numberinput numberInput" required="" id="id_capacity">
+        </div>
+        </div>
+
+        <div class="level" id="level">
+            <select name="lvl" id="lvl">
+                <option value="{{gym.7}}">{{gym.7}}</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+        </div>
+
+        <div class="location" id="location">
+            <select name="loc" id="loc">
+                <option value="{{gym.8}}">{{gym.8}}</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="Central">Central</option>
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" value="Update">Update</button>
+    </form>
+    
+
+
+
+
+
+
+
+
