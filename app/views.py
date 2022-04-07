@@ -391,8 +391,6 @@ def rating(request, *args):
     else:
         return render(request,'ratings/rating.html',{})
 
-def browse(request):
-    pass
 
 
 
