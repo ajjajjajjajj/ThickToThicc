@@ -1,4 +1,4 @@
-INSERT INTO login (email,type,password) VALUES
+INSERT INTO login(email,type,password) VALUES
     ('knortham0@weather.com','member','O2cDw2a08S'),
     ('rreynolds1@wordpress.com','member','zDTVM3aDUmk'),
     ('sreinger2@techcrunch.com','member','qaUN54Zirz8'),
@@ -208,8 +208,8 @@ INSERT INTO login (email,type,password) VALUES
     ('pychevron@pureyoga.com','gym','dcqI6bLL'),
     ('pyngeeann@pureyoga.com','gym','NFTKc3'),
     ('rhyyoga@rhyyoga.sg','gym','ZqK57h'),
-    ('sayhello@fitnessfirst.sg','gym','hlT0powK'),
-    ('sayhello@fitnessfirst.sg','gym','SZSr1awenY'),
+    ('ff1rp@ff.sg','gym','ere213w'),
+    ('ffcathay@ff.sg','gym','SZSr1awenY'),
     ('sfhbf@skyfitness.sg','gym','UnSQl0E'),
     ('sfsrggdn@skyfitness.sg','gym','KWO12yct'),
     ('shalayoga@live.com','gym','YmGgF6'),

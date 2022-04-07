@@ -997,4 +997,5 @@ INSERT INTO member_trainer (member_email, trainer_email, trainer_rating) VALUES
     ('pmacguiness3@statcounter.com','cvatcherf@hp.com',1.8),
     ('amclellandj@posterous.com','amacartney1b@imageshack.us',3.2),
     ('dkettel1i@1und1.de','mhaffenden19@apache.org',3.4),
-    ('knortham0@weather.com','dadshedj@harvard.edu',2.3);
+    ('knortham0@weather.com','dadshedj@harvard.edu',2.3),
+    ('sevenettx@scientificamerican.com','lirnys13@bbc.co.uk',3.5);

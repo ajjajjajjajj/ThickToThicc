@@ -6,7 +6,7 @@
 DROP TRIGGER IF EXISTS calc_gym on member_gym;
 DROP TRIGGER IF EXISTS calc_trainer on member_trainer;
 DROP TRIGGER IF EXISTS insert_trainer on trainer;
-DROP TRIGGER IF EXSITS insert_gym on gym;
+DROP TRIGGER IF EXISTS insert_gym on gym;
 DROP FUNCTION IF EXISTS gym_ratings();
 DROP FUNCTION IF EXISTS train_ratings();
 DROP FUNCTION IF EXISTS insert_gym();
