@@ -45,19 +45,27 @@ def admin_edit_req(request):
 
 
 def admin_edit_action(request):
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
-                [request.POST['email'], request.POST['type']])
-            user = cursor.fetchone()
-    
-        with connection.cursor() as cursor:
-            cursor.execute("UPDATE login SET first_name = %s, last_name = %s, email = %s, dob = %s, since = %s, country = %s WHERE customerid = %s"
-                    , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                        request.POST['dob'] , request.POST['since'], request.POST['country'], id ])
-            status = 'Customer edited successfully!'
-            cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-
-            return render(request, 'app/index.html', {'status': 'User details edited successfully'})
+    with connection.cursor() as cursor:
+        type = request.POST['type']
+        if type == 'gym':
+            cursor.execute("UPDATE gym SET name = %s, address = %s, upper_price_range = %s, \
+                lower_price_range = %s, capacity = %s, level = %s, region = %s WHERE email = %s", 
+                [request.POST['name'], request.POST['address'], request.POST['upper_price_range'],
+                request.POST['lower_price_range'],request.POST['capacity'],request.POST['lvl'], request.POST['loc'], request.POST['email']])
+            return render(request, 'app/index.html', {'status': 'Gym details edited successfully'})
+        elif type == 'member':
+            cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, preferred_gym_location = %s, \
+                budget = %s, focus1 = %s, focus2 = %s, focus3 = %s WHERE email = %s",[request.POST['first_name'],request.POST['last_name'],
+                request.POST['gender'], request.POST['level'], request.POST['location'], request.POST['budget'],
+                request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['email']])
+            return render(request, 'app/index.html', {'status': 'Member details edited successfully'})
+        elif type == 'trainer':
+            cursor.execute("UPDATE trainer SET first_name = %s, last_name = %s, gender = %s, upper_price_range = %s, \
+                    lower_price_range = %s, experience = %s, focus1 = %s, focus2 = %s, focus3 = %s, level = %s WHERE email = %s"
+                    , [request.POST['first_name'], request.POST['last_name'], request.POST['gender'],
+                        request.POST['upper_price_range'] , request.POST['lower_price_range'], request.POST['experience'], 
+                        request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['level'],request.POST['email']])
+            return render(request, 'app/index.html', {'status': 'Trainer details edited successfully'})
     
         
 # # Create your views here.
