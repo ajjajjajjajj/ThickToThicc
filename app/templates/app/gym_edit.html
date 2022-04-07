@@ -70,7 +70,10 @@
         </div>
         </div>
 
-        <div class="level" id="level">
+        <div class="control-group" id="div_id_level">
+            <label for="id_level" class="control-label requiredField">
+                Fitness Level<span class="asteriskField">*</span>
+            </label><div class="controls">
             <select name="lvl" id="lvl">
                 <option value="{{gym.7}}">{{gym.7}}</option>
                 <option value="Beginner">Beginner</option>
@@ -79,7 +82,10 @@
             </select>
         </div>
 
-        <div class="location" id="location">
+        <div class="control-group" id="div_id_location">
+            <label for id="id_location" class="control-label requiredField">
+                Preferred Location<span class="asteriskField">*</span>
+            </label><div class="controls">
             <select name="loc" id="loc">
                 <option value="{{gym.8}}">{{gym.8}}</option>
                 <option value="North">North</option>
@@ -93,7 +99,7 @@
         <br>
         <button type="submit" value="Update">Update</button>
     </form>
-    
+
 {% endblock%}
 
 
