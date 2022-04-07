@@ -902,7 +902,7 @@ INSERT INTO member_gym(member_email,gym_email,gym_rating) VALUES
     ('jedwick2r@cyberchimps.com','osyhorse@osy.sg',2.6),
     ('lmackro2m@marketwatch.com','help@absoluteyoga.sg',2.8),
     ('achelam1a@npr.org','jungle@thejungle.sg',2.9),
-    ('jquade2c@usa.gov','caliorchard@califitness.sg',5.7),
+    ('jquade2c@usa.gov','caliorchard@califitness.sg',3.0),
     ('jmunby1q@sphinn.com','bodypilot@live.com',3.6),
     ('gperks21@hhs.gov','bgclubFITT@clubFITT.sg',2.9),
     ('gcleaves1o@tumblr.com','kravsg@kravmaga.sg',3),
