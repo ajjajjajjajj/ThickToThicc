@@ -179,10 +179,10 @@ def search_request(request):
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
         budget = request.POST.get('budget',False)
-        gymaction = "SELECT DISTINCT * \
+        gymaction = "SELECT DISTINCT g.id, g.name, g.email, g.address, g.upper_price_range, g.lower_price_range, g.capacity, g.level, g.region \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
-        traineraction = "SELECT DISTINCT * \
+        traineraction = "SELECT DISTINCT t.id, t.email, t.first_name, t.last_name, t.gender, t.upper_price_range, t.lower_price_range, t.experience, t.focus1, t.focus2, t.focus3, t.level \
                 FROM trainer t, focus f \
                 WHERE first_name LIKE '%%" + string + "%%' \
                     OR last_name LIKE '%%" + string + "%%'"
