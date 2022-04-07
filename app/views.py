@@ -42,7 +42,7 @@ def admin_edit_req(request):
                 trainer = cursor.fetchone()
 
             return render(request, 'app/trainer_edit.html', {'trainer': trainer })
-    return redirect('index/', {'status': 'Edit request failed'})
+    return redirect('../index/', {'status': 'Edit request failed'})
 
 def admin_edit_action(request):
     with connection.cursor() as cursor:
