@@ -11,7 +11,7 @@
             <ul>
             {% for g in reco_gyms%}
                 <li>
-                    <a href="../profile/gym/{{ g.0 }}"> {{ g.1 }}</a>
+                    <a href="../../profile/gym/{{ g.0 }}"> {{ g.1 }}</a>
                 </li>
             {% endfor %}
             </ul>
@@ -25,7 +25,7 @@
         <ul>
             {% for t in reco_trainers %}
                 <li>
-                    <a href="../../../profile/trainer/{{ t.0 }}"> {{ t.2|add:t.3 }}</a>
+                    <a href="../../profile/trainer/{{ t.0 }}"> {{ t.2|add:t.3 }}</a>
                 </li>
             {% endfor %}
         </ul>
