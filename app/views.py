@@ -2,45 +2,49 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect
 
-
-# # Create your views here.
-# def index(request):
-#     """Shows the main page"""
-
-#     ## Delete customer
-#     if request.POST:
-#         if request.POST['action'] == 'delete':
-#             with connection.cursor() as cursor:
-#                 cursor.execute("DELETE FROM customers WHERE customerid = %s", [request.POST['id']])
-
-#     ## Use raw query to get all objects
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM customers ORDER BY customerid")
-#         customers = cursor.fetchall()
-#     result_dict = {'records': customers}
-#     return render(request,'app/index.html',result_dict)
-
-# # Create your views here.
 def admin_index(request):
 
-    ## Use raw query to get a customer
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM login")
         users = cursor.fetchall()
 
     return render(request,'app/index.html',{'users': users})
 
-def admin_delete(request, type, email):
+def admin_delete(request):
     if request.POST:
         with connection.cursor() as cursor:
             cursor.execute("DELETE FROM login WHERE email = %s AND type = %s", 
                 [request.POST['email'], request.POST['type']])
-        return render(request, 'app/view.html', {'status': 'User deleted successfully'})
+        return render(request, 'app/index.html', {'status': 'User deleted successfully'})
     
-    return render(request, 'app/delete.html', {'status': 'Please specify user details - login email and user type'})
+    return render(request, 'app/index.html', {'status': 'Please specify user details - login email and user type'})
 
-def admin_edit(request, type, email):
+def admin_edit_req(request):
     if request.POST:
+        type = request.POST['type']
+        if type == 'gym':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
+                [request.POST['email'], request.POST['type']])
+                gym = cursor.fetchone()
+            return render('gym_edit.html', {'gym': gym })
+        elif type == 'member':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
+                [request.POST['email'], request.POST['type']])
+                member = cursor.fetchone()
+
+            return render('member_edit.html', {'member': member })
+        elif type == 'trainer':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
+                [request.POST['email'], request.POST['type']])
+                trainer = cursor.fetchone()
+
+            return render('trainer_edit.html', {'trainer': trainer })
+
+
+def admin_edit_action(request):
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
                 [request.POST['email'], request.POST['type']])
@@ -52,8 +56,9 @@ def admin_edit(request, type, email):
                         request.POST['dob'] , request.POST['since'], request.POST['country'], id ])
             status = 'Customer edited successfully!'
             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-    else:
-        return render(request, 'app/edit', {'status': 'Please input edits below'})
+
+            return render(request, 'app/index.html', {'status': 'User details edited successfully'})
+    
         
 # # Create your views here.
 # def add(request):
@@ -82,37 +87,6 @@ def admin_edit(request, type, email):
  
 #     return render(request, "app/add.html", context)
 
-# # Create your views here.
-# def edit(request, id):
-#     """Shows the main page"""
-
-#     # dictionary for initial data with
-#     # field names as keys
-#     context ={}
-
-#     # fetch the object related to passed id
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-#         obj = cursor.fetchone()
-
-#     status = ''
-#     # save the data from the form
-
-#     if request.POST:
-#         ##TODO: date validation
-#         with connection.cursor() as cursor:
-#             cursor.execute("UPDATE customers SET first_name = %s, last_name = %s, email = %s, dob = %s, since = %s, country = %s WHERE customerid = %s"
-#                     , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-#                         request.POST['dob'] , request.POST['since'], request.POST['country'], id ])
-#             status = 'Customer edited successfully!'
-#             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-#             obj = cursor.fetchone()
-
-
-#     context["obj"] = obj
-#     context["status"] = status
- 
-#     return render(request, "app/edit.html", context)
 def home(request):
     return render(request,"home/home.html")
 
