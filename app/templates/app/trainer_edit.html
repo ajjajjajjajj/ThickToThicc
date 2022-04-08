@@ -9,6 +9,7 @@
     <form method="POST" action="../edit_submit/">
 
         {% csrf_token %}
+        <input type="hidden" name="type" value="trainer" />
 
         <div id="div_id_email" class="control-group">
             <label for="id_email" class="control-label requiredField">
