@@ -347,8 +347,8 @@ def rating(request, type=None, id=None):
         if type == 'gym':
             gym_email = request.POST['gymemail']
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM gym_ratings \
-                            WHERE gym_email = '" + gym_email + "'")
+                cursor.execute("SELECT * FROM member_gym \
+                            WHERE gym_email = '" + gym_email + "' AND member_email = '" + member_email + "'")
                 in_gym_rating = cursor.fetchone()
             if in_gym_rating:
                 with connection.cursor() as cursor:
@@ -466,3 +466,4 @@ def profile_view(request, type, id):
                 context['focus' + str(i)] = focuses[i][0]
 
         return render(request, 'profile/gym.html', context)
+

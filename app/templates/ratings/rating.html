@@ -59,7 +59,7 @@
                         Trainer's Email<span class="asteriskField">*</span>
                     </label>
                     <div class="controls">
-                        <input value="{% if type == 'trainer' %} {{email}} {% endif %}" type="text" name="traineremail" maxlength="256" class="textinput textInput" required="" id="id_traineremail">
+                        <input value="{% if type == 'trainer' %}{{email}}{% endif %}" type="text" name="traineremail" maxlength="256" class="textinput textInput" required="" id="id_traineremail">
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                         Your Rating<span class="asteriskField">*</span>
                     </label>
                     <div class="controls">
-                        <input type="number" name="rating" min="0" class="numberinput numberInput" required="" id="id_rating">
+                        <input type="number" name="rating" min="0" max="5" class="numberinput numberInput" required="" id="id_rating">
                     </div>
                 </div>
 
@@ -95,7 +95,7 @@
                         Gym's Email<span class="asteriskField">*</span>
                     </label>
                     <div class="controls">
-                        <input type="text" name="gymemail" maxlength="256" class="textinput textInput" required="" id="id_gymemail">
+                        <input value="{% if type == 'gym' %}{{email}}{% endif %}" type="text" name="gymemail" maxlength="256" class="textinput textInput" required="" id="id_gymemail">
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
                         Your Rating<span class="asteriskField">*</span>
                     </label>
                     <div class="controls">
-                        <input type="number" name="rating" min="0" class="numberinput numberInput" required="" id="id_rating">
+                        <input type="number" name="rating" min="0" max="5" class="numberinput numberInput" required="" id="id_rating">
                     </div>
                 </div>
 
