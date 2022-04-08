@@ -327,8 +327,8 @@ def rating(request, *args):
         if type == 'trainer':
             trainer_email = request.POST.get('traineremail',False)
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM trainer_ratings \
-                                WHERE trainer_email = '" + trainer_email + "'")
+                cursor.execute("SELECT * FROM member_trainer \
+                                WHERE trainer_email = '" + trainer_email + "' AND member_email = '" + member_email + "'")
                 in_trainer_rating = cursor.fetchone()
             if in_trainer_rating:
                 with connection.cursor() as cursor:
