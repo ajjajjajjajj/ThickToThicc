@@ -15,9 +15,15 @@ def admin_delete(request):
         with connection.cursor() as cursor:
             cursor.execute("DELETE FROM login WHERE email = %s AND type = %s", 
                 [request.POST['email'], request.POST['type']])
-        return render(request, 'app/index.html', {'status': 'User deleted successfully'})
-    
-    return render(request, 'app/index.html', {'status': 'Please specify user details - login email and user type'})
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM login")
+            users = cursor.fetchall()
+        return render(request, 'app/index.html', {'users': users, 'status': 'User deleted successfully'})
+    else: 
+        with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login")
+                users = cursor.fetchall()
+    return render(request, 'app/index.html', {'users': users, 'status': 'Please specify user details - login email and user type'})
 
 def admin_edit_req(request):
     if request.POST:
