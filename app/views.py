@@ -359,8 +359,11 @@ def rating(request, *args):
     elif len(args) != 0:
         type = args[0]
         id = args[1]
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT email FROM gym WHERE id = " + str(id))
+            email = cursor.fetchone()
         return render(request,'ratings/rating.html', {'type': type,
-                                                        'id': id })
+                                                        'email': email })
     else:
         return render(request,'ratings/rating.html',{})
 
