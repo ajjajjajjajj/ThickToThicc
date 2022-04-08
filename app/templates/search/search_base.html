@@ -36,7 +36,14 @@
         <div class="answer hidden" id="gym">
             <form method="POST" action="/search_request/">
                 {% csrf_token %}
-                <input type="text" name="search">
+
+                <div class="control-group" id="id_search">Name
+                    <div class="controls">
+                        <input type="text" name="search">
+                    </div>
+                </div>
+
+
                 <div class="location" id="location">
                     <select name="loc" id="loc">
                         <option value="">Select Location Preference</option>
