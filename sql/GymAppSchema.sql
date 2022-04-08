@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS login(
-email VARCHAR(256) NOT NULL UNIQUE
+email VARCHAR(256) NOT NULL UNIQUE,
 password VARCHAR(256) NOT NULL,
 type VARCHAR(64) NOT NULL CONSTRAINT type CHECK( type = 'member' OR type = 'trainer' OR type = 'gym'),
 PRIMARY KEY (email,type)
