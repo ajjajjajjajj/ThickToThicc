@@ -25,12 +25,12 @@
         <h2> Want to leave a rating for a gym or a trainer? </h2>
         <h3> Leave it here, along with your email for us to get back to you! </h3>
 
-        <form method="POST" action="rating/">
+        <form method="POST" action="../rating/">
             {% csrf_token %}
             <select name="type" id="type">
                 <option value="">Are you leaving feedback for a gym or a trainer?</option>
-                <option value="gym">Gym</option>
-                <option value="trainer">Trainer</option>
+                <option value="gym" {% if type == 'gym' %} selected {%endif%}>Gym</option>
+                <option value="trainer" {% if type == 'trainer'%} selected {% endif %}>Trainer</option>
             </select>
 
             <div class="answer hidden" id="trainer">
@@ -49,7 +49,7 @@
                         Trainer's Email<span class="asteriskField">*</span>
                     </label>
                     <div class="controls">
-                        <input type="text" name="traineremail" maxlength="256" class="textinput textInput" required="" id="id_traineremail">
+                        <input value="{% if type == 'trainer' %} {{email}} {% endif %}" type="text" name="traineremail" maxlength="256" class="textinput textInput" required="" id="id_traineremail">
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
             </div>
         </form>
 
-        <form method="POST" action="/rating/">
+        <form method="POST" action="../rating/">
             {% csrf_token %}
 
             <div class="answer hidden" id="gym">
