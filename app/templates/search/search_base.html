@@ -133,7 +133,13 @@
         <div class="answer hidden" id="trainer">
             <form method="POST" action="/search_request/">
                 {% csrf_token %}
-                <input type="text" name="search">
+
+                <div class="control-group" id="id_search">Name
+                    <div class="controls">
+                        <input type="text" name="search" required="">
+                    </div>
+                </div>
+
                 <div class="gender" id="gender">
                     <select name="gend" id="gend">
                         <option value="">Select Gender Preference</option>
