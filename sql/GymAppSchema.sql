@@ -97,7 +97,7 @@ PRIMARY KEY (gym_email,focus)
 );
 
 CREATE TABLE trainer_ratings( 
-trainer_email VARCHAR(64) REFERENCES trainer(email),
+trainer_email VARCHAR(64) REFERENCES trainer(email)
 	ON UPDATE CASCADE ON DELETE CASCADE
 	DEFERRABLE INITIALLY DEFERRED,
 rating NUMERIC CONSTRAINT rating CHECK(rating<=5)
