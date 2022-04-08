@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
+        <link href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+        <style type="text/css">
             .hidden {
                 display: none;
+            }
+
+            * {
+                font-family: "Bebas Neue", cursive;
+                font-size: 20px;
+                font-color: black;
+                text-align: center;
+                letter-spacing: 0.1em;
             }
         </style>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -37,7 +48,7 @@
             <form method="POST" action="/search_request/">
                 {% csrf_token %}
 
-                <div class="control-group" id="id_search">Name
+                <div class="control-group" id="id_search">Name:
                     <div class="controls">
                         <input type="text" name="search" required="">
                     </div>
