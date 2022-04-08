@@ -321,11 +321,11 @@ def recommends_view(request, member_id):
 def rating(request, type=None, id=None):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
-        rate = request.POST.get('rating',False)
-        member_email = request.POST.get('memberemail',False)
-        type = request.POST.get('type',False)
+        rate = request.POST['rating']]
+        member_email = request.POST['memberemail']
+        type = request.POST['type']
         if type == 'trainer':
-            trainer_email = request.POST.get('traineremail',False)
+            trainer_email = request.POST['traineremail']
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM trainer_ratings \
                                 WHERE trainer_email = '" + trainer_email + "'")
@@ -345,7 +345,7 @@ def rating(request, type=None, id=None):
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
         if type == 'gym':
-            gym_email = request.POST.get('gymemail',False)
+            gym_email = request.POST['gymemail']
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM gym_ratings \
                             WHERE gym_email = '" + gym_email + "'")
