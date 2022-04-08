@@ -70,7 +70,7 @@ def admin_edit_action(request):
         
         elif type == 'member':
             with connection.cursor() as cursor:
-                cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, preferred_gym_location = %s, \
+                cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, level = %s, preferred_gym_location = %s, \
                     budget = %s, focus1 = %s, focus2 = %s, focus3 = %s WHERE email = %s",[request.POST['first_name'],request.POST['last_name'],
                     request.POST['gender'], request.POST['level'], request.POST['location'], request.POST['budget'],
                     request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['email']])
