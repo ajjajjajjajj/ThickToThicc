@@ -360,7 +360,7 @@ def rating(request, *args):
         type = args[0]
         id = args[1]
         with connection.cursor() as cursor:
-            cursor.execute("SELECT email FROM gym WHERE id = " + str(id))
+            cursor.execute("SELECT email FROM " + type +  " WHERE id = " + str(id))
             email = cursor.fetchone()
         return render(request,'ratings/rating.html', {'type': type,
                                                         'email': email })
@@ -431,7 +431,11 @@ def profile_view(request, type, id):
                                                 FROM member_gym mg \
                                                 WHERE mg.gym_email = '" + email + "')")
             gym_members = cursor.fetchall()
-        
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT rating FROM gym_ratings \
+                            WHERE gym_email = %s", email)
+            rating = str(cursor.fetchone()[0])
+
         context = {'name': profile_info[1],
                                 'address': profile_info[3],
                                 'upper_price_range': profile_info[4],
@@ -440,7 +444,8 @@ def profile_view(request, type, id):
                                 'level': profile_info[7],
                                 'region': profile_info[8],
                                 'gym_members': gym_members,
-                                'email': email,}
+                                'email': email,
+                                'rating': rating}
 
 
         with connection.cursor() as cursor:
