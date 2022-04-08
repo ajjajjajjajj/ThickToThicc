@@ -85,34 +85,7 @@ def admin_edit_action(request):
                 users = cursor.fetchall()
             return render(request, 'app/index.html', {'users': users, 'status': 'Trainer details edited successfully'})
                 
-        
-# # Create your views here.
-# def add(request):
-#     """Shows the main page"""
-#     context = {}
-#     status = ''
-
-#     if request.POST:
-#         ## Check if customerid is already in the table
-#         with connection.cursor() as cursor:
-
-#             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [request.POST['customerid']])
-#             customer = cursor.fetchone()
-#             ## No customer with same id
-#             if customer == None:
-#                 ##TODO: date validation
-#                 cursor.execute("INSERT INTO customers VALUES (%s, %s, %s, %s, %s, %s, %s)"
-#                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-#                            request.POST['dob'] , request.POST['since'], request.POST['customerid'], request.POST['country'] ])
-#                 return redirect('index')    
-#             else:
-#                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
-
-
-#     context['status'] = status
- 
-#     return render(request, "app/add.html", context)
-
+          
 def home(request):
     return render(request,"home/home.html")
 
@@ -451,12 +424,7 @@ def profile_view(request, type, id):
                                                 WHERE mg.gym_email = '" + email + "')")
             gym_members = cursor.fetchall()
         
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT focus \
-                            FROM gymfocus \
-                            WHERE gym_email = '" + email + "'")
-            focuses = cursor.fetchall()
-        return render(request, 'profile/gym.html', {'name': profile_info[1],
+        context = {'name': profile_info[1],
                                 'address': profile_info[3],
                                 'upper_price_range': profile_info[4],
                                 'lower_price_range': profile_info[5],
@@ -464,7 +432,15 @@ def profile_view(request, type, id):
                                 'level': profile_info[7],
                                 'region': profile_info[8],
                                 'gym_members': gym_members,
-                                'email': email,
-                                'focus1': focuses[0][0],
-                                'focus2': focuses[1][0],
-                                'focus3': focuses[2][0]})
+                                'email': email,}
+
+
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT focus \
+                            FROM gymfocus \
+                            WHERE gym_email = '" + email + "'")
+            focuses = cursor.fetchall()
+            for i in range(len(focuses)):
+                context['focus' + str(i)] = focuses[i][0]
+
+        return render(request, 'profile/gym.html', context)
