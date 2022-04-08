@@ -408,8 +408,8 @@ def profile_view(request, type, id):
                                                 WHERE mt.trainer_email = '" + email + "')")
             trainer_members = cursor.fetchall()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT rating FROM trainer_ratings\
-                            WHERE trainer_email = %s", email)
+            cursor.execute("SELECT rating FROM trainer_ratings \
+                            WHERE trainer_email = %s", [email])
             rating = str(cursor.fetchone()[0])
         return render(request, 'profile/trainer.html', {'name': profile_info[2] + ' ' + profile_info[3],
                                 'gender': profile_info[4],
@@ -433,7 +433,7 @@ def profile_view(request, type, id):
             gym_members = cursor.fetchall()
         with connection.cursor() as cursor:
             cursor.execute("SELECT rating FROM gym_ratings \
-                            WHERE gym_email = %s", email)
+                            WHERE gym_email = %s", [email])
             rating = str(cursor.fetchone()[0])
 
         context = {'name': profile_info[1],
