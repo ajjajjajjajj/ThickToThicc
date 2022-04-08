@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block content1 %}
+{% block content %}
 
 Specialises in: {{ focus1 }}, {{ focus2 }}, {{ focus3 }} <br>
 
@@ -8,9 +8,8 @@ Lower Price Range: {{ lower_price_range }} <br>
 
 Upper Price Range: {{ upper_price_range }} <br>
 
-{% endblock %}
 
-{% block content2 %}
+
 Capacity: {{ capacity }} <br>
 
 Suitable for: {{ level }} level <br>
@@ -18,11 +17,10 @@ Suitable for: {{ level }} level <br>
 Region: {{ region }} <br>
 
 Trainer Rating: {{ rating }}
-{% endblock %}
+
 
 <a href="../../rating/gym/{{id}}">Leave a rating for {{name}} <a>
 
-{% block content3 %}
 <h3> Members in this gym </h3>
 <ul> 
     {% for m in gym_members %}
