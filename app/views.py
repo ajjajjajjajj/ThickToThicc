@@ -369,7 +369,7 @@ def rating(request, type=None, id=None):
             cursor.execute("SELECT email FROM " + type +  " WHERE id = " + str(id))
             email = cursor.fetchone()
         return render(request,'ratings/rating.html', {'type': type,
-                                                        'email': email })
+                                                        'email': email[0] })
     else:
         return render(request,'ratings/rating.html',{})
 
@@ -425,6 +425,7 @@ def profile_view(request, type, id):
                                 'focus1': profile_info[8],
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
+                                'level': profile_info[11],
                                 'trainer_members': trainer_members,
                                 'email': email, 
                                 'rating': rating,
