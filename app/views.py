@@ -15,9 +15,15 @@ def admin_delete(request):
         with connection.cursor() as cursor:
             cursor.execute("DELETE FROM login WHERE email = %s AND type = %s", 
                 [request.POST['email'], request.POST['type']])
-        return render(request, 'app/index.html', {'status': 'User deleted successfully'})
-    
-    return render(request, 'app/index.html', {'status': 'Please specify user details - login email and user type'})
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM login")
+            users = cursor.fetchall()
+        return render(request, 'app/index.html', {'users': users, 'status': 'User deleted successfully'})
+    else: 
+        with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login")
+                users = cursor.fetchall()
+    return render(request, 'app/index.html', {'users': users, 'status': 'Please specify user details - login email and user type'})
 
 def admin_edit_req(request):
     if request.POST:
@@ -63,10 +69,11 @@ def admin_edit_action(request):
             return render(request, 'app/index.html', {'users': users, 'status': 'Gym details edited successfully'})
         
         elif type == 'member':
-            cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, preferred_gym_location = %s, \
-                budget = %s, focus1 = %s, focus2 = %s, focus3 = %s WHERE email = %s",[request.POST['first_name'],request.POST['last_name'],
-                request.POST['gender'], request.POST['level'], request.POST['location'], request.POST['budget'],
-                request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['email']])
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, preferred_gym_location = %s, \
+                    budget = %s, focus1 = %s, focus2 = %s, focus3 = %s WHERE email = %s",[request.POST['first_name'],request.POST['last_name'],
+                    request.POST['gender'], request.POST['level'], request.POST['location'], request.POST['budget'],
+                    request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['email']])
 
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM login")
@@ -74,11 +81,12 @@ def admin_edit_action(request):
             return render(request, 'app/index.html', {'users': users, 'status': 'Member details edited successfully'})
             
         elif type == 'trainer':
-            cursor.execute("UPDATE trainer SET first_name = %s, last_name = %s, gender = %s, upper_price_range = %s, \
-                    lower_price_range = %s, experience = %s, focus1 = %s, focus2 = %s, focus3 = %s, level = %s WHERE email = %s"
-                    , [request.POST['first_name'], request.POST['last_name'], request.POST['gender'],
-                        request.POST['upper_price_range'] , request.POST['lower_price_range'], request.POST['experience'], 
-                        request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['level'],request.POST['email']])
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE trainer SET first_name = %s, last_name = %s, gender = %s, upper_price_range = %s, \
+                        lower_price_range = %s, experience = %s, focus1 = %s, focus2 = %s, focus3 = %s, level = %s WHERE email = %s"
+                        , [request.POST['first_name'], request.POST['last_name'], request.POST['gender'],
+                            request.POST['upper_price_range'] , request.POST['lower_price_range'], request.POST['experience'], 
+                            request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['level'],request.POST['email']])
 
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM login")
@@ -421,7 +429,8 @@ def profile_view(request, type, id):
                                 'focus3': profile_info[10],
                                 'trainer_members': trainer_members,
                                 'email': email, 
-                                'rating': rating})
+                                'rating': rating,
+                                'id': profile_info[0]})
     elif type == 'gym':
         email = profile_info[2]
         with connection.cursor() as cursor:
@@ -445,7 +454,8 @@ def profile_view(request, type, id):
                                 'region': profile_info[8],
                                 'gym_members': gym_members,
                                 'email': email,
-                                'rating': rating}
+                                'rating': rating,
+                                'id': profile_info[0]}
 
 
         with connection.cursor() as cursor:
