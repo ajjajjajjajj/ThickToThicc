@@ -70,7 +70,7 @@ def admin_edit_action(request):
         
         elif type == 'member':
             with connection.cursor() as cursor:
-                cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, preferred_gym_location = %s, \
+                cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, level = %s, preferred_gym_location = %s, \
                     budget = %s, focus1 = %s, focus2 = %s, focus3 = %s WHERE email = %s",[request.POST['first_name'],request.POST['last_name'],
                     request.POST['gender'], request.POST['level'], request.POST['location'], request.POST['budget'],
                     request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['email']])
@@ -318,14 +318,14 @@ def recommends_view(request, member_id):
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
 
-def rating(request, *args):
+def rating(request, type=None, id=None):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
-        rate = request.POST.get('rating',False)
-        member_email = request.POST.get('memberemail',False)
-        type = request.POST.get('type',False)
+        rate = request.POST['rating']]
+        member_email = request.POST['memberemail']
+        type = request.POST['type']
         if type == 'trainer':
-            trainer_email = request.POST.get('traineremail',False)
+            trainer_email = request.POST['traineremail']
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM member_trainer \
                                 WHERE trainer_email = '" + trainer_email + "' AND member_email = '" + member_email + "'")
@@ -345,7 +345,7 @@ def rating(request, *args):
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
         if type == 'gym':
-            gym_email = request.POST.get('gymemail',False)
+            gym_email = request.POST['gymemail']
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM gym_ratings \
                             WHERE gym_email = '" + gym_email + "'")
@@ -364,14 +364,12 @@ def rating(request, *args):
                     cursor.execute("SELECT * from gym_ratings where gym_email = '" + gym_email + "'")
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
-    elif len(args) != 0:
-        type = args[0]
-        id = args[1]
+    elif type and id:
         with connection.cursor() as cursor:
             cursor.execute("SELECT email FROM " + type +  " WHERE id = " + str(id))
             email = cursor.fetchone()
         return render(request,'ratings/rating.html', {'type': type,
-                                                        'email': email })
+                                                        'email': email[0] })
     else:
         return render(request,'ratings/rating.html',{})
 
@@ -427,6 +425,7 @@ def profile_view(request, type, id):
                                 'focus1': profile_info[8],
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
+                                'level': profile_info[11],
                                 'trainer_members': trainer_members,
                                 'email': email, 
                                 'rating': rating,
