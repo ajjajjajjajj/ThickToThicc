@@ -466,3 +466,4 @@ def profile_view(request, type, id):
                 context['focus' + str(i)] = focuses[i][0]
 
         return render(request, 'profile/gym.html', context)
+
