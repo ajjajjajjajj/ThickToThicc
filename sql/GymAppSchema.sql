@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS login(
-email VARCHAR(256) NOT NULL UNIQUE ON DELETE CASCADE
+email VARCHAR(256) NOT NULL UNIQUE
 password VARCHAR(256) NOT NULL,
 type VARCHAR(64) NOT NULL CONSTRAINT type CHECK( type = 'member' OR type = 'trainer' OR type = 'gym'),
 PRIMARY KEY (email,type)
@@ -22,7 +22,9 @@ focus1 VARCHAR(64) NOT NULL,
 focus2 VARCHAR(64) NOT NULL,
 focus3 VARCHAR(64) NOT NULL,
 level VARCHAR(64) NOT NULL,
-FOREIGN KEY (email) REFERENCES login(email)
+FOREIGN KEY (email) REFERENCES login(email) 
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE IF NOT EXISTS member(
@@ -34,10 +36,12 @@ gender VARCHAR(16) NOT NULL CONSTRAINT gender CHECK(gender = 'M' OR gender = 'F'
 level VARCHAR(64) NOT NULL,
 preferred_gym_location VARCHAR(256) NOT NULL,
 budget NUMERIC NOT NULL,
-FOREIGN KEY (email) REFERENCES login(email), 
 focus1 VARCHAR(64) REFERENCES focus(focus),
 focus2 VARCHAR(64) REFERENCES focus(focus),
-focus3 VARCHAR(64) REFERENCES focus(focus)
+focus3 VARCHAR(64) REFERENCES focus(focus),
+FOREIGN KEY (email) REFERENCES login(email) 
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED
 );
 
 
@@ -52,35 +56,51 @@ lower_price_range NUMERIC NOT NULL CHECK(lower_price_range > 0),
 capacity NUMERIC NOT NULL CHECK(capacity > 0),
 level VARCHAR(64) NOT NULL CONSTRAINT level CHECK(level = 'Beginner' OR level = 'Intermediate' OR level = 'Advanced'),
 region VARCHAR(16) NOT NULL CONSTRAINT region CHECK(region = 'North' OR region = 'South' OR region = 'East' OR region = 'West' OR region = 'Central'),
-FOREIGN KEY (email) REFERENCES login(email)
+FOREIGN KEY (email) REFERENCES login(email) 
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED
 );
 
 
 CREATE TABLE IF NOT EXISTS member_trainer(
-member_email VARCHAR(256) REFERENCES member(email),
-trainer_email VARCHAR(256) REFERENCES trainer(email),
+member_email VARCHAR(256) REFERENCES member(email)
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
+trainer_email VARCHAR(256) REFERENCES trainer(email)
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
 trainer_rating NUMERIC,
 UNIQUE(member_email, trainer_email)
 );
 
 
 CREATE TABLE IF NOT EXISTS member_gym(
-member_email VARCHAR(256) REFERENCES member(email),
-gym_email VARCHAR(256) REFERENCES gym(email),
+member_email VARCHAR(256) REFERENCES member(email)
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
+gym_email VARCHAR(256) REFERENCES gym(email)
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
 gym_rating NUMERIC CONSTRAINT gym_rating CHECK(gym_rating<=5),
 UNIQUE(member_email, gym_email)
 );
 
 CREATE TABLE IF NOT EXISTS gymfocus(
 gym_email VARCHAR(256),
-focus VARCHAR(64) REFERENCES focus(focus),
-FOREIGN KEY (gym_email) REFERENCES gym(email),
+focus VARCHAR(64) REFERENCES focus(focus)
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
+FOREIGN KEY (gym_email) REFERENCES gym(email)
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
 PRIMARY KEY (gym_email,focus)
 );
 
 CREATE TABLE trainer_ratings( 
-    trainer_email VARCHAR(64) REFERENCES trainer(email),
-    rating NUMERIC CONSTRAINT rating CHECK(rating<=5)
+trainer_email VARCHAR(64) REFERENCES trainer(email),
+	ON UPDATE CASCADE ON DELETE CASCADE
+	DEFERRABLE INITIALLY DEFERRED,
+rating NUMERIC CONSTRAINT rating CHECK(rating<=5)
 );
 
 CREATE OR REPLACE FUNCTION insert_trainer()
