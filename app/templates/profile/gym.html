@@ -27,7 +27,7 @@ Trainer Rating: {{ rating }}
 <ul> 
     {% for m in gym_members %}
     <li>
-        <a href="../../member/{{ m.0 }}"> {{ m.2|add:m.3 }} </a>
+        <a href="../../member/{{ m.0 }}"> {{ m.2|add:" "|add:m.3 }} </a>
     </li>
     {% endfor %}
 </ul>
