@@ -318,7 +318,7 @@ def recommends_view(request, member_id):
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
 
-def rating(request, *args):
+def rating(request, type=None, id=None):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
         rate = request.POST.get('rating',False)
@@ -364,9 +364,7 @@ def rating(request, *args):
                     cursor.execute("SELECT * from gym_ratings where gym_email = '" + gym_email + "'")
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
-    elif len(args) != 0:
-        type = args[0]
-        id = args[1]
+    elif type and id:
         with connection.cursor() as cursor:
             cursor.execute("SELECT email FROM " + type +  " WHERE id = " + str(id))
             email = cursor.fetchone()
