@@ -421,7 +421,8 @@ def profile_view(request, type, id):
                                 'focus3': profile_info[10],
                                 'trainer_members': trainer_members,
                                 'email': email, 
-                                'rating': rating})
+                                'rating': rating,
+                                'id': profile_info[0]})
     elif type == 'gym':
         email = profile_info[2]
         with connection.cursor() as cursor:
@@ -445,7 +446,8 @@ def profile_view(request, type, id):
                                 'region': profile_info[8],
                                 'gym_members': gym_members,
                                 'email': email,
-                                'rating': rating}
+                                'rating': rating,
+                                'id': profile_info[0]}
 
 
         with connection.cursor() as cursor:
