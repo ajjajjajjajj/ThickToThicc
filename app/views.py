@@ -407,6 +407,10 @@ def profile_view(request, type, id):
                                                 FROM member_trainer mt \
                                                 WHERE mt.trainer_email = '" + email + "')")
             trainer_members = cursor.fetchall()
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT rating FROM trainer_ratings\
+                            WHERE trainer_email = %s", email)
+            rating = str(cursor.fetchone()[0])
         return render(request, 'profile/trainer.html', {'name': profile_info[2] + ' ' + profile_info[3],
                                 'gender': profile_info[4],
                                 'upper_price_range': profile_info[5],
@@ -416,7 +420,8 @@ def profile_view(request, type, id):
                                 'focus2': profile_info[9],
                                 'focus3': profile_info[10],
                                 'trainer_members': trainer_members,
-                                'email': email })
+                                'email': email, 
+                                'rating': rating})
     elif type == 'gym':
         email = profile_info[2]
         with connection.cursor() as cursor:
