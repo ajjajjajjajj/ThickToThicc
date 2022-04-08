@@ -321,7 +321,7 @@ def recommends_view(request, member_id):
 def rating(request, type=None, id=None):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
-        rate = request.POST['rating']]
+        rate = request.POST['rating']
         member_email = request.POST['memberemail']
         type = request.POST['type']
         if type == 'trainer':
