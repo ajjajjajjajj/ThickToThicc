@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', admin_index, name='index'),
     path('delete/', admin_delete, name='delete'),
+    path('edit/', admin_edit_req, name='edit'),
+    path('edit_submit/', admin_edit_action, name='edit_submit'),
     # path('add', add, name='add'),
     # path('view/<str:id>', view, name='view'),
     # path('edit/<str:id>', edit, name='edit'),
@@ -35,6 +37,5 @@ urlpatterns = [
     path('<str:type>=<str:myid>/', loggedhome, name = 'loggedhome'),
     path('recommends/<str:member_id>/', recommends_view, name='recommends'),
     path('rating/',rating,name='rating'),
-    path('browse/',browse,name='browse'),
     path('profile/<str:type>/<str:id>/', profile_view, name = 'profile_view'),
 ]

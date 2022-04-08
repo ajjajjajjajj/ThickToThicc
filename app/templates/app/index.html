@@ -3,6 +3,7 @@
 <body>
     <h2>All Users of ThickToThicc</h2>
     <br/><br/>
+    <div> {{status}} </div>
     <table border=1>
         <thead>
             <th>Email</th>
@@ -16,14 +17,22 @@
             <td> {{ i.1 }} </td>
             <td> {{ i.2 }} </td>
             <td>
-                <a href="edit/{{i.2}}/{{i.0}}"><button>Edit</button></a> | 
-                <a href="delete/{{i.2}}/{{i.0}}"><button>Delete</button></a>
-                | 
-                <form method="POST" style="display: inline;">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{i.0}}"/>
-                <button onclick="return confirm('Are you sure you want to delete {{cust.5}}?');" type="submit" name="action" value="delete">Delete</button> 
-              </form></td>
+                <form action="../edit/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="{{i.2}}"/>
+                    <input type="hidden" name="email" value="{{i.0}}"/>
+                    <button type="submit">Edit</button> 
+                </form>
+
+                <form action="../delete/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="{{i.2}}"/>
+                    <input type="hidden" name="email" value="{{i.0}}"/>
+                    <button onclick="return confirm('Are you sure you want to delete {{i.0}}?');" type="submit">Delete</button> 
+
+                </form>
+                
+            </td>
         </tr>
         {% endfor %}
     </table>

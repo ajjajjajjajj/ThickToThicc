@@ -6,7 +6,7 @@
 
     <p style="color:red">{{ status | safe }}</p>
 
-    <form method="POST" action="edit/">
+    <form method="POST" action="edit_submit/">
 
         {% csrf_token %}
 
@@ -26,7 +26,7 @@
             <span class="asteriskField">*</span>
             </label>
         <div class="controls">
-            <input type="text" name="email" value="{{gym.2}}" maxlength="64" class="textinput textInput" required="" id="id_email">
+            <input readonly type="text" name="email" value="{{gym.2}}" maxlength="64" class="textinput textInput" required="" id="id_email">
         </div>
         </div>
         
@@ -84,7 +84,7 @@
 
         <div class="control-group" id="div_id_location">
             <label for id="id_location" class="control-label requiredField">
-                Preferred Location<span class="asteriskField">*</span>
+                Location<span class="asteriskField">*</span>
             </label><div class="controls">
             <select name="loc" id="loc">
                 <option value="{{gym.8}}">{{gym.8}}</option>

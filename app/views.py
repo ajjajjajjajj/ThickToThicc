@@ -2,58 +2,89 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect
 
-
-# # Create your views here.
-# def index(request):
-#     """Shows the main page"""
-
-#     ## Delete customer
-#     if request.POST:
-#         if request.POST['action'] == 'delete':
-#             with connection.cursor() as cursor:
-#                 cursor.execute("DELETE FROM customers WHERE customerid = %s", [request.POST['id']])
-
-#     ## Use raw query to get all objects
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM customers ORDER BY customerid")
-#         customers = cursor.fetchall()
-#     result_dict = {'records': customers}
-#     return render(request,'app/index.html',result_dict)
-
-# # Create your views here.
 def admin_index(request):
 
-    ## Use raw query to get a customer
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM login")
         users = cursor.fetchall()
 
     return render(request,'app/index.html',{'users': users})
 
-def admin_delete(request, type, email):
+def admin_delete(request):
     if request.POST:
         with connection.cursor() as cursor:
             cursor.execute("DELETE FROM login WHERE email = %s AND type = %s", 
                 [request.POST['email'], request.POST['type']])
-        return render(request, 'app/view.html', {'status': 'User deleted successfully'})
+        return render(request, 'app/index.html', {'status': 'User deleted successfully'})
     
-    return render(request, 'app/delete.html', {'status': 'Please specify user details - login email and user type'})
+    return render(request, 'app/index.html', {'status': 'Please specify user details - login email and user type'})
 
-def admin_edit(request, type, email):
+def admin_edit_req(request):
     if request.POST:
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM login WHERE email = %s AND type = %s", 
-                [request.POST['email'], request.POST['type']])
-            user = cursor.fetchone()
-    
-        with connection.cursor() as cursor:
-            cursor.execute("UPDATE login SET first_name = %s, last_name = %s, email = %s, dob = %s, since = %s, country = %s WHERE customerid = %s"
-                    , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                        request.POST['dob'] , request.POST['since'], request.POST['country'], id ])
-            status = 'Customer edited successfully!'
-            cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
+        type = request.POST['type']
+        if type == 'gym':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM gym WHERE email = %s", 
+                [request.POST['email']])
+                gym = cursor.fetchone()
+            return render(request,'app/gym_edit.html', {'gym': gym })
+        elif type == 'member':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM member WHERE email = %s", 
+                [request.POST['email']])
+                member = cursor.fetchone()
+
+            return render(request, 'app/member_edit.html', {'member': member })
+        elif type == 'trainer':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM trainer WHERE email = %s", 
+                [request.POST['email']])
+                trainer = cursor.fetchone()
+
+            return render(request, 'app/trainer_edit.html', {'trainer': trainer })
     else:
-        return render(request, 'app/edit', {'status': 'Please input edits below'})
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM login")
+            users = cursor.fetchall()
+        return render(request, 'app/index.html', {'users': users, 'status': 'Edit request failed'})
+
+def admin_edit_action(request):
+        type = request.POST['type']
+        if type == 'gym':
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE gym SET name = %s, address = %s, upper_price_range = %s, \
+                    lower_price_range = %s, capacity = %s, level = %s, region = %s WHERE email = %s", 
+                    [request.POST['name'], request.POST['address'], request.POST['upper_price_range'],
+                    request.POST['lower_price_range'],request.POST['capacity'],request.POST['lvl'], request.POST['loc'], request.POST['email']])
+            
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login")
+                users = cursor.fetchall()
+            return render(request, 'app/index.html', {'users': users, 'status': 'Gym details edited successfully'})
+        
+        elif type == 'member':
+            cursor.execute("UPDATE member SET first_name = %s, last_name = %s, gender = %s, preferred_gym_location = %s, \
+                budget = %s, focus1 = %s, focus2 = %s, focus3 = %s WHERE email = %s",[request.POST['first_name'],request.POST['last_name'],
+                request.POST['gender'], request.POST['level'], request.POST['location'], request.POST['budget'],
+                request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['email']])
+
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login")
+                users = cursor.fetchall()
+            return render(request, 'app/index.html', {'users': users, 'status': 'Member details edited successfully'})
+            
+        elif type == 'trainer':
+            cursor.execute("UPDATE trainer SET first_name = %s, last_name = %s, gender = %s, upper_price_range = %s, \
+                    lower_price_range = %s, experience = %s, focus1 = %s, focus2 = %s, focus3 = %s, level = %s WHERE email = %s"
+                    , [request.POST['first_name'], request.POST['last_name'], request.POST['gender'],
+                        request.POST['upper_price_range'] , request.POST['lower_price_range'], request.POST['experience'], 
+                        request.POST['focus1'],request.POST['focus2'],request.POST['focus3'],request.POST['level'],request.POST['email']])
+
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM login")
+                users = cursor.fetchall()
+            return render(request, 'app/index.html', {'users': users, 'status': 'Trainer details edited successfully'})
+                
         
 # # Create your views here.
 # def add(request):
@@ -82,37 +113,6 @@ def admin_edit(request, type, email):
  
 #     return render(request, "app/add.html", context)
 
-# # Create your views here.
-# def edit(request, id):
-#     """Shows the main page"""
-
-#     # dictionary for initial data with
-#     # field names as keys
-#     context ={}
-
-#     # fetch the object related to passed id
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-#         obj = cursor.fetchone()
-
-#     status = ''
-#     # save the data from the form
-
-#     if request.POST:
-#         ##TODO: date validation
-#         with connection.cursor() as cursor:
-#             cursor.execute("UPDATE customers SET first_name = %s, last_name = %s, email = %s, dob = %s, since = %s, country = %s WHERE customerid = %s"
-#                     , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-#                         request.POST['dob'] , request.POST['since'], request.POST['country'], id ])
-#             status = 'Customer edited successfully!'
-#             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-#             obj = cursor.fetchone()
-
-
-#     context["obj"] = obj
-#     context["status"] = status
- 
-#     return render(request, "app/edit.html", context)
 def home(request):
     return render(request,"home/home.html")
 
@@ -179,10 +179,10 @@ def search_request(request):
         focus2 = request.POST.get('foc2',False)
         focus3 = request.POST.get('foc3',False)
         budget = request.POST.get('budget',False)
-        gymaction = "SELECT DISTINCT * \
+        gymaction = "SELECT DISTINCT g.id, g.name, g.email, g.address, g.upper_price_range, g.lower_price_range, g.capacity, g.level, g.region \
             FROM gym g, gymfocus f \
             WHERE name LIKE '%%" + string + "%%'"
-        traineraction = "SELECT DISTINCT * \
+        traineraction = "SELECT DISTINCT t.id, t.email, t.first_name, t.last_name, t.gender, t.upper_price_range, t.lower_price_range, t.experience, t.focus1, t.focus2, t.focus3, t.level \
                 FROM trainer t, focus f \
                 WHERE first_name LIKE '%%" + string + "%%' \
                     OR last_name LIKE '%%" + string + "%%'"
@@ -337,7 +337,7 @@ def recommends_view(request, member_id):
                                 'reco_trainers': reco_trainers,
                                 'reco_members': reco_members})
 
-def rating(request):
+def rating(request, *args):
     #TODO: add case for insert rating for gyms, need to edit rating.html as well
     if request.POST:
         rate = request.POST.get('rating',False)
@@ -383,11 +383,14 @@ def rating(request):
                     cursor.execute("SELECT * from gym_ratings where gym_email = '" + gym_email + "'")
                     rating = cursor.fetchone()
                     return render(request,'ratings/rating.html',{'rating':rating})
+    elif len(args) != 0:
+        type = args[0]
+        id = args[1]
+        return render(request,'ratings/rating.html', {'type': type,
+                                                        'id': id })
     else:
         return render(request,'ratings/rating.html',{})
 
-def browse(request):
-    pass
 
 
 

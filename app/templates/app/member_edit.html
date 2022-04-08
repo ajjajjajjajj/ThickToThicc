@@ -2,9 +2,9 @@
 
 {% block content %}
 
-    <h2>Edit {{ trainer.2 }} {{trainer.3}}</h2>
+    <h2>Edit {{member.2}} {{member.3}}</h2>
 
-    <p style="color:red">{{ status | safe}}</p>
+    <p style="color:red">{{status | safe}}</p>
 
     <form method="POST" action="edit_submit/">
 
@@ -16,7 +16,7 @@
             <span class="asteriskField">*</span>
             </label>
         <div class="controls">
-            <input readonly type="text" name="email" value="{{trainer.1}}" maxlength="64" class="textinput textInput" required="" id="id_email">
+            <input readonly type="text" name="email" value="{{member.1}}" maxlength="64" class="textinput textInput" required="" id="id_email">
         </div>
         </div>
 
@@ -26,7 +26,7 @@
             <span class="asteriskField">*</span>
             </label>
         <div class="controls">
-            <input type="text" name="first_name" value="{{trainer.2}}" maxlength="64" class="textinput textInput" required="" id="id_first_name">
+            <input type="text" name="first_name" value="{{member.2}}" maxlength="64" class="textinput textInput" required="" id="id_first_name">
         </div>
         </div>
 
@@ -36,7 +36,7 @@
             <span class="asteriskField">*</span>
             </label>
         <div class="controls">
-            <input type="text" name="last_name" value="{{trainer.3}}" maxlength="64" class="textinput textInput" required="" id="id_last_name">
+            <input type="text" name="last_name" value="{{member.3}}" maxlength="64" class="textinput textInput" required="" id="id_last_name">
         </div>
         </div>
 
@@ -45,39 +45,46 @@
                 Gender<span class="asteriskField">*</span>
             </label><div class="controls">
             <select name="gender" id="id_gender">
-                <option value="{{trainer.4}}">{{trainer.4}}</option>
+                <option value="{{member.4}}">{{member.4}}</option>
                 <option value="M">Male</option>
                 <option value="F">Female</option>
             </select>
         </div>
 
-        <div id="div_id_upper_price_range" class="control-group">
-            <label for="id_upper_price_range" class="control-label requiredField">
-                Upper Price Range
-            <span class="asteriskField">*</span>
-            </label>
-        <div class="controls">
-            <input type="number" name="upper_price_range" value="{{trainer.5}}" class="numberinput numberInput" required="" id="id_upper_price_range">
+        <div class="control-group" id="div_id_level">
+            <label for="id_level" class="control-label requiredField">
+                Fitness Level<span class="asteriskField">*</span>
+            </label><div class="controls">
+            <select name="level" id="id_level">
+                <option value="{{member.5}}">{{member.5}}</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
         </div>
         </div>
 
-        <div id="div_id_lower_price_range" class="control-group">
-            <label for="id_lower_price_range" class="control-label requiredField">
-                Lower Price Range
-            <span class="asteriskField">*</span>
-            </label>
-        <div class="controls">
-            <input type="number" name="lower_price_range" value="{{trainer.6}}" class="numberinput numberInput" required="" id="id_lower_price_range">
-        </div>
+        <div class="control-group" id="div_id_location">
+            <label for id="id_location" class="control-label requiredField">
+                Preferred Gym Location<span class="asteriskField">*</span>
+            </label><div class="controls">
+            <select name="location" id="location">
+                <option value="{{member.6}}">{{member.6}}</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="Central">Central</option>
+            </select>
         </div>
 
-        <div id="div_id_experience" class="control-group">
-            <label for="id_experience" class="control-label requiredField">
-                Experience
+        <div id="div_id_budget" class="control-group">
+            <label for="id_budget" class="control-label requiredField">
+                Budget
             <span class="asteriskField">*</span>
             </label>
         <div class="controls">
-            <input type="number" name="experience" value="{{trainer.7}}" class="numberinput numberInput" required="" id="id_experience">
+            <input type="number" name="budget" value="{{member.7}}" class="numberinput numberInput" required="" id="id_budget">
         </div>
         </div>
 
@@ -88,7 +95,7 @@
             </label>
         <div class="controls">
             <select name="focus1" id="id_focus1">
-                <option value="{{trainer.8}}">{{trainer.8}}</option>
+                <option value="{{member.9}}">{{member.9}}</option>
                 <option value="Calisthenics">Calisthenics</option>
                 <option value="Crossfit">Crossfit</option>
                 <option value="Martial Arts">Martial Arts</option>
@@ -110,7 +117,7 @@
             </label>
         <div class="controls">
             <select name="focus2" id="id_focus2">
-                <option value="{{trainer.9}}">{{trainer.9}}</option>
+                <option value="{{member.10}}">{{member.10}}</option>
                 <option value="Calisthenics">Calisthenics</option>
                 <option value="Crossfit">Crossfit</option>
                 <option value="Martial Arts">Martial Arts</option>
@@ -132,7 +139,7 @@
             </label>
         <div class="controls">
             <select name="focus3" id="id_focus3">
-                <option value="{{trainer.10}}">{{trainer.10}}</option>
+                <option value="{{member.11}}">{{member.11}}</option>
                 <option value="Calisthenics">Calisthenics</option>
                 <option value="Crossfit">Crossfit</option>
                 <option value="Martial Arts">Martial Arts</option>
@@ -147,23 +154,22 @@
         </div>
         </div>
 
-        <div class="control-group" id="div_id_level">
-            <label for="id_level" class="control-label requiredField">
-                Fitness Level<span class="asteriskField">*</span>
-            </label><div class="controls">
-            <select name="level" id="id_level">
-                <option value="{{trainer.11}}">{{trainer.11}}</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-            </select>
-        </div>
-        </div>
-        
         <br>
         <button type="submit" value="Update">Update</button>
     </form>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
